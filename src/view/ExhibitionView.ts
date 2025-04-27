@@ -114,7 +114,7 @@ export default class ExhibitionView {
             
             const newArtWorks = readlineSync.question(`Novas obras (IDs separados por vírgula, exemplo: 1,2,3,4): `, { defaultInput: exhibitionToUpdate.getArtWorks().join(', ') });
 
-            const artWorksArray = newArtWorks.split(',').map(id => parseInt(id.trim()));
+            const artWorksArray = newArtWorks.split(',').map((id: string) => parseInt(id.trim()));
             
             const updated = this.exhibitionController.updateExhibition(newIdExhibition, newName, newDescription, artWorksArray);
             
