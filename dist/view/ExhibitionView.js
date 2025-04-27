@@ -122,7 +122,7 @@ class ExhibitionView {
             const newName = readlineSync.question(`Novo nome (${exhibitionToUpdate.getName()}): `, { defaultInput: exhibitionToUpdate.getName() });
             const newDescription = readlineSync.question(`Nova descrição (${exhibitionToUpdate.getDescription()}): `, { defaultInput: exhibitionToUpdate.getDescription() });
             const newArtWorks = readlineSync.question(`Novas obras (IDs separados por vírgula, exemplo: 1,2,3,4): `, { defaultInput: exhibitionToUpdate.getArtWorks().join(', ') });
-            const artWorksArray = newArtWorks.split(',').map(id => parseInt(id.trim()));
+            const artWorksArray = newArtWorks.split(',').map((id) => parseInt(id.trim()));
             const updated = this.exhibitionController.updateExhibition(newIdExhibition, newName, newDescription, artWorksArray);
             if (updated) {
                 console.log(`Exposição com ID ${idExhibition} atualizada.`);
