@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-class Artist {
+const BaseEntity_1 = __importDefault(require("./BaseEntity"));
+class Artist extends BaseEntity_1.default {
     //Constructor com elementos indispensaveis para a construção de um objeto Artist
     constructor(idArtist, name, bio, birthYear, instagram) {
-        this.idArtist = idArtist;
-        this.name = name;
+        super(idArtist, name);
         this.bio = bio;
         this.birthYear = birthYear;
         this.instagram = instagram;
@@ -28,23 +31,11 @@ class Artist {
             this.instagram = instagram;
         }
     }
-    //Formatação do nome para caso o nome não seja inserido
-    formatName(name) {
-        if (name == "") {
-            name = "Desconhecido";
-            this.name = name;
-        }
-        else {
-            this.name = name;
-        }
+    //GetInfo para retornar as informações do artista
+    getInfo() {
+        return this.getBasicInfo();
     }
-    //Gets e Sets
-    getIdArtist() {
-        return this.idArtist;
-    }
-    getName() {
-        return this.name;
-    }
+    //Gets e Sets 
     getBio() {
         return this.bio;
     }
@@ -53,12 +44,6 @@ class Artist {
     }
     getInstagram() {
         return this.instagram;
-    }
-    setIdArtist(idArtist) {
-        this.idArtist = idArtist;
-    }
-    setName(name) {
-        this.formatName(name);
     }
     setBio(bio) {
         this.bio = bio;

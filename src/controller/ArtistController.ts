@@ -9,17 +9,15 @@ export default class ArtistController{
   }
 
   public crateArtist(name: string, bio: string, birthYear: number, instagram: string): Artist | null{
-    try{
-      return this.db.createArtist(name, bio, birthYear, instagram);
-    }
-    catch (error: any){
-      console.error("Erro ao criar artista:", error.message);
-      return null;
-    }
+    return this.db.createArtist(name, bio, birthYear, instagram);
   }
 
   public getArtist(idArtist: number): Artist | undefined{
     return this.db.readArtist(idArtist);
+  }
+
+  public getArtistByName(name: string): Artist | undefined{
+    return this.db.readArtistByName(name);
   }
 
   public listArtists(): Artist[]{

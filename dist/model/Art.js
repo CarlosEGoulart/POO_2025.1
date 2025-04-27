@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-class Art {
+const BaseEntity_1 = __importDefault(require("./BaseEntity"));
+class Art extends BaseEntity_1.default {
     //Constructor com elementos indispensaveis para a construção de um objeto Art
     constructor(idArt, title, description, year) {
-        this.idArt = idArt;
-        this.title = title;
+        super(idArt, title);
         this.description = description;
         this.year = year;
     }
@@ -16,13 +19,11 @@ class Art {
             this.year = year;
         }
     }
+    //GetInfo para retornar as informações da obra
+    getInfo() {
+        return this.getBasicInfo();
+    }
     //Gets e Sets
-    getIdArt() {
-        return this.idArt;
-    }
-    getTitle() {
-        return this.title;
-    }
     getDescription() {
         return this.description;
     }
@@ -31,12 +32,6 @@ class Art {
     }
     getArtist() {
         return this.artist;
-    }
-    setIdArt(idArt) {
-        this.idArt = idArt;
-    }
-    setTitle(title) {
-        this.title = title;
     }
     setDescription(description) {
         this.description = description;

@@ -18,26 +18,45 @@ export default class Database{
   }
 
   public readArt(idArt: number): Art | undefined{
-    return this.ArtDb.find(art => art.getIdArt() === idArt);
+    for(let i = 0; i < this.ArtDb.length; i++){
+      if(this.ArtDb[i].getId() === idArt){
+        return this.ArtDb[i];
+      }
+      else{
+        console.log("Obra não encontrada!");
+      }
+    }
+  }
+
+  public readArtByTitle(name:string): Art | undefined{
+    for(let i = 0; i < this.ArtDb.length; i++){
+      if(this.ArtDb[i].getName() === name){
+        return this.ArtDb[i];
+      }
+      else{
+        console.log("Obra não encontrada!")
+      }
+    }
   }
 
   public readAllArts(): Art[]{
     return this.ArtDb;
   }
   
-  public updateArt(idArt: number, title: string, description: string, year: number):boolean{
-    const artIndex = this.ArtDb.findIndex(art => art.getIdArt() === idArt);
-    if(artIndex !== -1){
-      this.ArtDb[artIndex] = new Art(idArt, title, description, year);
-      return true;
+  public updateArt(idArt: number, title:string, description: string, year: number):boolean{
+    const art = this.readArt(idArt);
+    if(art){
+      art.setName(title);
+      art.setDescription(description);
+      art.setYear(year);
+      return true; 
     }
-
     return false;
   }
 
   public deleteArt(idArt: number): Art[] | undefined{
     for(let i = 0; i < this.ArtDb.length; i++){
-      if(this.ArtDb[i].getIdArt() === idArt){
+      if(this.ArtDb[i].getId() === idArt){
         this.ArtDb.splice(i, 1);
         return this.ArtDb;
       }
@@ -66,7 +85,25 @@ export default class Database{
   }
 
   public readArtist(idArtist: number): Artist | undefined{
-    return this.ArtistDb.find(artist => artist.getIdArtist() === idArtist);
+    for(let i = 0; i < this.ArtistDb.length; i++){
+      if(this.ArtistDb[i].getId() === idArtist){
+        return this.ArtistDb[i];
+      }
+      else{
+        console.log("Artista não encontrado!");
+      }
+    }
+  }
+
+  public readArtistByName(name:string): Artist | undefined{
+    for(let i = 0; i < this.ArtistDb.length; i++){
+      if(this.ArtistDb[i].getName() === name){
+        return this.ArtistDb[i];
+      }
+      else{
+        console.log("Artista não encontrado!");
+      }
+    }
   }
 
   public readAllArtists(): Artist[]{
@@ -74,17 +111,22 @@ export default class Database{
   }
 
   public updateArtist(idArtist: number, name: string, bio: string, birthYear: number, instagram: string): boolean{
-    const artistIndex = this.ArtistDb.findIndex(artist => artist.getIdArtist() === idArtist);
-    if(artistIndex !== -1){
-      this.ArtistDb[artistIndex] = new Artist(idArtist, name, bio, birthYear, instagram);
+    const artist = this.readArtist(idArtist);
+    if(artist){
+      artist.setName(name);
+      artist.setBio(bio);
+      artist.setBirthYear(birthYear);
+      artist.setInstagram(instagram);
       return true;
     }
-    return false;
+    else{
+      return false;
+    }  
   }
 
   public deleteArtist(idArtist: number): Artist[] | undefined{
     for(let i = 0; i < this.ArtistDb.length; i++){
-      if(this.ArtistDb[i].getIdArtist() === idArtist){
+      if(this.ArtistDb[i].getId() === idArtist){
         this.ArtistDb.splice(i, 1);
         return this.ArtistDb;
       }
@@ -102,35 +144,54 @@ export default class Database{
     return newExhibition;
   }
 
-  public readExhibition(idExhibition: number): Exhibition | undefined {
-    return this.ExhibitionDb.find(exhibition => exhibition.getIdExhibition() === idExhibition);
+  public readExhibition(idExhibition: number): Exhibition | undefined{
+    for(let i = 0; i < this.ExhibitionDb.length; i++){
+      if(this.ExhibitionDb[i].getId() === idExhibition){
+        return this.ExhibitionDb[i];
+      }
+      else{
+        console.log("Exibição não encontrada!");
+      }
+    }
   }
+
+  public readExhibitionByName(name:string): Exhibition | undefined{
+    for(let i = 0; i < this.ExhibitionDb.length; i++){
+      if(this.ExhibitionDb[i].getName() === name){
+        return this.ExhibitionDb[i];
+      }
+      else{
+        console.log("Exibição não encontrada!")
+      }
+    }
+  }
+  
 
   public readAllExhibitions(): Exhibition[] {
     return this.ExhibitionDb;
   }
 
   public updateExhibition(idExhibition: number, name: string, description: string, artWorks: number[]): boolean {
-    const exhibitionIndex = this.ExhibitionDb.findIndex(exhibition => exhibition.getIdExhibition() === idExhibition);
-    if (exhibitionIndex !== -1) {
-      this.ExhibitionDb[exhibitionIndex] = new Exhibition(idExhibition, name, description, artWorks);
+    const Exhibition = this.readExhibition(idExhibition);
+    if (Exhibition){
+      Exhibition.setName(name);
+      Exhibition.setDescription(description);
+      Exhibition.setArtWorks(artWorks);
       return true;
     }
     else{
       return false;
-    }  
-    
+    }     
   }
 
   public deleteExhibition(idExhibition: number): boolean {
     for(let i = 0; i < this.ExhibitionDb.length; i++){
-      if(this.ExhibitionDb[i].getIdExhibition() === idExhibition){
+      if(this.ExhibitionDb[i].getId() === idExhibition){
         this.ExhibitionDb.splice(i, 1);
         return true;
       }
     }
-    return false;
-             
+    return false;           
   }
            
   public addArtToExhibition(idExhibition: number, idArt: number): boolean {
@@ -158,7 +219,7 @@ export default class Database{
 
   public getExhibitionArts(idExhibition: number): Art[] | undefined {
     for(let i = 0; i < this.ExhibitionDb.length; i++){
-      if(this.ExhibitionDb[i].getIdExhibition() === idExhibition){
+      if(this.ExhibitionDb[i].getId() === idExhibition){
         const artIds = this.ExhibitionDb[i].getArtWorks();
         const arts = artIds.map(id => this.readArt(id)).filter(art => art !== undefined) as Art[];
         return arts;

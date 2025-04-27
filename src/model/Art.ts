@@ -1,8 +1,7 @@
 import Artist from "./Artist"
+import BaseEntity from "./BaseEntity";
 
-export default class Art{
-  private idArt: number;
-  private title: string;
+export default class Art extends BaseEntity{
   private description: string;
   private year: number;
   private artist!: Artist;
@@ -10,8 +9,7 @@ export default class Art{
   
   //Constructor com elementos indispensaveis para a construção de um objeto Art
   constructor(idArt: number, title: string, description: string, year: number){
-    this.idArt = idArt;
-    this.title = title;
+    super(idArt, title)
     this.description = description;
     this.year = year;
   }
@@ -26,15 +24,12 @@ export default class Art{
     }
   }
 
+  //GetInfo para retornar as informações da obra
+  public getInfo(): string {
+    return this.getBasicInfo();
+  }
+  
   //Gets e Sets
-  public getIdArt(): number{
-    return this.idArt;
-  }
-
-  public getTitle(): string{
-    return this.title;
-  }
-
   public getDescription(): string{
     return this.description;
   }
@@ -45,14 +40,6 @@ export default class Art{
 
   public getArtist(): Artist{
     return this.artist;
-  }
-
-  public setIdArt(idArt: number): void{
-    this.idArt = idArt;
-  }  
-
-  public setTitle(title: string): void{
-    this.title = title;
   }
 
   public setDescription(description: string): void{

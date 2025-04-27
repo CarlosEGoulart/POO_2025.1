@@ -5,16 +5,13 @@ class ArtistController {
         this.db = db;
     }
     crateArtist(name, bio, birthYear, instagram) {
-        try {
-            return this.db.createArtist(name, bio, birthYear, instagram);
-        }
-        catch (error) {
-            console.error("Erro ao criar artista:", error.message);
-            return null;
-        }
+        return this.db.createArtist(name, bio, birthYear, instagram);
     }
     getArtist(idArtist) {
         return this.db.readArtist(idArtist);
+    }
+    getArtistByName(name) {
+        return this.db.readArtistByName(name);
     }
     listArtists() {
         return this.db.readAllArtists();

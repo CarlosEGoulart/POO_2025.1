@@ -10,17 +10,15 @@ export default class ArtController{
   }
 
   public createArt(title: string, description: string, year: number): Art | null {
-    try {
-      return this.db.createArt(title, description, year);
-    } 
-    catch (error: any) {
-      console.error("Erro ao criar obra:", error.message);
-      return null;
-    }
+    return this.db.createArt(title, description, year);
   }
 
   public getArt(idArt: number): Art | undefined{
     return this.db.readArt(idArt);
+  }
+
+  public getArtByTitle(name:string): Art | undefined{
+    return this.db.readArtByTitle(name);
   }
 
   public listArts(): Art[]{

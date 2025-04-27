@@ -5,16 +5,13 @@ class ExhibitionController {
         this.db = db;
     }
     createExhibition(name, description, artWorks = []) {
-        try {
-            return this.db.createExhibition(name, description, artWorks);
-        }
-        catch (error) {
-            console.error("Erro ao criar exposição:", error.message);
-            return null;
-        }
+        return this.db.createExhibition(name, description, artWorks);
     }
     getExhibition(idExhibition) {
         return this.db.readExhibition(idExhibition);
+    }
+    getExhibitionByName(name) {
+        return this.db.readExhibitionByName(name);
     }
     listExhibitions() {
         return this.db.readAllExhibitions();

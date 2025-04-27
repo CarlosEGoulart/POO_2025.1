@@ -1,4 +1,3 @@
-// controller/ExhibitionController.ts
 import Database from "../db/Database";
 import Exhibition from "../model/Exhibition";
 import Art from "../model/Art";
@@ -11,16 +10,15 @@ export default class ExhibitionController {
     }
 
     public createExhibition(name: string, description: string, artWorks: number[] = []): Exhibition | null {
-        try {
-            return this.db.createExhibition(name, description, artWorks);
-        } catch (error: any) {
-            console.error("Erro ao criar exposição:", error.message);
-            return null;
-        }
+        return this.db.createExhibition(name, description, artWorks);
     }
 
     public getExhibition(idExhibition: number): Exhibition | undefined {
         return this.db.readExhibition(idExhibition);
+    }
+
+    public getExhibitionByName(name:string): Exhibition | undefined{
+        return this.db.readExhibitionByName(name);
     }
 
     public listExhibitions(): Exhibition[] {

@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// controller/MainController.ts
 const Database_1 = __importDefault(require("../db/Database"));
 const ArtController_1 = __importDefault(require("./ArtController"));
 const ArtistController_1 = __importDefault(require("./ArtistController"));

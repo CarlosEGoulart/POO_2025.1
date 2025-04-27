@@ -1,4 +1,3 @@
-// controller/MainController.ts
 import Database from "../db/Database";
 import ArtController from "./ArtController";
 import ArtistController from "./ArtistController";
@@ -10,3 +9,4 @@ export default class MainController {
     public artistController: ArtistController = new ArtistController(this.db);
     public exhibitionController: ExhibitionController = new ExhibitionController(this.db);
 }
+

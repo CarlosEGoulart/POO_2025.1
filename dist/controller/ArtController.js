@@ -5,16 +5,13 @@ class ArtController {
         this.db = db;
     }
     createArt(title, description, year) {
-        try {
-            return this.db.createArt(title, description, year);
-        }
-        catch (error) {
-            console.error("Erro ao criar obra:", error.message);
-            return null;
-        }
+        return this.db.createArt(title, description, year);
     }
     getArt(idArt) {
         return this.db.readArt(idArt);
+    }
+    getArtByTitle(name) {
+        return this.db.readArtByTitle(name);
     }
     listArts() {
         return this.db.readAllArts();
