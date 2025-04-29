@@ -1,10 +1,12 @@
 export default abstract class BaseEntity {
     protected id: number;
     protected name: string;
+    private description: string;
 
-    constructor(id: number, name: string) {
+    constructor(id: number, name: string, description: string) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
 
     //Formatação do nome para caso o nome não seja inserido
@@ -28,12 +30,20 @@ export default abstract class BaseEntity {
         return this.name;
     }
 
+    public getDescription(): string {
+        return this.description;
+    }
+
     public setName(name: string): void {
         this.formatName(name);
     }
 
     public setId(id: number): void{
         this.id = id;
+    }
+
+    public setDescription(description: string): void {
+        this.description = description;
     }
 
     // Método que será sobrescrito pelas classes filhas

@@ -1,14 +1,12 @@
 import BaseEntity from "./BaseEntity"
 
 export default class Artist extends BaseEntity{
-  private bio: string;
   private birthYear: number;
   private instagram: string;
 
 //Constructor com elementos indispensaveis para a construção de um objeto Artist
   constructor(idArtist: number, name: string, bio: string, birthYear: number, instagram: string){
-    super(idArtist, name);
-    this.bio = bio;
+    super(idArtist, name, bio);
     this.birthYear = birthYear;
     this.instagram = instagram;
   }
@@ -42,10 +40,6 @@ export default class Artist extends BaseEntity{
     }
   
     //Gets e Sets 
-    public getBio(): string{
-      return this.bio;
-    }
-  
     public getBirthYear(): number{
       return this.birthYear;
     }
@@ -53,11 +47,7 @@ export default class Artist extends BaseEntity{
     public getInstagram(): string{
       return this.instagram;
     }
-  
-    public setBio(bio: string): void{
-      this.bio = bio;
-    }
-  
+
     public setBirthYear(birthYear: number): void{
       this.validateBirthYear(birthYear);
     }

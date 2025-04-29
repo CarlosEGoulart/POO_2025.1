@@ -1,14 +1,12 @@
 import BaseEntity from "./BaseEntity"
 
 export default class Exhibition extends BaseEntity{
-    private description: string;
     private artWorks: number[] = [];
 
 
     //Constructor com elementos indispensaveis para a construção de um objeto Exhibition
     constructor(idExhibition: number, name: string, description: string, artWorks: number[]){
-        super(idExhibition, name);
-        this.description = description;
+        super(idExhibition, name, description);
         this.artWorks = artWorks;
     }
 
@@ -19,16 +17,8 @@ export default class Exhibition extends BaseEntity{
     }
     
     //Gets e Sets
-    public getDescription(): string{ 
-        return this.description;
-    }
-
     public getArtWorks(): number[]{
         return this.artWorks;
-    }
-
-    public setDescription(description: string): void{
-        this.description = description;
     }
 
     public setArtWorks(artWorks: number[]): void{

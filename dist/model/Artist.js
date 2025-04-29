@@ -7,8 +7,7 @@ const BaseEntity_1 = __importDefault(require("./BaseEntity"));
 class Artist extends BaseEntity_1.default {
     //Constructor com elementos indispensaveis para a construção de um objeto Artist
     constructor(idArtist, name, bio, birthYear, instagram) {
-        super(idArtist, name);
-        this.bio = bio;
+        super(idArtist, name, bio);
         this.birthYear = birthYear;
         this.instagram = instagram;
     }
@@ -36,17 +35,11 @@ class Artist extends BaseEntity_1.default {
         return this.getBasicInfo();
     }
     //Gets e Sets 
-    getBio() {
-        return this.bio;
-    }
     getBirthYear() {
         return this.birthYear;
     }
     getInstagram() {
         return this.instagram;
-    }
-    setBio(bio) {
-        this.bio = bio;
     }
     setBirthYear(birthYear) {
         this.validateBirthYear(birthYear);

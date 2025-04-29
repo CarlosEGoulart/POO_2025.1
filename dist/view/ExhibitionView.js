@@ -31,9 +31,9 @@ class ExhibitionView {
     start() {
         while (true) {
             console.log("\n--- Gerenciar Exposições ---");
-            console.log("1. Listar Exposições");
+            console.log("1. Criar Nova Exposição");
             console.log("2. Visualizar Detalhes da Exposição");
-            console.log("3. Criar Nova Exposição");
+            console.log("3. Listar Exposições");
             console.log("4. Atualizar Exposição");
             console.log("5. Deletar Exposição");
             console.log("6. Adicionar Obra de Arte à Exposição");
@@ -42,13 +42,13 @@ class ExhibitionView {
             const choice = readlineSync.questionInt("Escolha uma opção: ");
             switch (choice) {
                 case 1:
-                    this.listExhibitions();
+                    this.createExhibition();
                     break;
                 case 2:
                     this.viewExhibitionDetails();
                     break;
                 case 3:
-                    this.createExhibition();
+                    this.listExhibitions();
                     break;
                 case 4:
                     this.updateExhibition();
@@ -69,29 +69,35 @@ class ExhibitionView {
             }
         }
     }
-    listExhibitions() {
-        const exhibitions = this.exhibitionController.listExhibitions();
-        if (exhibitions.length == 0) {
-            console.log("Nenhuma exposição cadastrada.");
-            return;
+    createExhibition() {
+        const name = readlineSync.question("Digite o nome da exposição: ");
+        const description = readlineSync.question("Digite a descrição da exposição: ");
+        const newExhibition = this.exhibitionController.createExhibition(name, description);
+        if (newExhibition) {
+            console.log(`Exposição "${newExhibition.getName()}" criada com ID: ${newExhibition.getId()}.`);
         }
-        console.log("\n--- Lista de Exposições ---");
-        exhibitions.forEach(exhibition => {
-            console.log(`ID: ${exhibition.getId()}, Nome: ${exhibition.getName()}`);
-        });
+        else {
+            console.log("Erro ao criar a exposição.");
+        }
     }
     viewExhibitionDetails() {
-        const searchOption = readlineSync.question("Deseja buscar a exposição por (ID/Nome)? ", { limit: ['ID', 'Nome'], caseSensitive: false }).toUpperCase();
+        const searchOption = readlineSync
+            .question("Deseja buscar a exposição por (ID/Nome)? ", {
+            limit: ["ID", "Nome"],
+            caseSensitive: false,
+        })
+            .toUpperCase();
         let exhibitionToView;
         let exhibitionId;
         let exhibitionName;
-        if (searchOption === 'ID') {
+        if (searchOption === "ID") {
             exhibitionId = readlineSync.questionInt("Digite o ID da exposição: ");
             exhibitionToView = this.exhibitionController.getExhibition(exhibitionId);
         }
-        else if (searchOption === 'NOME') {
+        else if (searchOption === "NOME") {
             exhibitionName = readlineSync.question("Digite o nome da exposição: ");
-            exhibitionToView = this.exhibitionController.getExhibitionByName(exhibitionName);
+            exhibitionToView =
+                this.exhibitionController.getExhibitionByName(exhibitionName);
             if (exhibitionToView) {
                 exhibitionId = exhibitionToView.getId();
             }
@@ -112,7 +118,7 @@ class ExhibitionView {
             const arts = this.exhibitionController.getExhibitionArts(exhibitionToView.getId());
             if (arts && arts.length > 0) {
                 console.log("Obras de Arte na Exposição:");
-                arts.forEach(art => {
+                arts.forEach((art) => {
                     console.log(`  - ID: ${art.getId()}, Título: ${art.getName()}`);
                 });
             }
@@ -124,28 +130,35 @@ class ExhibitionView {
             console.log("Exposição não encontrada.");
         }
     }
-    createExhibition() {
-        const name = readlineSync.question("Digite o nome da exposição: ");
-        const description = readlineSync.question("Digite a descrição da exposição: ");
-        const newExhibition = this.exhibitionController.createExhibition(name, description);
-        if (newExhibition) {
-            console.log(`Exposição "${newExhibition.getName()}" criada com ID: ${newExhibition.getId()}.`);
+    listExhibitions() {
+        const exhibitions = this.exhibitionController.listExhibitions();
+        if (exhibitions.length == 0) {
+            console.log("Nenhuma exposição cadastrada.");
+            return;
         }
-        else {
-            console.log("Erro ao criar a exposição.");
-        }
+        console.log("\n--- Lista de Exposições ---");
+        exhibitions.forEach((exhibition) => {
+            console.log(`ID: ${exhibition.getId()}, Nome: ${exhibition.getName()}`);
+        });
     }
     updateExhibition() {
-        const searchOption = readlineSync.question("Deseja buscar a exposição para atualizar por (ID/Nome)? ", { limit: ['ID', 'Nome'], caseSensitive: false }).toUpperCase();
+        const searchOption = readlineSync
+            .question("Deseja buscar a exposição para atualizar por (ID/Nome)? ", {
+            limit: ["ID", "Nome"],
+            caseSensitive: false,
+        })
+            .toUpperCase();
         let exhibitionToUpdate;
         let exhibitionIdToUpdate;
-        if (searchOption === 'ID') {
+        if (searchOption === "ID") {
             exhibitionIdToUpdate = readlineSync.questionInt("Digite o ID da exposição para atualizar: ");
-            exhibitionToUpdate = this.exhibitionController.getExhibition(exhibitionIdToUpdate);
+            exhibitionToUpdate =
+                this.exhibitionController.getExhibition(exhibitionIdToUpdate);
         }
-        else if (searchOption === 'NOME') {
+        else if (searchOption === "NOME") {
             const exhibitionName = readlineSync.question("Digite o nome da exposição para atualizar: ");
-            exhibitionToUpdate = this.exhibitionController.getExhibitionByName(exhibitionName);
+            exhibitionToUpdate =
+                this.exhibitionController.getExhibitionByName(exhibitionName);
             if (exhibitionToUpdate) {
                 exhibitionIdToUpdate = exhibitionToUpdate.getId();
             }
@@ -164,7 +177,9 @@ class ExhibitionView {
             const newName = readlineSync.question(`Novo nome: `);
             const newDescription = readlineSync.question(`Nova descrição: `);
             const newArtWorksInput = readlineSync.question(`Novas obras (IDs separados por vírgula, exemplo: 1,2,3,4): `);
-            const artWorksArray = newArtWorksInput.split(',').map((id) => parseInt(id.trim()));
+            const artWorksArray = newArtWorksInput
+                .split(",")
+                .map((id) => parseInt(id.trim()));
             if (exhibitionIdToUpdate !== undefined) {
                 const updated = this.exhibitionController.updateExhibition(newIdExhibition, newName, newDescription, artWorksArray);
                 if (updated) {
@@ -183,13 +198,18 @@ class ExhibitionView {
         }
     }
     deleteExhibition() {
-        const searchOption = readlineSync.question("Deseja buscar a exposição para deletar por (ID/Nome)? ", { limit: ['ID', 'Nome'], caseSensitive: false }).toUpperCase();
+        const searchOption = readlineSync
+            .question("Deseja buscar a exposição para deletar por (ID/Nome)? ", {
+            limit: ["ID", "Nome"],
+            caseSensitive: false,
+        })
+            .toUpperCase();
         let exhibitionToDeleteId;
         let exhibitionToDeleteName;
-        if (searchOption === 'ID') {
+        if (searchOption === "ID") {
             exhibitionToDeleteId = readlineSync.questionInt("Digite o ID da exposição para deletar: ");
         }
-        else if (searchOption === 'NOME') {
+        else if (searchOption === "NOME") {
             exhibitionToDeleteName = readlineSync.question("Digite o nome da exposição para deletar: ");
             const exhibitionToDelete = this.exhibitionController.getExhibitionByName(exhibitionToDeleteName);
             if (exhibitionToDelete) {
