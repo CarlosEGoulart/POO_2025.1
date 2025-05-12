@@ -7,7 +7,8 @@ const BaseEntity_1 = __importDefault(require("./BaseEntity"));
 class Art extends BaseEntity_1.default {
     //Constructor com elementos indispensaveis para a construção de um objeto Art
     constructor(idArt, title, description, year) {
-        super(idArt, title, description);
+        super(idArt, title);
+        this.description = description;
         this.year = year;
     }
     //Validação do ano de criação da obra
@@ -23,11 +24,17 @@ class Art extends BaseEntity_1.default {
         return this.getBasicInfo();
     }
     //Gets e Sets
+    getDescription() {
+        return this.description;
+    }
     getYear() {
         return this.year;
     }
     getArtist() {
         return this.artist;
+    }
+    setDescription(description) {
+        this.description = description;
     }
     setYear(year) {
         this.validateYear(year);

@@ -107,7 +107,7 @@ class Database {
         const artist = this.readArtist(idArtist);
         if (artist) {
             artist.setName(name);
-            artist.setDescription(bio);
+            artist.setBio(bio);
             artist.setBirthYear(birthYear);
             artist.setInstagram(instagram);
             return true;

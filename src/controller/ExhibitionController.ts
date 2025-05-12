@@ -1,3 +1,4 @@
+// controller/ExhibitionController.ts
 import Database from "../db/Database";
 import Exhibition from "../model/Exhibition";
 import Art from "../model/Art";

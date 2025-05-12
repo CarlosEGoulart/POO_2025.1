@@ -2,13 +2,15 @@ import Artist from "./Artist"
 import BaseEntity from "./BaseEntity";
 
 export default class Art extends BaseEntity{
+  private description: string;
   private year: number;
   private artist!: Artist;
 
   
   //Constructor com elementos indispensaveis para a construção de um objeto Art
   constructor(idArt: number, title: string, description: string, year: number){
-    super(idArt, title, description)
+    super(idArt, title)
+    this.description = description;
     this.year = year;
   }
 
@@ -28,12 +30,20 @@ export default class Art extends BaseEntity{
   }
   
   //Gets e Sets
+  public getDescription(): string{
+    return this.description;
+  }
+
   public getYear(): number{
     return this.year;
   }
 
   public getArtist(): Artist{
     return this.artist;
+  }
+
+  public setDescription(description: string): void{
+    this.description = description;
   }
 
   public setYear(year: number): void{
