@@ -21,7 +21,9 @@ export default class ExhibitionView {
             console.log("3. Criar Nova Exposição");
             console.log("4. Atualizar Exposição");
             console.log("5. Adicionar Obras à Exposição");
-            console.log("6. Deletar Exposição");
+            console.log("6. Remover Obras da Exposição");
+            console.log("7. Listar Obras da Exposição");
+            console.log("8. Deletar Exposição");
             console.log("0. Voltar ao Menu Principal");
 
             const choice = readlineSync.questionInt("Escolha uma opção: ");
@@ -43,6 +45,12 @@ export default class ExhibitionView {
                     this.assignArtToExhibition();
                     break;
                 case 6:
+                    this.removeArtFromExhibition();
+                    break;
+                case 7:
+                    this.getExhibitionArts();
+                    break;
+                case 8:
                     this.deleteExhibition();
                     break;
                 case 0:
@@ -137,6 +145,32 @@ export default class ExhibitionView {
         if (assigned) {
             this.message.showMessage(MessageType.Success);
         } else {
+            this.message.showMessage(MessageType.Error);
+        }
+    }
+
+    private removeArtFromExhibition(): void{
+        const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
+        const artInput = readlineSync.question("Digite o ID da arte: ");
+        const removed = this.exhibitionController.removeArtFromExhibition(Number(exhibitionInput), Number(artInput));
+        if (removed){
+            this.message.showMessage(MessageType.Success);
+        }
+        else{
+            this.message.showMessage(MessageType.Error);
+        }
+    }
+
+    public getExhibitionArts(): void{
+        const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
+        const arts = this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+        if (arts){
+            arts.forEach(art => {
+                console.log(`ID: ${art.getId()}, Título: ${art.getName()}, Ano: ${art.getYear()}`);
+            });
+            this.message.showMessage(MessageType.Success);
+        }
+        else{
             this.message.showMessage(MessageType.Error);
         }
     }
