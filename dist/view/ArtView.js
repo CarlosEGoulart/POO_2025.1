@@ -152,7 +152,6 @@ class ArtView {
     assignArtistToArt() {
         const artInput = readlineSync.question("Digite o ID da obra: ");
         const artistInput = readlineSync.question("Digite o ID do artista: ");
-        // Supondo que assignArtistToArt aceita o ID do artista diretamente
         const assigned = this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
         if (assigned) {
             this.message.showMessage(EnumType_1.MessageType.Success);

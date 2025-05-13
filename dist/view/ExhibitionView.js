@@ -114,7 +114,6 @@ class ExhibitionView {
             const newTitle = titleInput.trim() === "" ? exhibition.getName() : titleInput;
             const descInput = readlineSync.question(`Nova descrição (${exhibition.getDescription()}): `);
             const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
-            // Para simplificar, não atualiza as obras aqui
             const updated = this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
             if (updated) {
                 this.message.showMessage(EnumType_1.MessageType.Success);
