@@ -21,7 +21,7 @@ class ExhibitionController {
     listExhibitions() {
         return this.db.readAllExhibitions();
     }
-    updateExhibition(param, name, description, artWorks, extra) {
+    updateExhibition(param, name, description, artWorks) {
         if (typeof param === "number") {
             return this.db.updateExhibition(param, name, description, artWorks);
         }
@@ -33,7 +33,7 @@ class ExhibitionController {
         }
         return false;
     }
-    deleteExhibition(param, extra) {
+    deleteExhibition(param) {
         if (typeof param === "number") {
             return this.db.deleteExhibition(param);
         }

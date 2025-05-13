@@ -20,7 +20,8 @@ export default class ExhibitionView {
             console.log("2. Visualizar Detalhes da Exposição");
             console.log("3. Criar Nova Exposição");
             console.log("4. Atualizar Exposição");
-            console.log("5. Deletar Exposição");
+            console.log("5. Adicionar Obras à Exposição");
+            console.log("6. Deletar Exposição");
             console.log("0. Voltar ao Menu Principal");
 
             const choice = readlineSync.questionInt("Escolha uma opção: ");
@@ -39,6 +40,9 @@ export default class ExhibitionView {
                     this.updateExhibition();
                     break;
                 case 5:
+                    this.assignArtToExhibition();
+                    break;
+                case 6:
                     this.deleteExhibition();
                     break;
                 case 0:
@@ -123,6 +127,17 @@ export default class ExhibitionView {
             this.message.showMessage(MessageType.Success);
         } else {
             this.message.showMessage(MessageType.NotFound);
+        }
+    }
+
+    private assignArtToExhibition(): void {
+        const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
+        const artInput = readlineSync.question("Digite o ID da arte: ");
+        const assigned = this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
+        if (assigned) {
+            this.message.showMessage(MessageType.Success);
+        } else {
+            this.message.showMessage(MessageType.Error);
         }
     }
 }

@@ -37,7 +37,8 @@ class ExhibitionView {
             console.log("2. Visualizar Detalhes da Exposição");
             console.log("3. Criar Nova Exposição");
             console.log("4. Atualizar Exposição");
-            console.log("5. Deletar Exposição");
+            console.log("5. Adicionar Obras à Exposição");
+            console.log("6. Deletar Exposição");
             console.log("0. Voltar ao Menu Principal");
             const choice = readlineSync.questionInt("Escolha uma opção: ");
             switch (choice) {
@@ -54,6 +55,9 @@ class ExhibitionView {
                     this.updateExhibition();
                     break;
                 case 5:
+                    this.assignArtToExhibition();
+                    break;
+                case 6:
                     this.deleteExhibition();
                     break;
                 case 0:
@@ -140,6 +144,17 @@ class ExhibitionView {
         }
         else {
             this.message.showMessage(EnumType_1.MessageType.NotFound);
+        }
+    }
+    assignArtToExhibition() {
+        const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
+        const artInput = readlineSync.question("Digite o ID da arte: ");
+        const assigned = this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
+        if (assigned) {
+            this.message.showMessage(EnumType_1.MessageType.Success);
+        }
+        else {
+            this.message.showMessage(EnumType_1.MessageType.Error);
         }
     }
 }

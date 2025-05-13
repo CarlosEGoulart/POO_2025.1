@@ -21,7 +21,7 @@ class ArtController {
     listArts() {
         return this.db.readAllArts();
     }
-    updateArt(param, title, description, year, extra) {
+    updateArt(param, title, description, year) {
         if (typeof param === "number") {
             return this.db.updateArt(param, title, description, year);
         }
@@ -33,7 +33,7 @@ class ArtController {
         }
         return false;
     }
-    deleteArt(param, extra) {
+    deleteArt(param) {
         if (typeof param === "number") {
             return !!this.db.deleteArt(param);
         }

@@ -2,7 +2,7 @@ import BaseEntity from "./BaseEntity";
 
 export default class Exhibition extends BaseEntity {
     private description: string;
-    private artWorks: number[]; // IDs das obras
+    private artWorks: number[];
 
     constructor(id: number, name: string, description: string, artWorks: number[] = []) {
         super(id, name);
@@ -24,12 +24,6 @@ export default class Exhibition extends BaseEntity {
 
     public setArtWorks(artWorks: number[]): void {
         this.artWorks = artWorks;
-    }
-
-    public getYear(): number {
-        // Exemplo: retorna o ano do nome, se estiver no nome, ou 0
-        const match = this.name.match(/\d{4}/);
-        return match ? parseInt(match[0]) : 0;
     }
 
     public getInfo(): string {

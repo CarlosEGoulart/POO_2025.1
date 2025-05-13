@@ -22,11 +22,6 @@ class Exhibition extends BaseEntity_1.default {
     setArtWorks(artWorks) {
         this.artWorks = artWorks;
     }
-    getYear() {
-        // Exemplo: retorna o ano do nome, se estiver no nome, ou 0
-        const match = this.name.match(/\d{4}/);
-        return match ? parseInt(match[0]) : 0;
-    }
     getInfo() {
         return `Exposição: ${this.name}, Descrição: ${this.description}, Obras: ${this.artWorks.length}`;
     }

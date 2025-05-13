@@ -1,5 +1,4 @@
 import Art from "../model/Art";
-import Artist from "../model/Artist";
 import Database from "../db/Database";
 
 export default class ArtController {
@@ -34,7 +33,7 @@ export default class ArtController {
     public updateArt(id: number, title: string, description: string, year: number): boolean;
     public updateArt(param: number | string, title: string, description: string, year: number, extra?: string): boolean;
     public updateArt(id: number, title: string, description: string, year: number, extra?: string): boolean;
-    public updateArt(param: number | string, title: string, description: string, year: number, extra?: string): boolean {
+    public updateArt(param: number | string, title: string, description: string, year: number): boolean {
         if (typeof param === "number") {
             return this.db.updateArt(param, title, description, year);
         } else if (typeof param === "string") {
@@ -49,7 +48,7 @@ export default class ArtController {
     public deleteArt(id: number): boolean;
     public deleteArt(title: string): boolean;
     public deleteArt(id: number, extra: string): boolean;
-    public deleteArt(param: number | string, extra?: string): boolean {
+    public deleteArt(param: number | string): boolean {
         if (typeof param === "number") {
             return !!this.db.deleteArt(param);
         } else if (typeof param === "string") {

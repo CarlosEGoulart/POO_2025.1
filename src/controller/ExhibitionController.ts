@@ -1,4 +1,3 @@
-// controller/ExhibitionController.ts
 import Database from "../db/Database";
 import Exhibition from "../model/Exhibition";
 import Art from "../model/Art";
@@ -35,7 +34,7 @@ export default class ExhibitionController {
     public updateExhibition(id: number, name: string, description: string, artWorks: number[]): boolean;
     public updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): boolean;
     public updateExhibition(id: number, name: string, description: string, artWorks: number[], extra?: string): boolean;
-    public updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): boolean {
+    public updateExhibition(param: number | string, name: string, description: string, artWorks: number[]): boolean {
         if (typeof param === "number") {
             return this.db.updateExhibition(param, name, description, artWorks);
         } else if (typeof param === "string") {
@@ -50,7 +49,7 @@ export default class ExhibitionController {
     public deleteExhibition(id: number): boolean;
     public deleteExhibition(name: string): boolean;
     public deleteExhibition(id: number, extra: string): boolean;
-    public deleteExhibition(param: number | string, extra?: string): boolean {
+    public deleteExhibition(param: number | string): boolean {
         if (typeof param === "number") {
             return this.db.deleteExhibition(param);
         } else if (typeof param === "string") {
