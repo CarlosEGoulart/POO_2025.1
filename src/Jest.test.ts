@@ -15,6 +15,7 @@ test("Test Artist class", () => {
     expect(artist.getId()).toBe(1);
     expect(artist.getName()).toBe("Vincent van Gogh");
     expect(artist.getBio()).toBe("Dutch post-impressionist painter");
+    expect(artist.getInstagram()).toBe("@vangogh");
 });
 
 test("Test Exhibition class", () => {
