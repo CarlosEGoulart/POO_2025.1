@@ -19,6 +19,7 @@ export default abstract class BaseEntity {
         }
     }
 
+
     //Gets e Sets
     public getId(): number {
         return this.id;

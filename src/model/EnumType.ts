@@ -1,6 +1,8 @@
 export enum ArtType {
-    PAINTING = "Painting",
-    SCULPTURE = "Sculpture",
-    PHOTOGRAPH = "Photograph"
+    Sucess = "Successo!",
+    Error = "Erro!",
+    NotFound = "Não encontrado!",
   }
+  
+
   
