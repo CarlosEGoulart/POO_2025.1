@@ -72,12 +72,4 @@ export default class ExhibitionController {
     public getExhibitionArts(idExhibition: number): Art[] | undefined{
         return this.db.getExhibitionArts(idExhibition);
     }
-
-    public listAllArts(): Art[] {
-        return this.db.readAllArts();
-    }
-
-    public getArt(idArt: number): Art | undefined {
-        return this.db.readArt(idArt);
-    }
 }
