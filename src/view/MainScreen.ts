@@ -3,18 +3,20 @@ import ArtistView from "./ArtistView";
 import ArtView from "./ArtView";
 import ExhibitionView from "./ExhibitionView";
 import * as readlineSync from 'readline-sync';
+import Message from "../model/Message";
 
 export default class MainScreen {
     private mainController: MainController;
     private artistView: ArtistView;
     private artView: ArtView;
     private exhibitionView: ExhibitionView;
+    private message: Message = new Message();
 
     constructor(mainController: MainController) {
         this.mainController = mainController;
-        this.artistView = new ArtistView(this.mainController.artistController);
-        this.artView = new ArtView(this.mainController.artController);
-        this.exhibitionView = new ExhibitionView(this.mainController.exhibitionController);
+        this.artistView = new ArtistView(this.mainController.artistController, this.message);
+        this.artView = new ArtView(this.mainController.artController, this.message);
+        this.exhibitionView = new ExhibitionView(this.mainController.exhibitionController, this.message);
     }
 
     public start(): void {

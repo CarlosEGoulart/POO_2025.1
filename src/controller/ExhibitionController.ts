@@ -10,28 +10,56 @@ export default class ExhibitionController {
         this.db = db;
     }
 
-    public createExhibition(name: string, description: string, artWorks: number[] = []): Exhibition | null {
+    public createExhibition(name: string, description: string, artWorks: number[] = []): Exhibition {
         return this.db.createExhibition(name, description, artWorks);
     }
 
-    public getExhibition(idExhibition: number): Exhibition | undefined {
-        return this.db.readExhibition(idExhibition);
-    }
-
-    public getExhibitionByName(name:string): Exhibition | undefined{
-        return this.db.readExhibitionByName(name);
+    public getExhibition(id: number): Exhibition | undefined;
+    public getExhibition(name: string): Exhibition | undefined;
+    public getExhibition(id: number, extra: string): Exhibition | undefined;
+    public getExhibition(param: number | string, extra?: string): Exhibition | undefined {
+        if (typeof param === "number") {
+            if (typeof extra === "string") {
+                return this.db.readExhibition(param);
+            }
+            return this.db.readExhibition(param);
+        } else if (typeof param === "string") {
+            return this.db.readExhibitionByName(param);
+        }
     }
 
     public listExhibitions(): Exhibition[] {
         return this.db.readAllExhibitions();
     }
 
-    public updateExhibition(idExhibition: number, name: string, description:string, artWorks: number[]): boolean {
-        return this.db.updateExhibition(idExhibition, name, description, artWorks);
+    public updateExhibition(id: number, name: string, description: string, artWorks: number[]): boolean;
+    public updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): boolean;
+    public updateExhibition(id: number, name: string, description: string, artWorks: number[], extra?: string): boolean;
+    public updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): boolean {
+        if (typeof param === "number") {
+            return this.db.updateExhibition(param, name, description, artWorks);
+        } else if (typeof param === "string") {
+            const exhibition = this.db.readExhibitionByName(param);
+            if (exhibition) {
+                return this.db.updateExhibition(exhibition.getId(), name, description, artWorks);
+            }
+        }
+        return false;
     }
 
-    public deleteExhibition(idExhibition: number): boolean  {
-        return this.db.deleteExhibition(idExhibition);
+    public deleteExhibition(id: number): boolean;
+    public deleteExhibition(name: string): boolean;
+    public deleteExhibition(id: number, extra: string): boolean;
+    public deleteExhibition(param: number | string, extra?: string): boolean {
+        if (typeof param === "number") {
+            return this.db.deleteExhibition(param);
+        } else if (typeof param === "string") {
+            const exhibition = this.db.readExhibitionByName(param);
+            if (exhibition) {
+                return this.db.deleteExhibition(exhibition.getId());
+            }
+        }
+        return false;
     }
 
     public addArtToExhibition(idExhibition: number, idArt: number): boolean {

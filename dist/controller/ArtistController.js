@@ -4,23 +4,46 @@ class ArtistController {
     constructor(db) {
         this.db = db;
     }
-    crateArtist(name, bio, birthYear, instagram) {
+    createArtist(name, bio, birthYear, instagram) {
         return this.db.createArtist(name, bio, birthYear, instagram);
     }
-    getArtist(idArtist) {
-        return this.db.readArtist(idArtist);
-    }
-    getArtistByName(name) {
-        return this.db.readArtistByName(name);
+    getArtist(param, extra) {
+        if (typeof param === "number") {
+            if (typeof extra === "string") {
+                return this.db.readArtist(param);
+            }
+            return this.db.readArtist(param);
+        }
+        else if (typeof param === "string") {
+            return this.db.readArtistByName(param);
+        }
     }
     listArtists() {
         return this.db.readAllArtists();
     }
-    updateArtist(idArtist, name, bio, birthYear, instagram) {
-        return this.db.updateArtist(idArtist, name, bio, birthYear, instagram);
+    updateArtist(param, name, bio, birthYear, instagram, extra) {
+        if (typeof param === "number") {
+            return this.db.updateArtist(param, name, bio, birthYear, instagram);
+        }
+        else if (typeof param === "string") {
+            const artist = this.db.readArtistByName(param);
+            if (artist) {
+                return this.db.updateArtist(artist.getId(), name, bio, birthYear, instagram);
+            }
+        }
+        return false;
     }
-    deleteArtist(idArtist) {
-        return this.db.deleteArtist(idArtist);
+    deleteArtist(param, extra) {
+        if (typeof param === "number") {
+            return !!this.db.deleteArtist(param);
+        }
+        else if (typeof param === "string") {
+            const artist = this.db.readArtistByName(param);
+            if (artist) {
+                return !!this.db.deleteArtist(artist.getId());
+            }
+        }
+        return false;
     }
 }
 exports.default = ArtistController;

@@ -7,20 +7,43 @@ class ExhibitionController {
     createExhibition(name, description, artWorks = []) {
         return this.db.createExhibition(name, description, artWorks);
     }
-    getExhibition(idExhibition) {
-        return this.db.readExhibition(idExhibition);
-    }
-    getExhibitionByName(name) {
-        return this.db.readExhibitionByName(name);
+    getExhibition(param, extra) {
+        if (typeof param === "number") {
+            if (typeof extra === "string") {
+                return this.db.readExhibition(param);
+            }
+            return this.db.readExhibition(param);
+        }
+        else if (typeof param === "string") {
+            return this.db.readExhibitionByName(param);
+        }
     }
     listExhibitions() {
         return this.db.readAllExhibitions();
     }
-    updateExhibition(idExhibition, name, description, artWorks) {
-        return this.db.updateExhibition(idExhibition, name, description, artWorks);
+    updateExhibition(param, name, description, artWorks, extra) {
+        if (typeof param === "number") {
+            return this.db.updateExhibition(param, name, description, artWorks);
+        }
+        else if (typeof param === "string") {
+            const exhibition = this.db.readExhibitionByName(param);
+            if (exhibition) {
+                return this.db.updateExhibition(exhibition.getId(), name, description, artWorks);
+            }
+        }
+        return false;
     }
-    deleteExhibition(idExhibition) {
-        return this.db.deleteExhibition(idExhibition);
+    deleteExhibition(param, extra) {
+        if (typeof param === "number") {
+            return this.db.deleteExhibition(param);
+        }
+        else if (typeof param === "string") {
+            const exhibition = this.db.readExhibitionByName(param);
+            if (exhibition) {
+                return this.db.deleteExhibition(exhibition.getId());
+            }
+        }
+        return false;
     }
     addArtToExhibition(idExhibition, idArt) {
         return this.db.addArtToExhibition(idExhibition, idArt);

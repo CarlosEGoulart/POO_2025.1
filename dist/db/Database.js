@@ -15,31 +15,17 @@ class Database {
         this.nextArtistId = 1;
         this.nextExhibitionId = 1;
     }
-    //Métodos CRUD para Art
+    // ART CRUD
     createArt(title, description, year) {
         const newArt = new Art_1.default(this.nextArtId++, title, description, year);
         this.ArtDb.push(newArt);
         return newArt;
     }
     readArt(idArt) {
-        for (let i = 0; i < this.ArtDb.length; i++) {
-            if (this.ArtDb[i].getId() === idArt) {
-                return this.ArtDb[i];
-            }
-            else {
-                console.log("Obra não encontrada!");
-            }
-        }
+        return this.ArtDb.find(art => art.getId() === idArt);
     }
     readArtByTitle(name) {
-        for (let i = 0; i < this.ArtDb.length; i++) {
-            if (this.ArtDb[i].getName() === name) {
-                return this.ArtDb[i];
-            }
-            else {
-                console.log("Obra não encontrada!");
-            }
-        }
+        return this.ArtDb.find(art => art.getName().toLowerCase() === name.toLowerCase());
     }
     readAllArts() {
         return this.ArtDb;
@@ -55,16 +41,12 @@ class Database {
         return false;
     }
     deleteArt(idArt) {
-        for (let i = 0; i < this.ArtDb.length; i++) {
-            if (this.ArtDb[i].getId() === idArt) {
-                this.ArtDb.splice(i, 1);
-                return this.ArtDb;
-            }
-            else {
-                console.log("Obra não encontrada!");
-                return undefined;
-            }
+        const index = this.ArtDb.findIndex(art => art.getId() === idArt);
+        if (index !== -1) {
+            this.ArtDb.splice(index, 1);
+            return this.ArtDb;
         }
+        return undefined;
     }
     assignArtistToArt(idArt, artist) {
         const art = this.readArt(idArt);
@@ -74,31 +56,17 @@ class Database {
         }
         return false;
     }
-    //Métodos CRUD para Artist
+    // ARTIST CRUD
     createArtist(name, bio, birthYear, instagram) {
         const newArtist = new Artist_1.default(this.nextArtistId++, name, bio, birthYear, instagram);
         this.ArtistDb.push(newArtist);
         return newArtist;
     }
     readArtist(idArtist) {
-        for (let i = 0; i < this.ArtistDb.length; i++) {
-            if (this.ArtistDb[i].getId() === idArtist) {
-                return this.ArtistDb[i];
-            }
-            else {
-                console.log("Artista não encontrado!");
-            }
-        }
+        return this.ArtistDb.find(artist => artist.getId() === idArtist);
     }
     readArtistByName(name) {
-        for (let i = 0; i < this.ArtistDb.length; i++) {
-            if (this.ArtistDb[i].getName() === name) {
-                return this.ArtistDb[i];
-            }
-            else {
-                console.log("Artista não encontrado!");
-            }
-        }
+        return this.ArtistDb.find(artist => artist.getName().toLowerCase() === name.toLowerCase());
     }
     readAllArtists() {
         return this.ArtistDb;
@@ -112,69 +80,46 @@ class Database {
             artist.setInstagram(instagram);
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
     deleteArtist(idArtist) {
-        for (let i = 0; i < this.ArtistDb.length; i++) {
-            if (this.ArtistDb[i].getId() === idArtist) {
-                this.ArtistDb.splice(i, 1);
-                return this.ArtistDb;
-            }
-            else {
-                console.log("Artista não encontrado!");
-                return undefined;
-            }
+        const index = this.ArtistDb.findIndex(artist => artist.getId() === idArtist);
+        if (index !== -1) {
+            this.ArtistDb.splice(index, 1);
+            return this.ArtistDb;
         }
+        return undefined;
     }
-    //Métodos CRUD para Exhibition
+    // EXHIBITION CRUD
     createExhibition(name, description, artWorks = []) {
         const newExhibition = new Exhibition_1.default(this.nextExhibitionId++, name, description, artWorks);
         this.ExhibitionDb.push(newExhibition);
         return newExhibition;
     }
     readExhibition(idExhibition) {
-        for (let i = 0; i < this.ExhibitionDb.length; i++) {
-            if (this.ExhibitionDb[i].getId() === idExhibition) {
-                return this.ExhibitionDb[i];
-            }
-            else {
-                console.log("Exibição não encontrada!");
-            }
-        }
+        return this.ExhibitionDb.find(exh => exh.getId() === idExhibition);
     }
     readExhibitionByName(name) {
-        for (let i = 0; i < this.ExhibitionDb.length; i++) {
-            if (this.ExhibitionDb[i].getName() === name) {
-                return this.ExhibitionDb[i];
-            }
-            else {
-                console.log("Exibição não encontrada!");
-            }
-        }
+        return this.ExhibitionDb.find(exh => exh.getName().toLowerCase() === name.toLowerCase());
     }
     readAllExhibitions() {
         return this.ExhibitionDb;
     }
     updateExhibition(idExhibition, name, description, artWorks) {
-        const Exhibition = this.readExhibition(idExhibition);
-        if (Exhibition) {
-            Exhibition.setName(name);
-            Exhibition.setDescription(description);
-            Exhibition.setArtWorks(artWorks);
+        const exhibition = this.readExhibition(idExhibition);
+        if (exhibition) {
+            exhibition.setName(name);
+            exhibition.setDescription(description);
+            exhibition.setArtWorks(artWorks);
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
     deleteExhibition(idExhibition) {
-        for (let i = 0; i < this.ExhibitionDb.length; i++) {
-            if (this.ExhibitionDb[i].getId() === idExhibition) {
-                this.ExhibitionDb.splice(i, 1);
-                return true;
-            }
+        const index = this.ExhibitionDb.findIndex(exh => exh.getId() === idExhibition);
+        if (index !== -1) {
+            this.ExhibitionDb.splice(index, 1);
+            return true;
         }
         return false;
     }
@@ -200,16 +145,12 @@ class Database {
         return false;
     }
     getExhibitionArts(idExhibition) {
-        for (let i = 0; i < this.ExhibitionDb.length; i++) {
-            if (this.ExhibitionDb[i].getId() === idExhibition) {
-                const artIds = this.ExhibitionDb[i].getArtWorks();
-                const arts = artIds.map(id => this.readArt(id)).filter(art => art !== undefined);
-                return arts;
-            }
-            else {
-                console.log("Exibição não encontrada!");
-            }
+        const exhibition = this.readExhibition(idExhibition);
+        if (exhibition) {
+            const artIds = exhibition.getArtWorks();
+            return artIds.map(id => this.readArt(id)).filter(art => art !== undefined);
         }
+        return undefined;
     }
 }
 exports.default = Database;

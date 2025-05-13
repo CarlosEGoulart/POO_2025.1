@@ -1,19 +1,22 @@
 import ArtistController from "../controller/ArtistController";
 import * as readlineSync from 'readline-sync';
-import Artist from "../model/Artist";
+import Message from "../model/Message";
+import { MessageType } from "../model/EnumType";
 
 export default class ArtistView {
     private artistController: ArtistController;
+    private message: Message;
 
-    constructor(artistController: ArtistController) {
+    constructor(artistController: ArtistController, message: Message) {
         this.artistController = artistController;
+        this.message = message;
     }
 
     public start(): void {
         while (true) {
             console.log("\n--- Gerenciar Artistas ---");
             console.log("1. Listar Artistas");
-            console.log("3. Visualizar Detalhes do Artista");
+            console.log("2. Visualizar Detalhes do Artista");
             console.log("3. Criar Novo Artista");
             console.log("4. Atualizar Artista");
             console.log("5. Deletar Artista");
@@ -40,7 +43,7 @@ export default class ArtistView {
                 case 0:
                     return;
                 default:
-                    console.log("Opção inválida. Tente novamente.");
+                    this.message.showMessage(MessageType.Error);
             }
         }
     }
@@ -48,146 +51,91 @@ export default class ArtistView {
     private listArtists(): void {
         const artists = this.artistController.listArtists();
         if (artists.length === 0) {
-            console.log("Nenhum artista cadastrado.");
+            this.message.showMessage(MessageType.NotFound);
             return;
         }
-        console.log("\n--- Lista de Artistas ---");
         artists.forEach(artist => {
-            console.log(`ID: ${artist.getId()}, Nome: ${artist.getName()}, Ano de Nascimento: ${artist.getBirthYear()}`);
+            console.log(`ID: ${artist.getId()}, Nome: ${artist.getName()}`);
         });
     }
 
     private viewArtistDetails(): void {
-        const searchOption = readlineSync.question(
-            "Deseja buscar o artista por (ID/Nome)? ",
-            { limit: ['ID', 'Nome'], caseSensitive: false }
-        ).toUpperCase();
-    
-        if (searchOption === 'ID') {
-            const idArtist = readlineSync.questionInt("Digite o ID do artista: ");
-            const artist = this.artistController.getArtist(idArtist);
-            this.displayArtistDetails(artist);
-        } else if (searchOption === 'NOME') { 
-            const nameArtist = readlineSync.question("Digite o nome do artista: ");
-            const artist = this.artistController.getArtistByName(nameArtist);
-            this.displayArtistDetails(artist);
+        const input = readlineSync.question("Digite o ID ou Nome do artista: ");
+        let artist;
+        if (!isNaN(Number(input))) {
+            artist = this.artistController.getArtist(Number(input));
         } else {
-            console.log("Opção inválida.");
+            artist = this.artistController.getArtist(input);
         }
-    }
-    
-    private displayArtistDetails(artist: Artist | undefined): void {
         if (artist) {
-            console.log("\n--- Detalhes do Artista ---");
-            console.log(`ID: ${artist.getId()}`);
-            console.log(`Nome: ${artist.getName()}`);
-            console.log(`Biografia: ${artist.getBio()}`);
-            console.log(`Ano de Nascimento: ${artist.getBirthYear()}`);
-            console.log(`Instagram: ${artist.getInstagram() || 'Não disponível'}`);
+            console.log(artist.getInfo());
         } else {
-            console.log("Artista não encontrado.");
+            this.message.showMessage(MessageType.NotFound);
         }
     }
 
     private createArtist(): void {
-        const name = readlineSync.question("Digite o nome do artista: ");
-        const bio = readlineSync.question("Digite a biografia do artista: ");
-        const birthYear = readlineSync.questionInt("Digite o ano de nascimento do artista: ");
-        const instagram = readlineSync.question("Digite o Instagram do artista: ");
-
-        const newArtist = this.artistController.crateArtist(name, bio, birthYear, instagram);
+        const name = readlineSync.question("Nome: ");
+        const bio = readlineSync.question("Bio: ");
+        const birthYear = readlineSync.questionInt("Ano de nascimento: ");
+        const instagram = readlineSync.question("Instagram: ");
+        const newArtist = this.artistController.createArtist(name, bio, birthYear, instagram);
         if (newArtist) {
-            console.log(`Artista "${newArtist.getName()}" criado com ID: ${newArtist.getId()}.`);
+            this.message.showMessage(MessageType.Success);
         } else {
-            console.log("Erro ao criar o artista.");
+            this.message.showMessage(MessageType.Error);
         }
     }
 
     private updateArtist(): void {
-        const searchOption = readlineSync.question(
-            "Deseja buscar o artista para atualizar por (ID/Nome)? ",
-            { limit: ['ID', 'Nome'], caseSensitive: false }
-        ).toUpperCase();
-    
-        let artistToUpdate: Artist | undefined;
-        let artistId: number | undefined;
-    
-        if (searchOption === 'ID') {
-            artistId = readlineSync.questionInt("Digite o ID do artista para atualizar: ");
-            artistToUpdate = this.artistController.getArtist(artistId);
-        } 
-        
-        else if (searchOption === 'NOME') {
-            const nameArtist = readlineSync.question("Digite o nome do artista para atualizar: ");
-            artistToUpdate = this.artistController.getArtistByName(nameArtist);
-            if (artistToUpdate) {
-                artistId = artistToUpdate.getId();
-            } 
+        const input = readlineSync.question("Digite o ID ou Nome do artista para atualizar: ");
+        let artist;
+        if (!isNaN(Number(input))) {
+            artist = this.artistController.getArtist(Number(input));
+        } else {
+            artist = this.artistController.getArtist(input);
         }
-        
-        else {
-            console.log("Opção inválida.");
-            return;
-        }
-    
-        if(artistToUpdate){
-            console.log(`\n--- Atualizando Artista: ${artistToUpdate.getName()} (ID: ${artistToUpdate.getId()}) ---`);
-    
-            const newName = readlineSync.question(`Novo nome (${artistToUpdate.getName()}): `, { defaultInput: artistToUpdate.getName() });
-            const newBio = readlineSync.question(`Nova biografia (${artistToUpdate.getBio()}): `, { defaultInput: artistToUpdate.getBio() });
-            const newBirthYear = readlineSync.questionInt(`Novo ano de nascimento (${artistToUpdate.getBirthYear()}): `, { defaultInput: artistToUpdate.getBirthYear().toString() });
-            const newInstagram = readlineSync.question(`Novo Instagram (${artistToUpdate.getInstagram() || ''}): `, { defaultInput: artistToUpdate.getInstagram() || '' });
-    
-            if (artistId !== undefined) {
-                const updated = this.artistController.updateArtist(artistId, newName, newBio, newBirthYear, newInstagram);
-                if (updated) {
-                    console.log(`Artista com ID ${artistId} atualizado.`);
-                }  
-                else {
-                    console.log("Erro ao atualizar o artista.");
-                }
-            }  
-            else {
-                console.log("Erro interno: ID do artista não disponível para atualização.");
+        if (artist) {
+            const namePrompt = `Novo nome (${artist.getName()}): `;
+            const bioPrompt = `Nova bio (${artist.getBio()}): `;
+            const birthYearPrompt = `Novo ano de nascimento (${artist.getBirthYear()}): `;
+            const instagramPrompt = `Novo Instagram (${artist.getInstagram()}): `;
+
+            let newName = readlineSync.question(namePrompt);
+            if (!newName.trim()) newName = artist.getName();
+
+            let newBio = readlineSync.question(bioPrompt);
+            if (!newBio.trim()) newBio = artist.getBio();
+
+            let newBirthYearInput = readlineSync.question(birthYearPrompt);
+            let newBirthYear = newBirthYearInput.trim() ? Number(newBirthYearInput) : artist.getBirthYear();
+
+            let newInstagram = readlineSync.question(instagramPrompt);
+            if (!newInstagram.trim()) newInstagram = artist.getInstagram();
+
+            const updated = this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
+            if (updated) {
+                this.message.showMessage(MessageType.Success);
+            } else {
+                this.message.showMessage(MessageType.Error);
             }
-        } 
-        else {
-            console.log("Artista não encontrado.");
+        } else {
+            this.message.showMessage(MessageType.NotFound);
         }
     }
 
     private deleteArtist(): void {
-        const searchOption = readlineSync.question(
-            "Deseja buscar o artista para deletar por (ID/Nome)? ",
-            { limit: ['ID', 'Nome'], caseSensitive: false }
-        ).toUpperCase();
-    
-        let artistToDeleteId: number | undefined;
-        let artistToDeleteName: string | undefined;
-    
-        if (searchOption === 'ID') {
-            artistToDeleteId = readlineSync.questionInt("Digite o ID do artista para deletar: ");
-        } else if (searchOption === 'NOME') {
-            artistToDeleteName = readlineSync.question("Digite o nome do artista para deletar: ");
-            const artistToDelete = this.artistController.getArtistByName(artistToDeleteName);
-            if (artistToDelete) {
-                artistToDeleteId = artistToDelete.getId();
-            } else {
-                console.log(`Artista com nome "${artistToDeleteName}" não encontrado.`);
-                return;
-            }
+        const input = readlineSync.question("Digite o ID ou Nome do artista para deletar: ");
+        let deleted;
+        if (!isNaN(Number(input))) {
+            deleted = this.artistController.deleteArtist(Number(input));
         } else {
-            console.log("Opção inválida.");
-            return;
+            deleted = this.artistController.deleteArtist(input);
         }
-    
-        if (artistToDeleteId !== undefined) {
-            const deletedArtists = this.artistController.deleteArtist(artistToDeleteId);
-            if (deletedArtists) {
-                console.log(`Artista com ID ${artistToDeleteId} deletado.`);
-            } else {
-                console.log("Artista não encontrado.");
-            }
+        if (deleted) {
+            this.message.showMessage(MessageType.Success);
+        } else {
+            this.message.showMessage(MessageType.NotFound);
         }
     }
 }

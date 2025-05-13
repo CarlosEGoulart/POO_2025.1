@@ -1,12 +1,16 @@
 import ArtController from "../controller/ArtController";
 import * as readlineSync from 'readline-sync';
+import Message from "../model/Message";
+import { MessageType } from "../model/EnumType";
 import Art from "../model/Art";
 
 export default class ArtView {
     private artController: ArtController;
+    private message: Message;
 
-    constructor(artController: ArtController) {
+    constructor(artController: ArtController, message: Message) {
         this.artController = artController;
+        this.message = message;
     }
 
     public start(): void {
@@ -44,7 +48,7 @@ export default class ArtView {
                 case 0:
                     return;
                 default:
-                    console.log("Opção inválida. Tente novamente.");
+                    this.message.showMessage(MessageType.Error);
             }
         }
     }
@@ -52,148 +56,94 @@ export default class ArtView {
     private listArts(): void {
         const arts = this.artController.listArts();
         if (arts.length === 0) {
-            console.log("Nenhuma obra de arte cadastrada.");
+            this.message.showMessage(MessageType.NotFound);
             return;
         }
-        console.log("\n--- Lista de Obras de Arte ---");
         arts.forEach(art => {
             console.log(`ID: ${art.getId()}, Título: ${art.getName()}, Ano: ${art.getYear()}`);
         });
     }
 
     private viewArtDetails(): void {
-        const searchOption = readlineSync.question(
-            "Deseja buscar a obra de arte por (ID/Título)? ",
-            { limit: ['ID', 'Título'], caseSensitive: false }
-        ).toUpperCase();
-    
-        let artToView: Art | undefined;
-    
-        if (searchOption === 'ID') {
-            const idArt = readlineSync.questionInt("Digite o ID da obra de arte: ");
-            artToView = this.artController.getArt(idArt);
-        } else if (searchOption === 'TÍTULO') {
-            const titleArt = readlineSync.question("Digite o título da obra de arte: ");
-            artToView = this.artController.getArtByTitle(titleArt);
+        const input = readlineSync.question("Digite o ID ou Título da obra: ");
+        let art: Art | undefined;
+        if (!isNaN(Number(input))) {
+            art = this.artController.getArt(Number(input));
         } else {
-            console.log("Opção inválida.");
-            return;
+            art = this.artController.getArt(input);
         }
-    
-        if (artToView) {
-            console.log("\n--- Detalhes da Obra de Arte ---");
-            console.log(`ID: ${artToView.getId()}`);
-            console.log(`Título: ${artToView.getName()}`);
-            console.log(`Descrição: ${artToView.getDescription()}`);
-            console.log(`Ano: ${artToView.getYear()}`);
-            if (artToView.getArtist()) {
-                console.log(`Artista: ${artToView.getArtist().getName()}`);
-            } else {
-                console.log("Artista: Não atribuído");
-            }
+        if (art) {
+            console.log(art.getInfo());
         } else {
-            console.log("Obra de arte não encontrada.");
+            this.message.showMessage(MessageType.NotFound);
         }
     }
 
     private createArt(): void {
-        const title = readlineSync.question("Digite o título da obra: ");
-        const description = readlineSync.question("Digite a descrição da obra: ");
-        const year = readlineSync.questionInt("Digite o ano de criação da obra: ");
-
+        const title = readlineSync.question("Título: ");
+        const description = readlineSync.question("Descrição: ");
+        const year = readlineSync.questionInt("Ano: ");
         const newArt = this.artController.createArt(title, description, year);
         if (newArt) {
-            console.log(`Obra de arte "${newArt.getName()}" criada com ID: ${newArt.getId()}.`);
+            this.message.showMessage(MessageType.Success);
         } else {
-            console.log("Erro ao criar a obra de arte.");
+            this.message.showMessage(MessageType.Error);
         }
     }
 
     private updateArt(): void {
-        const searchOption = readlineSync.question(
-            "Deseja buscar a obra de arte para atualizar por (ID/Título)? ",
-            { limit: ['ID', 'Título'], caseSensitive: false }
-        ).toUpperCase();
-    
-        let artToUpdate: Art | undefined;
-        let artId: number | undefined;
-    
-        if (searchOption === 'ID') {
-            artId = readlineSync.questionInt("Digite o ID da obra de arte para atualizar: ");
-            artToUpdate = this.artController.getArt(artId);
-        } else if (searchOption === 'TÍTULO') {
-            const titleArt = readlineSync.question("Digite o título da obra de arte para atualizar: ");
-            artToUpdate = this.artController.getArtByTitle(titleArt);
-            if (artToUpdate) {
-                artId = artToUpdate.getId();
-            } else {
-                console.log(`Obra de arte com título "${titleArt}" não encontrada.`);
-                return;
-            }
+        const input = readlineSync.question("Digite o ID ou Título da obra para atualizar: ");
+        let art: Art | undefined;
+        if (!isNaN(Number(input))) {
+            art = this.artController.getArt(Number(input));
         } else {
-            console.log("Opção inválida.");
-            return;
+            art = this.artController.getArt(input);
         }
-    
-        if (artToUpdate) {
-            console.log(`\n--- Atualizando Obra de Arte: ${artToUpdate.getName()} (ID: ${artToUpdate.getId()}) ---`);
-    
-            const newTitle = readlineSync.question(`Novo título (${artToUpdate.getName()}): `, { defaultInput: artToUpdate.getName() });
-            const newDescription = readlineSync.question(`Nova descrição (${artToUpdate.getDescription()}): `, { defaultInput: artToUpdate.getDescription() });
-            const newYear = readlineSync.questionInt(`Novo ano (${artToUpdate.getYear()}): `, { defaultInput: artToUpdate.getYear().toString() });
-    
-            if (artId !== undefined) {
-                const updated = this.artController.updateArt(artId, newTitle, newDescription, newYear);
-                if (updated) {
-                    console.log(`Obra de arte com ID ${artId} atualizada.`);
-                } else {
-                    console.log("Erro ao atualizar a obra de arte.");
-                }
+        if (art) {
+            const newTitleInput = readlineSync.question(`Novo título (${art.getName()}): `);
+            const newTitle = newTitleInput.trim() === "" ? art.getName() : newTitleInput;
+
+            const newDescriptionInput = readlineSync.question(`Nova descrição (${art.getDescription()}): `);
+            const newDescription = newDescriptionInput.trim() === "" ? art.getDescription() : newDescriptionInput;
+
+            const newYearInput = readlineSync.question(`Novo ano (${art.getYear()}): `);
+            const newYear = newYearInput.trim() === "" ? art.getYear() : Number(newYearInput);
+
+            const updated = this.artController.updateArt(art.getId(), newTitle, newDescription, newYear);
+            if (updated) {
+                this.message.showMessage(MessageType.Success);
             } else {
-                console.log("Erro interno: ID da obra de arte não disponível para atualização.");
+                this.message.showMessage(MessageType.Error);
             }
         } else {
-            console.log("Obra de arte não encontrada.");
+            this.message.showMessage(MessageType.NotFound);
         }
     }
 
     private deleteArt(): void {
-        const searchOption = readlineSync.question(
-            "Deseja buscar a obra de arte para deletar por (ID/Título)? ",
-            { limit: ['ID', 'Título'], caseSensitive: false }
-        ).toUpperCase();
-    
-        let artToDeleteId: number | undefined;
-        let artToDeleteTitle: string | undefined;
-    
-        if (searchOption === 'ID') {
-            artToDeleteId = readlineSync.questionInt("Digite o ID da obra de arte para deletar: ");
-        } else if (searchOption === 'TÍTULO') {
-            artToDeleteTitle = readlineSync.question("Digite o título da obra de arte para deletar: ");
-            const artToDelete = this.artController.getArtByTitle(artToDeleteTitle);
-            if (artToDelete) {
-                artToDeleteId = artToDelete.getId();
-            } else {
-                console.log(`Obra de arte com título "${artToDeleteTitle}" não encontrada.`);
-                return;
-            }
+        const input = readlineSync.question("Digite o ID ou Título da obra para deletar: ");
+        let deleted;
+        if (!isNaN(Number(input))) {
+            deleted = this.artController.deleteArt(Number(input));
         } else {
-            console.log("Opção inválida.");
-            return;
+            deleted = this.artController.deleteArt(input);
         }
-    
-        if (artToDeleteId !== undefined) {
-            const deletedArts = this.artController.deleteArt(artToDeleteId);
-            if (deletedArts) {
-                console.log(`Obra de arte com ID ${artToDeleteId} deletada.`);
-            } 
-            else {
-                console.log("Obra de arte não encontrada.");
-            }
+        if (deleted) {
+            this.message.showMessage(MessageType.Success);
+        } else {
+            this.message.showMessage(MessageType.NotFound);
         }
     }
 
     private assignArtistToArt(): void {
-        console.log("Funcionalidade de atribuir artista não completamente implementada nesta view.");
-    }    
+        const artInput = readlineSync.question("Digite o ID da obra: ");
+        const artistInput = readlineSync.question("Digite o ID do artista: ");
+        // Supondo que assignArtistToArt aceita o ID do artista diretamente
+        const assigned = this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
+        if (assigned) {
+            this.message.showMessage(MessageType.Success);
+        } else {
+            this.message.showMessage(MessageType.Error);
+        }
+    }
 }

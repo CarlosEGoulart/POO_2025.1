@@ -5,54 +5,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const BaseEntity_1 = __importDefault(require("./BaseEntity"));
 class Artist extends BaseEntity_1.default {
-    //Constructor com elementos indispensaveis para a construção de um objeto Artist
-    constructor(idArtist, name, bio, birthYear, instagram) {
-        super(idArtist, name);
+    constructor(id, name, bio, birthYear, instagram) {
+        super(id, name);
         this.bio = bio;
         this.birthYear = birthYear;
         this.instagram = instagram;
     }
-    //Validação do ano de nascimento do artista
-    validateBirthYear(birthYear) {
-        if (birthYear < 0 || birthYear > new Date().getFullYear()) {
-            console.log("Ano de nascimento invalido!");
-        }
-        else {
-            this.birthYear = birthYear;
-        }
-    }
-    //Formatação do instagram para inseriro @ caso não esteja presente
-    formatInstagram(instagram) {
-        if (!instagram.startsWith('@')) {
-            instagram = '@' + instagram;
-            this.instagram = instagram;
-        }
-        else {
-            this.instagram = instagram;
-        }
-    }
-    //GetInfo para retornar as informações do artista
-    getInfo() {
-        return this.getBasicInfo();
-    }
-    //Gets e Sets 
     getBio() {
         return this.bio;
-    }
-    getBirthYear() {
-        return this.birthYear;
-    }
-    getInstagram() {
-        return this.instagram;
     }
     setBio(bio) {
         this.bio = bio;
     }
+    getBirthYear() {
+        return this.birthYear;
+    }
     setBirthYear(birthYear) {
-        this.validateBirthYear(birthYear);
+        this.birthYear = birthYear;
+    }
+    getInstagram() {
+        return this.instagram;
     }
     setInstagram(instagram) {
-        this.formatInstagram(instagram);
+        this.instagram = instagram;
+    }
+    getInfo() {
+        return `Artista: ${this.name}, Bio: ${this.bio}, Ano de Nascimento: ${this.birthYear}, Instagram: ${this.instagram}`;
     }
 }
 exports.default = Artist;

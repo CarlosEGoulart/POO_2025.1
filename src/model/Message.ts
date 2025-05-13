@@ -1,8 +1,8 @@
-import { IMessage } from "./IMessage";  
+import { MessageType } from "./EnumType";
 
-export class Message implements IMessage {
-    showMessage(): void {
-        console.log("Ação realizada com sucesso!");
+export default class Message {
+    showMessage(type: MessageType) {
+        console.log(type);
     }
 }
 

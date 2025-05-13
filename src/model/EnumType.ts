@@ -1,8 +1,5 @@
-export enum ArtType {
-    Sucess = "Successo!",
-    Error = "Erro!",
-    NotFound = "Não encontrado!",
-  }
-  
-
-  
+export enum MessageType {
+    Success = "Operação realizada com sucesso!",
+    Error = "Ocorreu um erro.",
+    NotFound = "Elemento não encontrado."
+}

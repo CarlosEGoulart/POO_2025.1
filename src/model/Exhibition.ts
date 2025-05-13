@@ -1,37 +1,38 @@
-import BaseEntity from "./BaseEntity"
+import BaseEntity from "./BaseEntity";
 
-export default class Exhibition extends BaseEntity{
+export default class Exhibition extends BaseEntity {
     private description: string;
-    private artWorks: number[] = [];
+    private artWorks: number[]; // IDs das obras
 
-
-    //Constructor com elementos indispensaveis para a construção de um objeto Exhibition
-    constructor(idExhibition: number, name: string, description: string, artWorks: number[]){
-        super(idExhibition, name);
+    constructor(id: number, name: string, description: string, artWorks: number[] = []) {
+        super(id, name);
         this.description = description;
         this.artWorks = artWorks;
     }
 
-
-    //GetInfo para retornar as informações da exibição
-    public getInfo(): string{
-        return this.getBasicInfo();
-    }
-    
-    //Gets e Sets
-    public getDescription(): string{ 
+    public getDescription(): string {
         return this.description;
     }
 
-    public getArtWorks(): number[]{
-        return this.artWorks;
-    }
-
-    public setDescription(description: string): void{
+    public setDescription(description: string): void {
         this.description = description;
     }
 
-    public setArtWorks(artWorks: number[]): void{
+    public getArtWorks(): number[] {
+        return this.artWorks;
+    }
+
+    public setArtWorks(artWorks: number[]): void {
         this.artWorks = artWorks;
+    }
+
+    public getYear(): number {
+        // Exemplo: retorna o ano do nome, se estiver no nome, ou 0
+        const match = this.name.match(/\d{4}/);
+        return match ? parseInt(match[0]) : 0;
+    }
+
+    public getInfo(): string {
+        return `Exposição: ${this.name}, Descrição: ${this.description}, Obras: ${this.artWorks.length}`;
     }
 }
