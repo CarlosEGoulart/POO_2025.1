@@ -54,11 +54,5 @@ class ExhibitionController {
     getExhibitionArts(idExhibition) {
         return this.db.getExhibitionArts(idExhibition);
     }
-    listAllArts() {
-        return this.db.readAllArts();
-    }
-    getArt(idArt) {
-        return this.db.readArt(idArt);
-    }
 }
 exports.default = ExhibitionController;
