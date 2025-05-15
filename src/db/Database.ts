@@ -11,8 +11,8 @@ export default class Database {
     private nextExhibitionId: number = 1;
 
     // ART CRUD
-    public createArt(title: string, description: string, year: number): Art {
-        const newArt = new Art(this.nextArtId++, title, description, year);
+    public createArt(title: string, description: string, year: number, imageUrl: string): Art {
+        const newArt = new Art(this.nextArtId++, title, description, year, imageUrl);
         this.ArtDb.push(newArt);
         return newArt;
     }
