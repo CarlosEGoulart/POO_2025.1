@@ -5,12 +5,14 @@ export default class Art extends BaseEntity {
     private description: string;
     private year: number;
     private artist?: Artist;
+    private imageUrl: string;
 
-    constructor(id: number, name: string, description: string, year: number, artist?: Artist) {
+    constructor(id: number, name: string, description: string, year: number, imageUrl: string = "", artist?: Artist) {
         super(id, name);
         this.description = description;
         this.year = year;
         this.artist = artist;
+        this.imageUrl = imageUrl
     }
 
     public getDescription(): string {
@@ -37,7 +39,15 @@ export default class Art extends BaseEntity {
         this.artist = artist;
     }
 
+    public getImageUrl(): string {
+        return this.imageUrl;
+    }
+
+    public setImageUrl(imageUrl: string): void {
+        this.imageUrl = imageUrl;
+    }
+
     public getInfo(): string {
-        return `Obra: ${this.name}, Descrição: ${this.description}, Ano: ${this.year}, Artista: ${this.artist ? this.artist.getName() : "Desconhecido"}`;
+        return `Obra: ${this.name}, Descrição: ${this.description}, Ano: ${this.year}, URL da Imagem: ${this.imageUrl}, Artista: ${this.artist ? this.artist.getName() : "Desconhecido"}`;
     }
 }
