@@ -11,6 +11,18 @@ class Artist extends BaseEntity_1.default {
         this.birthYear = birthYear;
         this.instagram = instagram;
     }
+    getId() {
+        return this.id;
+    }
+    setId(id) {
+        this.id = id;
+    }
+    getName() {
+        return this.name;
+    }
+    setName(name) {
+        this.name = name;
+    }
     getBio() {
         return this.bio;
     }

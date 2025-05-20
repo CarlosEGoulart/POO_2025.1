@@ -12,6 +12,22 @@ export default class Artist extends BaseEntity {
         this.instagram = instagram;
     }
 
+    public getId(): number {
+        return this.id;
+    }
+
+    public setId(id: number): void {
+        this.id = id;
+    }
+    
+    public getName(): string {
+        return this.name;
+    }
+    
+    public setName(name: string): void {
+        this.name = name;
+    }
+    
     public getBio(): string {
         return this.bio;
     }

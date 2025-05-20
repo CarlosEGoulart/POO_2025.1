@@ -10,14 +10,26 @@ class Exhibition extends BaseEntity_1.default {
         this.description = description;
         this.artWorks = artWorks;
     }
+    getId() {
+        return this.id;
+    }
+    getName() {
+        return this.name;
+    }
     getDescription() {
         return this.description;
     }
-    setDescription(description) {
-        this.description = description;
-    }
     getArtWorks() {
         return this.artWorks;
+    }
+    setId(id) {
+        this.id = id;
+    }
+    setName(name) {
+        this.name = name;
+    }
+    setDescription(description) {
+        this.description = description;
     }
     setArtWorks(artWorks) {
         this.artWorks = artWorks;

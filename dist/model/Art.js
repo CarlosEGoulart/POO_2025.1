@@ -12,26 +12,38 @@ class Art extends BaseEntity_1.default {
         this.artist = artist;
         this.imageUrl = imageUrl;
     }
+    getId() {
+        return this.id;
+    }
+    getName() {
+        return this.name;
+    }
     getDescription() {
         return this.description;
-    }
-    setDescription(description) {
-        this.description = description;
     }
     getYear() {
         return this.year;
     }
-    setYear(year) {
-        this.year = year;
-    }
     getArtist() {
         return this.artist;
     }
-    setArtist(artist) {
-        this.artist = artist;
-    }
     getImageUrl() {
         return this.imageUrl;
+    }
+    setId(id) {
+        this.id = id;
+    }
+    setName(name) {
+        this.name = name;
+    }
+    setDescription(description) {
+        this.description = description;
+    }
+    setYear(year) {
+        this.year = year;
+    }
+    setArtist(artist) {
+        this.artist = artist;
     }
     setImageUrl(imageUrl) {
         this.imageUrl = imageUrl;

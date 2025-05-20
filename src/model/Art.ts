@@ -15,34 +15,49 @@ export default class Art extends BaseEntity {
         this.imageUrl = imageUrl
     }
 
+    public getId(): number {
+        return this.id;
+    }
+
+    public getName(): string {
+        return this.name;
+    }
+    
     public getDescription(): string {
         return this.description;
     }
-
-    public setDescription(description: string): void {
-        this.description = description;
-    }
-
+    
     public getYear(): number {
         return this.year;
+    }
+
+    public getArtist(): Artist | undefined {
+        return this.artist;
+    }
+    
+    public getImageUrl(): string {
+        return this.imageUrl;
+    }
+    
+    public setId(id: number): void {
+        this.id = id;
+    }
+    
+    public setName(name: string): void {
+        this.name = name;
+    }
+    public setDescription(description: string): void {
+        this.description = description;
     }
 
     public setYear(year: number): void {
         this.year = year;
     }
 
-    public getArtist(): Artist | undefined {
-        return this.artist;
-    }
-
     public setArtist(artist: Artist): void {
         this.artist = artist;
     }
-
-    public getImageUrl(): string {
-        return this.imageUrl;
-    }
-
+    
     public setImageUrl(imageUrl: string): void {
         this.imageUrl = imageUrl;
     }

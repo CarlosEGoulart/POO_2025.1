@@ -10,16 +10,32 @@ export default class Exhibition extends BaseEntity {
         this.artWorks = artWorks;
     }
 
+    public getId(): number {
+        return this.id;
+    }
+    
+    public getName(): string {
+        return this.name;
+    }
+    
     public getDescription(): string {
         return this.description;
     }
 
-    public setDescription(description: string): void {
-        this.description = description;
-    }
-
     public getArtWorks(): number[] {
         return this.artWorks;
+    }
+    
+    public setId(id: number): void {
+        this.id = id;
+    }
+    
+    public setName(name: string): void {
+        this.name = name;
+    }
+    
+    public setDescription(description: string): void {
+        this.description = description;
     }
 
     public setArtWorks(artWorks: number[]): void {

@@ -7,17 +7,11 @@ export default abstract class BaseEntity {
         this.name = name;
     }
 
-    public getId(): number {
-        return this.id;
-    }
-
-    public getName(): string {
-        return this.name;
-    }
-
-    public setName(name: string): void {
-        this.name = name;
-    }
-
-    public abstract getInfo(): string;
+    public abstract getId(): number;
+   
+    public abstract setId(id: number): void;
+    
+    public abstract getName(): string;
+    
+    public abstract setName(name: string): void;
 }
