@@ -5,5 +5,5 @@ var MessageType;
 (function (MessageType) {
     MessageType["Success"] = "Operacao realizada com sucesso!";
     MessageType["Error"] = "Ocorreu um erro.";
-    MessageType["NotFound"] = "Elemento n\u00E3o encontrado.";
+    MessageType["NotFound"] = "Elemento nao encontrado.";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
