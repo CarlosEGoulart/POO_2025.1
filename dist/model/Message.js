@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Fit {
+class Message {
     showMessage(type) {
         console.log(type);
     }
 }
-exports.default = Fit;
+exports.default = Message;

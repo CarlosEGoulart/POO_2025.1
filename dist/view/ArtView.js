@@ -15,23 +15,13 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const readlineSync = __importStar(require("readline-sync"));
 const EnumType_1 = require("../model/EnumType");
@@ -90,16 +80,23 @@ class ArtView {
     viewArtDetails() {
         const input = readlineSync.question("Digite o ID ou Título da obra: ");
         let art;
-        if (!isNaN(Number(input))) {
-            art = this.artController.getArt(Number(input));
+        try {
+            if (!isNaN(Number(input))) {
+                art = this.artController.getArt(Number(input));
+            }
+            else {
+                art = this.artController.getArt(input);
+            }
+            try {
+                if (art) {
+                    console.log(art.getInfo());
+                }
+            }
+            catch (error) {
+                this.message.showMessage(EnumType_1.MessageType.Error);
+            }
         }
-        else {
-            art = this.artController.getArt(input);
-        }
-        if (art) {
-            console.log(art.getInfo());
-        }
-        else {
+        catch (error) {
             this.message.showMessage(EnumType_1.MessageType.NotFound);
         }
     }
@@ -107,40 +104,44 @@ class ArtView {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
         const year = readlineSync.questionInt("Ano: ");
-        const imageUrl = readlineSync.question("Url da imagem: ");
+        const imageUrl = readlineSync.question("URL da Imagem: ");
         const newArt = this.artController.createArt(title, description, year, imageUrl);
-        if (newArt) {
-            this.message.showMessage(EnumType_1.MessageType.Success);
+        try {
+            if (newArt) {
+                this.message.showMessage(EnumType_1.MessageType.Success);
+            }
         }
-        else {
+        catch (error) {
             this.message.showMessage(EnumType_1.MessageType.Error);
         }
     }
     updateArt() {
         const input = readlineSync.question("Digite o ID ou Título da obra para atualizar: ");
         let art;
-        if (!isNaN(Number(input))) {
-            art = this.artController.getArt(Number(input));
-        }
-        else {
-            art = this.artController.getArt(input);
-        }
-        if (art) {
-            const newTitleInput = readlineSync.question(`Novo título (${art.getName()}): `);
-            const newTitle = newTitleInput.trim() === "" ? art.getName() : newTitleInput;
-            const newDescriptionInput = readlineSync.question(`Nova descrição (${art.getDescription()}): `);
-            const newDescription = newDescriptionInput.trim() === "" ? art.getDescription() : newDescriptionInput;
-            const newYearInput = readlineSync.question(`Novo ano (${art.getYear()}): `);
-            const newYear = newYearInput.trim() === "" ? art.getYear() : Number(newYearInput);
-            const updated = this.artController.updateArt(art.getId(), newTitle, newDescription, newYear);
-            if (updated) {
-                this.message.showMessage(EnumType_1.MessageType.Success);
+        try {
+            if (!isNaN(Number(input))) {
+                art = this.artController.getArt(Number(input));
             }
             else {
-                this.message.showMessage(EnumType_1.MessageType.Error);
+                art = this.artController.getArt(input);
+            }
+            if (art) {
+                const newTitleInput = readlineSync.question(`Novo título (${art.getName()}): `);
+                const newTitle = newTitleInput.trim() === "" ? art.getName() : newTitleInput;
+                const newDescriptionInput = readlineSync.question(`Nova descrição (${art.getDescription()}): `);
+                const newDescription = newDescriptionInput.trim() === "" ? art.getDescription() : newDescriptionInput;
+                const newYearInput = readlineSync.question(`Novo ano (${art.getYear()}): `);
+                const newYear = newYearInput.trim() === "" ? art.getYear() : Number(newYearInput);
+                try {
+                    this.artController.updateArt(art.getId(), newTitle, newDescription, newYear);
+                    this.message.showMessage(EnumType_1.MessageType.Success);
+                }
+                catch (error) {
+                    this.message.showMessage(EnumType_1.MessageType.Error);
+                }
             }
         }
-        else {
+        catch (error) {
             this.message.showMessage(EnumType_1.MessageType.NotFound);
         }
     }
@@ -153,21 +154,23 @@ class ArtView {
         else {
             deleted = this.artController.deleteArt(input);
         }
-        if (deleted) {
-            this.message.showMessage(EnumType_1.MessageType.Success);
+        try {
+            if (deleted) {
+                this.message.showMessage(EnumType_1.MessageType.Success);
+            }
         }
-        else {
+        catch (error) {
             this.message.showMessage(EnumType_1.MessageType.NotFound);
         }
     }
     assignArtistToArt() {
         const artInput = readlineSync.question("Digite o ID da obra: ");
         const artistInput = readlineSync.question("Digite o ID do artista: ");
-        const assigned = this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
-        if (assigned) {
+        try {
+            this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
             this.message.showMessage(EnumType_1.MessageType.Success);
         }
-        else {
+        catch (error) {
             this.message.showMessage(EnumType_1.MessageType.Error);
         }
     }

@@ -67,14 +67,23 @@ export default class ArtView {
     private viewArtDetails(): void {
         const input = readlineSync.question("Digite o ID ou Título da obra: ");
         let art: Art | undefined;
-        if (!isNaN(Number(input))) {
-            art = this.artController.getArt(Number(input));
-        } else {
-            art = this.artController.getArt(input);
+        try {
+            if (!isNaN(Number(input))) {
+                art = this.artController.getArt(Number(input));
+            } else {
+                art = this.artController.getArt(input);
+            }
+
+            try {
+                if (art) {
+                    console.log(art.getInfo());
+                }
+            }
+            catch (error) {
+                this.message.showMessage(MessageType.Error);
+            }
         }
-        if (art) {
-            console.log(art.getInfo());
-        } else {
+        catch (error) {
             this.message.showMessage(MessageType.NotFound);
         }
     }
@@ -83,11 +92,16 @@ export default class ArtView {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
         const year = readlineSync.questionInt("Ano: ");
-        const imageUrl = readlineSync.question("Url da imagem: ")
+        const imageUrl = readlineSync.question("URL da Imagem: ");
         const newArt = this.artController.createArt(title, description, year, imageUrl);
-        if (newArt) {
-            this.message.showMessage(MessageType.Success);
-        } else {
+
+        try {
+            if (newArt) {
+                this.message.showMessage(MessageType.Success);
+            }
+        }
+
+        catch (error) {
             this.message.showMessage(MessageType.Error);
         }
     }
@@ -95,28 +109,32 @@ export default class ArtView {
     private updateArt(): void {
         const input = readlineSync.question("Digite o ID ou Título da obra para atualizar: ");
         let art: Art | undefined;
-        if (!isNaN(Number(input))) {
-            art = this.artController.getArt(Number(input));
-        } else {
-            art = this.artController.getArt(input);
-        }
-        if (art) {
-            const newTitleInput = readlineSync.question(`Novo título (${art.getName()}): `);
-            const newTitle = newTitleInput.trim() === "" ? art.getName() : newTitleInput;
 
-            const newDescriptionInput = readlineSync.question(`Nova descrição (${art.getDescription()}): `);
-            const newDescription = newDescriptionInput.trim() === "" ? art.getDescription() : newDescriptionInput;
-
-            const newYearInput = readlineSync.question(`Novo ano (${art.getYear()}): `);
-            const newYear = newYearInput.trim() === "" ? art.getYear() : Number(newYearInput);
-
-            const updated = this.artController.updateArt(art.getId(), newTitle, newDescription, newYear);
-            if (updated) {
-                this.message.showMessage(MessageType.Success);
+        try {
+            if (!isNaN(Number(input))) {
+                art = this.artController.getArt(Number(input));
             } else {
-                this.message.showMessage(MessageType.Error);
+                art = this.artController.getArt(input);
             }
-        } else {
+            if (art) {
+                const newTitleInput = readlineSync.question(`Novo título (${art.getName()}): `);
+                const newTitle = newTitleInput.trim() === "" ? art.getName() : newTitleInput;
+                const newDescriptionInput = readlineSync.question(`Nova descrição (${art.getDescription()}): `);
+                const newDescription = newDescriptionInput.trim() === "" ? art.getDescription() : newDescriptionInput;
+                const newYearInput = readlineSync.question(`Novo ano (${art.getYear()}): `);
+                const newYear = newYearInput.trim() === "" ? art.getYear() : Number(newYearInput);
+
+                try {
+                    this.artController.updateArt(art.getId(), newTitle, newDescription, newYear);
+                    this.message.showMessage(MessageType.Success);
+
+                }
+                catch (error) {
+                    this.message.showMessage(MessageType.Error);
+                }
+            }
+        }
+        catch (error) {
             this.message.showMessage(MessageType.NotFound);
         }
     }
@@ -129,9 +147,14 @@ export default class ArtView {
         } else {
             deleted = this.artController.deleteArt(input);
         }
-        if (deleted) {
-            this.message.showMessage(MessageType.Success);
-        } else {
+
+
+        try {
+            if (deleted) {
+                this.message.showMessage(MessageType.Success);
+            }
+        }
+        catch (error) {
             this.message.showMessage(MessageType.NotFound);
         }
     }
@@ -139,10 +162,13 @@ export default class ArtView {
     private assignArtistToArt(): void {
         const artInput = readlineSync.question("Digite o ID da obra: ");
         const artistInput = readlineSync.question("Digite o ID do artista: ");
-        const assigned = this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
-        if (assigned) {
+
+        try {
+            this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
             this.message.showMessage(MessageType.Success);
-        } else {
+        }
+        
+        catch (error) {
             this.message.showMessage(MessageType.Error);
         }
     }

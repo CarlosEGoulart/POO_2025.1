@@ -75,14 +75,24 @@ export default class ExhibitionView {
     private viewExhibitionDetails(): void {
         const input = readlineSync.question("Digite o ID ou Título da exposição: ");
         let exhibition: Exhibition | undefined;
-        if (!isNaN(Number(input))) {
-            exhibition = this.exhibitionController.getExhibition(Number(input));
-        } else {
-            exhibition = this.exhibitionController.getExhibition(input);
+
+        try {
+            if (!isNaN(Number(input))) {
+                exhibition = this.exhibitionController.getExhibition(Number(input));
+            } else {
+                exhibition = this.exhibitionController.getExhibition(input);
+            }
+
+            try {
+                if (exhibition) {
+                    console.log(exhibition.getInfo());
+                }
+            }
+            catch (error) {
+                this.message.showMessage(MessageType.Error);
+            }
         }
-        if (exhibition) {
-            console.log(exhibition.getInfo());
-        } else {
+        catch (error) {
             this.message.showMessage(MessageType.NotFound);
         }
     }
@@ -90,13 +100,17 @@ export default class ExhibitionView {
     private createExhibition(): void {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        const newExhibition = this.exhibitionController.createExhibition(title, description, []);
-        if (newExhibition) {
+
+        try {
+            this.exhibitionController.createExhibition(title, description, []);
             this.message.showMessage(MessageType.Success);
-        } else {
+        }
+
+        catch (error) {
             this.message.showMessage(MessageType.Error);
         }
     }
+
 
     private updateExhibition(): void {
         const input = readlineSync.question("Digite o ID ou Título da exposição para atualizar: ");
@@ -106,19 +120,24 @@ export default class ExhibitionView {
         } else {
             exhibition = this.exhibitionController.getExhibition(input);
         }
-        if (exhibition) {
-            const titleInput = readlineSync.question(`Novo título (${exhibition.getName()}): `);
-            const newTitle = titleInput.trim() === "" ? exhibition.getName() : titleInput;
-            const descInput = readlineSync.question(`Nova descrição (${exhibition.getDescription()}): `);
-            const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
-            
-            const updated = this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
-            if (updated) {
-                this.message.showMessage(MessageType.Success);
-            } else {
-                this.message.showMessage(MessageType.Error);
+
+        try {
+            if (exhibition) {
+                const titleInput = readlineSync.question(`Novo título (${exhibition.getName()}): `);
+                const newTitle = titleInput.trim() === "" ? exhibition.getName() : titleInput;
+                const descInput = readlineSync.question(`Nova descrição (${exhibition.getDescription()}): `);
+                const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
+
+                try {
+                    this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
+                    this.message.showMessage(MessageType.Success);
+                }
+                catch (error) {
+                    this.message.showMessage(MessageType.Error);
+                }
             }
-        } else {
+        }
+        catch (error) {
             this.message.showMessage(MessageType.NotFound);
         }
     }
@@ -126,14 +145,24 @@ export default class ExhibitionView {
     private deleteExhibition(): void {
         const input = readlineSync.question("Digite o ID ou Título da exposição para deletar: ");
         let deleted;
-        if (!isNaN(Number(input))) {
-            deleted = this.exhibitionController.deleteExhibition(Number(input));
-        } else {
-            deleted = this.exhibitionController.deleteExhibition(input);
+
+        try {
+            if (!isNaN(Number(input))) {
+                deleted = this.exhibitionController.deleteExhibition(Number(input));
+            } else {
+                deleted = this.exhibitionController.deleteExhibition(input);
+            }
+
+            try {
+                if (deleted) {
+                    this.message.showMessage(MessageType.Success);
+                }
+            }
+            catch (error) {
+                this.message.showMessage(MessageType.Error);
+            }
         }
-        if (deleted) {
-            this.message.showMessage(MessageType.Success);
-        } else {
+        catch (error) {
             this.message.showMessage(MessageType.NotFound);
         }
     }
@@ -141,36 +170,45 @@ export default class ExhibitionView {
     private assignArtToExhibition(): void {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const artInput = readlineSync.question("Digite o ID da arte: ");
-        const assigned = this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
-        if (assigned) {
+
+        try {
+            this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
             this.message.showMessage(MessageType.Success);
-        } else {
+        }
+
+        catch (error) {
             this.message.showMessage(MessageType.Error);
         }
     }
 
-    private removeArtFromExhibition(): void{
+    private removeArtFromExhibition(): void {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const artInput = readlineSync.question("Digite o ID da arte: ");
-        const removed = this.exhibitionController.removeArtFromExhibition(Number(exhibitionInput), Number(artInput));
-        if (removed){
+
+        try {
+            this.exhibitionController.removeArtFromExhibition(Number(exhibitionInput), Number(artInput));
             this.message.showMessage(MessageType.Success);
         }
-        else{
+
+        catch (error) {
             this.message.showMessage(MessageType.Error);
         }
     }
 
-    public getExhibitionArts(): void{
+    public getExhibitionArts(): void {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const arts = this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
-        if (arts){
-            arts.forEach(art => {
-                console.log(`ID: ${art.getId()}, Título: ${art.getName()}, Ano: ${art.getYear()}`);
-            });
-            this.message.showMessage(MessageType.Success);
+        
+        try {
+            if (arts) {
+                arts.forEach(art => {
+                    console.log(`ID: ${art.getId()}, Título: ${art.getName()}, Ano: ${art.getYear()}`);
+                });
+                this.message.showMessage(MessageType.Success);
+            }
         }
-        else{
+        
+        catch (error) {
             this.message.showMessage(MessageType.Error);
         }
     }
