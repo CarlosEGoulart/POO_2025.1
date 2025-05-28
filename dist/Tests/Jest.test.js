@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Art_1 = __importDefault(require("./model/Classes/Art"));
-const Artist_1 = __importDefault(require("./model/Classes/Artist"));
-const Exhibition_1 = __importDefault(require("./model/Classes/Exhibition"));
+const Art_1 = __importDefault(require("../model/Classes/Art"));
+const Artist_1 = __importDefault(require("../model/Classes/Artist"));
+const Exhibition_1 = __importDefault(require("../model/Classes/Exhibition"));
 test("Test Art class", () => {
     const art = new Art_1.default(1, "Titulo da obra", "Descrição da obra", 2025);
     expect(art.getId()).toBe(1);

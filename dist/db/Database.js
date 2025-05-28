@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Art_1 = __importDefault(require("../model/Art"));
-const Artist_1 = __importDefault(require("../model/Artist"));
-const Exhibition_1 = __importDefault(require("../model/Exhibition"));
+const Art_1 = __importDefault(require("../model/Classes/Art"));
+const Artist_1 = __importDefault(require("../model/Classes/Artist"));
+const Exhibition_1 = __importDefault(require("../model/Classes/Exhibition"));
 class Database {
     constructor() {
         this.ArtDb = [];

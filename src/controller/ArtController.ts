@@ -1,4 +1,4 @@
-import Art from "../model/Art";
+import Art from "../model/Classes/Art";
 import Database from "../db/Database";
 
 export default class ArtController {

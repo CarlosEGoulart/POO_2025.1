@@ -1,6 +1,6 @@
-import Art from "../model/Art";
-import Artist from "../model/Artist";
-import Exhibition from "../model/Exhibition";
+import Art from "../model/Classes/Art";
+import Artist from "../model/Classes/Artist";
+import Exhibition from "../model/Classes/Exhibition";
 
 export default class Database {
     private ArtDb: Art[] = [];

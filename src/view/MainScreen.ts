@@ -3,7 +3,7 @@ import ArtistView from "./ArtistView";
 import ArtView from "./ArtView";
 import ExhibitionView from "./ExhibitionView";
 import * as readlineSync from 'readline-sync';
-import Message from "../model/Message";
+import Message from "../model/Message/Message";
 
 export default class MainScreen {
     private mainController: MainController;

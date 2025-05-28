@@ -22,9 +22,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const readlineSync = __importStar(require("readline-sync"));
-const EnumType_1 = require("../model/EnumType");
+const EnumType_1 = require("../model/Message/EnumType");
+const Exception_1 = __importDefault(require("../model/Error/Exception"));
 class ArtistView {
     constructor(artistController, message) {
         this.artistController = artistController;
@@ -40,26 +44,37 @@ class ArtistView {
             console.log("5. Deletar Artista");
             console.log("0. Voltar ao Menu Principal");
             const choice = readlineSync.questionInt("Escolha uma opção: ");
-            switch (choice) {
-                case 1:
-                    this.listArtists();
-                    break;
-                case 2:
-                    this.viewArtistDetails();
-                    break;
-                case 3:
-                    this.createArtist();
-                    break;
-                case 4:
-                    this.updateArtist();
-                    break;
-                case 5:
-                    this.deleteArtist();
-                    break;
-                case 0:
-                    return;
-                default:
+            try {
+                switch (choice) {
+                    case 1:
+                        this.listArtists();
+                        break;
+                    case 2:
+                        this.viewArtistDetails();
+                        break;
+                    case 3:
+                        this.createArtist();
+                        break;
+                    case 4:
+                        this.updateArtist();
+                        break;
+                    case 5:
+                        this.deleteArtist();
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        throw new Exception_1.default("Opção inválida");
+                }
+            }
+            catch (error) {
+                if (error instanceof Exception_1.default) {
+                    console.error(error.message);
+                }
+                else {
                     this.message.showMessage(EnumType_1.MessageType.Error);
+                    console.error("Erro inesperado:", error);
+                }
             }
         }
     }
@@ -76,24 +91,17 @@ class ArtistView {
     viewArtistDetails() {
         const input = readlineSync.question("Digite o ID ou Nome do artista: ");
         let artist;
-        try {
-            if (!isNaN(Number(input))) {
-                artist = this.artistController.getArtist(Number(input));
-            }
-            else {
-                artist = this.artistController.getArtist(input);
-            }
-            try {
-                if (artist) {
-                    console.log(artist.getInfo());
-                }
-            }
-            catch (error) {
-                this.message.showMessage(EnumType_1.MessageType.Error);
-            }
+        if (!isNaN(Number(input))) {
+            artist = this.artistController.getArtist(Number(input));
         }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.NotFound);
+        else {
+            artist = this.artistController.getArtist(input);
+        }
+        if (artist) {
+            console.log(artist.getInfo());
+        }
+        else {
+            throw new Exception_1.default("Artista não encontrado");
         }
     }
     createArtist() {
@@ -101,74 +109,60 @@ class ArtistView {
         const bio = readlineSync.question("Bio: ");
         const birthYear = readlineSync.questionInt("Ano de nascimento: ");
         const instagram = readlineSync.question("Instagram: ");
-        try {
-            this.artistController.createArtist(name, bio, birthYear, instagram);
-            this.message.showMessage(EnumType_1.MessageType.Success);
-        }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.Error);
-        }
+        this.artistController.createArtist(name, bio, birthYear, instagram);
+        this.message.showMessage(EnumType_1.MessageType.Success);
     }
     updateArtist() {
         const input = readlineSync.question("Digite o ID ou Nome do artista para atualizar: ");
         let artist;
-        try {
-            if (!isNaN(Number(input))) {
-                artist = this.artistController.getArtist(Number(input));
+        if (!isNaN(Number(input))) {
+            artist = this.artistController.getArtist(Number(input));
+        }
+        else {
+            artist = this.artistController.getArtist(input);
+        }
+        if (artist) {
+            const namePrompt = `Novo nome (${artist.getName()}): `;
+            const bioPrompt = `Nova bio (${artist.getBio()}): `;
+            const birthYearPrompt = `Novo ano de nascimento (${artist.getBirthYear()}): `;
+            const instagramPrompt = `Novo Instagram (${artist.getInstagram()}): `;
+            let newName = readlineSync.question(namePrompt);
+            if (!newName.trim())
+                newName = artist.getName();
+            let newBio = readlineSync.question(bioPrompt);
+            if (!newBio.trim())
+                newBio = artist.getBio();
+            let newBirthYearInput = readlineSync.question(birthYearPrompt);
+            let newBirthYear = newBirthYearInput.trim() ? Number(newBirthYearInput) : artist.getBirthYear();
+            let newInstagram = readlineSync.question(instagramPrompt);
+            if (!newInstagram.trim())
+                newInstagram = artist.getInstagram();
+            try {
+                this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
+                this.message.showMessage(EnumType_1.MessageType.Success);
             }
-            else {
-                artist = this.artistController.getArtist(input);
-            }
-            if (artist) {
-                const namePrompt = `Novo nome (${artist.getName()}): `;
-                const bioPrompt = `Nova bio (${artist.getBio()}): `;
-                const birthYearPrompt = `Novo ano de nascimento (${artist.getBirthYear()}): `;
-                const instagramPrompt = `Novo Instagram (${artist.getInstagram()}): `;
-                let newName = readlineSync.question(namePrompt);
-                if (!newName.trim())
-                    newName = artist.getName();
-                let newBio = readlineSync.question(bioPrompt);
-                if (!newBio.trim())
-                    newBio = artist.getBio();
-                let newBirthYearInput = readlineSync.question(birthYearPrompt);
-                let newBirthYear = newBirthYearInput.trim() ? Number(newBirthYearInput) : artist.getBirthYear();
-                let newInstagram = readlineSync.question(instagramPrompt);
-                if (!newInstagram.trim())
-                    newInstagram = artist.getInstagram();
-                try {
-                    this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
-                    this.message.showMessage(EnumType_1.MessageType.Success);
-                }
-                catch (error) {
-                    this.message.showMessage(EnumType_1.MessageType.Error);
-                }
+            catch (error) {
+                throw new Exception_1.default("Erro ao atualizar artista");
             }
         }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.NotFound);
+        else {
+            throw new Exception_1.default("Artista não encontrado");
         }
     }
     deleteArtist() {
         const input = readlineSync.question("Digite o ID ou Nome do artista para deletar: ");
         let deleted;
-        try {
-            if (!isNaN(Number(input))) {
-                deleted = this.artistController.deleteArtist(Number(input));
-            }
-            else {
-                deleted = this.artistController.deleteArtist(input);
-            }
-            try {
-                if (deleted) {
-                    this.message.showMessage(EnumType_1.MessageType.Success);
-                }
-            }
-            catch (error) {
-                this.message.showMessage(EnumType_1.MessageType.Error);
-            }
+        if (!isNaN(Number(input))) {
+            deleted = this.artistController.deleteArtist(Number(input));
         }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.NotFound);
+        else {
+            deleted = this.artistController.deleteArtist(input);
+        }
+        if (deleted) {
+            this.message.showMessage(EnumType_1.MessageType.Success);
+        }
+        else {
+            throw new Exception_1.default("Error ao deletar artista");
         }
     }
 }

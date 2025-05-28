@@ -1,5 +1,5 @@
 import Database from "../db/Database";
-import Artist from "../model/Artist";
+import Artist from "../model/Classes/Artist";
 
 export default class ArtistController {
     private db: Database;

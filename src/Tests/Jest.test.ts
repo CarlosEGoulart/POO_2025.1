@@ -1,6 +1,6 @@
-import Art from "./model/Art";
-import Artist from "./model/Artist";
-import Exhibition from "./model/Exhibition";
+import Art from "../model/Classes/Art";
+import Artist from "../model/Classes/Artist";
+import Exhibition from "../model/Classes/Exhibition";
 
 test("Test Art class", () => {
     const art = new Art(1, "Titulo da obra", "Descrição da obra", 2025);

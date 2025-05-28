@@ -22,9 +22,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const readlineSync = __importStar(require("readline-sync"));
-const EnumType_1 = require("../model/EnumType");
+const EnumType_1 = require("../model/Message/EnumType");
+const Exception_1 = __importDefault(require("../model/Error/Exception"));
 class ExhibitionView {
     constructor(exhibitionController, message) {
         this.exhibitionController = exhibitionController;
@@ -43,35 +47,46 @@ class ExhibitionView {
             console.log("8. Deletar Exposição");
             console.log("0. Voltar ao Menu Principal");
             const choice = readlineSync.questionInt("Escolha uma opção: ");
-            switch (choice) {
-                case 1:
-                    this.listExhibitions();
-                    break;
-                case 2:
-                    this.viewExhibitionDetails();
-                    break;
-                case 3:
-                    this.createExhibition();
-                    break;
-                case 4:
-                    this.updateExhibition();
-                    break;
-                case 5:
-                    this.assignArtToExhibition();
-                    break;
-                case 6:
-                    this.removeArtFromExhibition();
-                    break;
-                case 7:
-                    this.getExhibitionArts();
-                    break;
-                case 8:
-                    this.deleteExhibition();
-                    break;
-                case 0:
-                    return;
-                default:
+            try {
+                switch (choice) {
+                    case 1:
+                        this.listExhibitions();
+                        break;
+                    case 2:
+                        this.viewExhibitionDetails();
+                        break;
+                    case 3:
+                        this.createExhibition();
+                        break;
+                    case 4:
+                        this.updateExhibition();
+                        break;
+                    case 5:
+                        this.assignArtToExhibition();
+                        break;
+                    case 6:
+                        this.removeArtFromExhibition();
+                        break;
+                    case 7:
+                        this.getExhibitionArts();
+                        break;
+                    case 8:
+                        this.deleteExhibition();
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        throw new Exception_1.default("Opção inválida");
+                }
+            }
+            catch (error) {
+                if (error instanceof Error) {
+                    console.error(error.message);
+                }
+                else {
                     this.message.showMessage(EnumType_1.MessageType.Error);
+                    console.error("Erro inesperado:", error);
+                }
             }
         }
     }
@@ -88,36 +103,25 @@ class ExhibitionView {
     viewExhibitionDetails() {
         const input = readlineSync.question("Digite o ID ou Título da exposição: ");
         let exhibition;
-        try {
-            if (!isNaN(Number(input))) {
-                exhibition = this.exhibitionController.getExhibition(Number(input));
-            }
-            else {
-                exhibition = this.exhibitionController.getExhibition(input);
-            }
-            try {
-                if (exhibition) {
-                    console.log(exhibition.getInfo());
-                }
-            }
-            catch (error) {
-                this.message.showMessage(EnumType_1.MessageType.Error);
-            }
+        if (!isNaN(Number(input))) {
+            exhibition = this.exhibitionController.getExhibition(Number(input));
         }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.NotFound);
+        else {
+            exhibition = this.exhibitionController.getExhibition(input);
+        }
+        if (exhibition) {
+            console.log(exhibition.getInfo());
+            this.message.showMessage(EnumType_1.MessageType.Success);
+        }
+        else {
+            throw new Exception_1.default("Exposição não encontrada");
         }
     }
     createExhibition() {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        try {
-            this.exhibitionController.createExhibition(title, description, []);
-            this.message.showMessage(EnumType_1.MessageType.Success);
-        }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.Error);
-        }
+        this.exhibitionController.createExhibition(title, description, []);
+        this.message.showMessage(EnumType_1.MessageType.Success);
     }
     updateExhibition() {
         const input = readlineSync.question("Digite o ID ou Título da exposição para atualizar: ");
@@ -128,46 +132,37 @@ class ExhibitionView {
         else {
             exhibition = this.exhibitionController.getExhibition(input);
         }
-        try {
-            if (exhibition) {
-                const titleInput = readlineSync.question(`Novo título (${exhibition.getName()}): `);
-                const newTitle = titleInput.trim() === "" ? exhibition.getName() : titleInput;
-                const descInput = readlineSync.question(`Nova descrição (${exhibition.getDescription()}): `);
-                const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
-                try {
-                    this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
-                    this.message.showMessage(EnumType_1.MessageType.Success);
-                }
-                catch (error) {
-                    this.message.showMessage(EnumType_1.MessageType.Error);
-                }
+        if (exhibition) {
+            const titleInput = readlineSync.question(`Novo título (${exhibition.getName()}): `);
+            const newTitle = titleInput.trim() === "" ? exhibition.getName() : titleInput;
+            const descInput = readlineSync.question(`Nova descrição (${exhibition.getDescription()}): `);
+            const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
+            try {
+                this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
+                this.message.showMessage(EnumType_1.MessageType.Success);
+            }
+            catch (error) {
+                throw new Exception_1.default("Erro ao atualizar a exposição");
             }
         }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.NotFound);
+        else {
+            throw new Exception_1.default("Exposição não encontrada");
         }
     }
     deleteExhibition() {
         const input = readlineSync.question("Digite o ID ou Título da exposição para deletar: ");
         let deleted;
-        try {
-            if (!isNaN(Number(input))) {
-                deleted = this.exhibitionController.deleteExhibition(Number(input));
-            }
-            else {
-                deleted = this.exhibitionController.deleteExhibition(input);
-            }
-            try {
-                if (deleted) {
-                    this.message.showMessage(EnumType_1.MessageType.Success);
-                }
-            }
-            catch (error) {
-                this.message.showMessage(EnumType_1.MessageType.Error);
-            }
+        if (!isNaN(Number(input))) {
+            deleted = this.exhibitionController.deleteExhibition(Number(input));
         }
-        catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.NotFound);
+        else {
+            deleted = this.exhibitionController.deleteExhibition(input);
+        }
+        if (deleted) {
+            this.message.showMessage(EnumType_1.MessageType.Success);
+        }
+        else {
+            throw new Exception_1.default("Erro ao deletar a exposição");
         }
     }
     assignArtToExhibition() {
@@ -178,7 +173,7 @@ class ExhibitionView {
             this.message.showMessage(EnumType_1.MessageType.Success);
         }
         catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.Error);
+            throw new Exception_1.default("Erro ao adicionar arte à exposição");
         }
     }
     removeArtFromExhibition() {
@@ -189,22 +184,20 @@ class ExhibitionView {
             this.message.showMessage(EnumType_1.MessageType.Success);
         }
         catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.Error);
+            throw new Exception_1.default("Erro ao remover arte da exposição");
         }
     }
     getExhibitionArts() {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const arts = this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
         try {
-            if (arts) {
-                arts.forEach(art => {
-                    console.log(`ID: ${art.getId()}, Título: ${art.getName()}, Ano: ${art.getYear()}`);
-                });
-                this.message.showMessage(EnumType_1.MessageType.Success);
+            this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+            if (!arts || arts.length === 0) {
+                this.message.showMessage(EnumType_1.MessageType.NotFound);
             }
         }
         catch (error) {
-            this.message.showMessage(EnumType_1.MessageType.Error);
+            throw new Exception_1.default("Erro ao obter obras da exposição");
         }
     }
 }

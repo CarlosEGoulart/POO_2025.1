@@ -30,7 +30,7 @@ const ArtistView_1 = __importDefault(require("./ArtistView"));
 const ArtView_1 = __importDefault(require("./ArtView"));
 const ExhibitionView_1 = __importDefault(require("./ExhibitionView"));
 const readlineSync = __importStar(require("readline-sync"));
-const Message_1 = __importDefault(require("../model/Message"));
+const Message_1 = __importDefault(require("../model/Message/Message"));
 class MainScreen {
     constructor(mainController) {
         this.message = new Message_1.default();

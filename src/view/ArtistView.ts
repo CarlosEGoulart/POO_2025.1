@@ -1,7 +1,8 @@
 import ArtistController from "../controller/ArtistController";
 import * as readlineSync from 'readline-sync';
-import Message from "../model/Message";
-import { MessageType } from "../model/EnumType";
+import Message from "../model/Message/Message";
+import { MessageType } from "../model/Message/EnumType";
+import Exception from "../model/Error/Exception";
 
 export default class ArtistView {
     private artistController: ArtistController;
@@ -24,26 +25,38 @@ export default class ArtistView {
 
             const choice = readlineSync.questionInt("Escolha uma opção: ");
 
-            switch (choice) {
-                case 1:
-                    this.listArtists();
-                    break;
-                case 2:
-                    this.viewArtistDetails();
-                    break;
-                case 3:
-                    this.createArtist();
-                    break;
-                case 4:
-                    this.updateArtist();
-                    break;
-                case 5:
-                    this.deleteArtist();
-                    break;
-                case 0:
-                    return;
-                default:
+            try {
+                switch (choice) {
+                    case 1:
+                        this.listArtists();
+                        break;
+                    case 2:
+                        this.viewArtistDetails();
+                        break;
+                    case 3:
+                        this.createArtist();
+                        break;
+                    case 4:
+                        this.updateArtist();
+                        break;
+                    case 5:
+                        this.deleteArtist();
+                        break;
+                    case 0:
+                        return;
+                    default:
+                        throw new Exception("Opção inválida");
+                }
+            }
+            catch (error) {
+                if (error instanceof Exception) {
+                    console.error(error.message);
+                }
+
+                else {
                     this.message.showMessage(MessageType.Error);
+                    console.error("Erro inesperado:", error);
+                }
             }
         }
     }
@@ -62,24 +75,21 @@ export default class ArtistView {
     private viewArtistDetails(): void {
         const input = readlineSync.question("Digite o ID ou Nome do artista: ");
         let artist;
-        try {
-            if (!isNaN(Number(input))) {
-                artist = this.artistController.getArtist(Number(input));
-            } else {
-                artist = this.artistController.getArtist(input);
-            }
 
-            try {
-                if (artist) {
-                    console.log(artist.getInfo());
-                }
-            }
-            catch (error) {
-                this.message.showMessage(MessageType.Error);
-            }
+        if (!isNaN(Number(input))) {
+            artist = this.artistController.getArtist(Number(input));
         }
-        catch (error) {
-            this.message.showMessage(MessageType.NotFound);
+
+        else {
+            artist = this.artistController.getArtist(input);
+        }
+
+        if (artist) {
+            console.log(artist.getInfo());
+        }
+
+        else {
+            throw new Exception("Artista não encontrado");
         }
     }
 
@@ -88,82 +98,71 @@ export default class ArtistView {
         const bio = readlineSync.question("Bio: ");
         const birthYear = readlineSync.questionInt("Ano de nascimento: ");
         const instagram = readlineSync.question("Instagram: ");
-
-        try {
-            this.artistController.createArtist(name, bio, birthYear, instagram);
-            this.message.showMessage(MessageType.Success);
-        }
-
-        catch (error) {
-            this.message.showMessage(MessageType.Error);
-        }
+        this.artistController.createArtist(name, bio, birthYear, instagram);
+        this.message.showMessage(MessageType.Success);
     }
 
     private updateArtist(): void {
         const input = readlineSync.question("Digite o ID ou Nome do artista para atualizar: ");
         let artist;
-        try {
-            if (!isNaN(Number(input))) {
-                artist = this.artistController.getArtist(Number(input));
-            } else {
-                artist = this.artistController.getArtist(input);
+        if (!isNaN(Number(input))) {
+            artist = this.artistController.getArtist(Number(input));
+        }
+
+        else {
+            artist = this.artistController.getArtist(input);
+        }
+
+        if (artist) {
+            const namePrompt = `Novo nome (${artist.getName()}): `;
+            const bioPrompt = `Nova bio (${artist.getBio()}): `;
+            const birthYearPrompt = `Novo ano de nascimento (${artist.getBirthYear()}): `;
+            const instagramPrompt = `Novo Instagram (${artist.getInstagram()}): `;
+
+            let newName = readlineSync.question(namePrompt);
+            if (!newName.trim()) newName = artist.getName();
+
+            let newBio = readlineSync.question(bioPrompt);
+            if (!newBio.trim()) newBio = artist.getBio();
+
+            let newBirthYearInput = readlineSync.question(birthYearPrompt);
+            let newBirthYear = newBirthYearInput.trim() ? Number(newBirthYearInput) : artist.getBirthYear();
+
+            let newInstagram = readlineSync.question(instagramPrompt);
+            if (!newInstagram.trim()) newInstagram = artist.getInstagram();
+
+            try {
+                this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
+                this.message.showMessage(MessageType.Success);
             }
-            if (artist) {
-                const namePrompt = `Novo nome (${artist.getName()}): `;
-                const bioPrompt = `Nova bio (${artist.getBio()}): `;
-                const birthYearPrompt = `Novo ano de nascimento (${artist.getBirthYear()}): `;
-                const instagramPrompt = `Novo Instagram (${artist.getInstagram()}): `;
 
-                let newName = readlineSync.question(namePrompt);
-                if (!newName.trim()) newName = artist.getName();
-
-                let newBio = readlineSync.question(bioPrompt);
-                if (!newBio.trim()) newBio = artist.getBio();
-
-                let newBirthYearInput = readlineSync.question(birthYearPrompt);
-                let newBirthYear = newBirthYearInput.trim() ? Number(newBirthYearInput) : artist.getBirthYear();
-
-                let newInstagram = readlineSync.question(instagramPrompt);
-                if (!newInstagram.trim()) newInstagram = artist.getInstagram();
-
-
-                try {
-                    this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
-                    this.message.showMessage(MessageType.Success);
-                }
-                
-                catch (error) {
-                    this.message.showMessage(MessageType.Error);
-                }
+            catch (error) {
+                throw new Exception("Erro ao atualizar artista");
             }
         }
-        catch (error) {
-            this.message.showMessage(MessageType.NotFound);
+
+        else {
+            throw new Exception("Artista não encontrado");
         }
     }
 
     private deleteArtist(): void {
         const input = readlineSync.question("Digite o ID ou Nome do artista para deletar: ");
         let deleted;
-        try {
-            if (!isNaN(Number(input))) {
-                deleted = this.artistController.deleteArtist(Number(input));
-            } else {
-                deleted = this.artistController.deleteArtist(input);
-            }
-
-            try {
-                if (deleted) {
-                    this.message.showMessage(MessageType.Success);
-                }
-            }
-            catch (error) {
-                this.message.showMessage(MessageType.Error);
-            }
+        if (!isNaN(Number(input))) {
+            deleted = this.artistController.deleteArtist(Number(input));
         }
 
-        catch (error) {
-            this.message.showMessage(MessageType.NotFound);
+        else {
+            deleted = this.artistController.deleteArtist(input);
+        }
+
+        if (deleted) {
+            this.message.showMessage(MessageType.Success);
+        }
+
+        else {
+            throw new Exception("Error ao deletar artista");
         }
     }
 }
