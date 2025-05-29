@@ -153,16 +153,16 @@ export default class ArtistView {
             deleted = this.artistController.deleteArtist(Number(input));
         }
 
-        else {
+        else{
             deleted = this.artistController.deleteArtist(input);
         }
-
+        
         if (deleted) {
             this.message.showMessage(MessageType.Success);
         }
 
         else {
-            throw new Exception("Error ao deletar artista");
+            throw new Exception("Artista não encontrado");
         }
     }
 }
