@@ -1,8 +1,20 @@
 import BaseEntity from './BaseEntity';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 export default class Exhibition extends BaseEntity {
-    private description: string;
-    private artWorks: number[];
+    @PrimaryGeneratedColumn()
+    id!: number;
+    
+    @Column({
+        length: 50,
+    })
+    name!: string
+    
+    @Column()
+    description: string;
+    
+    @Column()
+    artWorks: number[];
 
     constructor(id: number, name: string, description: string, artWorks: number[] = []) {
         super(id, name);

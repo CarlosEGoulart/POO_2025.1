@@ -1,9 +1,23 @@
 import BaseEntity from "./BaseEntity";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 export default class Artist extends BaseEntity {
-    private bio: string;
-    private birthYear: number;
-    private instagram: string;
+    @PrimaryGeneratedColumn()
+    id!: number;
+    
+    @Column({
+        length: 50,
+    })
+    name!: string
+
+    @Column()
+    bio: string;
+    
+    @Column()
+    birthYear: number;
+    
+    @Column()
+    instagram: string;
 
     constructor(id: number, name: string, bio: string, birthYear: number, instagram: string) {
         super(id, name);

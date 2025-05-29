@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
-    "test": "jest" 
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,9 @@
   "description": "",
   "dependencies": {
     "mysql2": "^3.14.1",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.24"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

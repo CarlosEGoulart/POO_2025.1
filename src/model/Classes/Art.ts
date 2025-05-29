@@ -1,11 +1,29 @@
 import BaseEntity from "./BaseEntity";
 import Artist from "./Artist";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
+@Entity()
 export default class Art extends BaseEntity {
-    private description: string;
-    private year: number;
-    private artist?: Artist;
-    private imageUrl: string;
+    @PrimaryGeneratedColumn()
+    id!: number;
+    
+    @Column({
+        length: 50,
+    })
+    name!: string
+
+    
+    @Column()
+    description: string;
+    
+    @Column()
+    year: number;
+    
+    @Column()
+    artist?: Artist;
+    
+    @Column()
+    imageUrl: string;
 
     constructor(id: number, name: string, description: string, year: number, imageUrl: string = "", artist?: Artist) {
         super(id, name);
@@ -65,4 +83,5 @@ export default class Art extends BaseEntity {
     public getInfo(): string {
         return `Obra: ${this.name}, Descrição: ${this.description}, Ano: ${this.year}, URL da Imagem: ${this.imageUrl}, Artista: ${this.artist ? this.artist.getName() : "Desconhecido"}`;
     }
+
 }
