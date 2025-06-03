@@ -9,7 +9,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     port: 3306,
     username: "carlos",
     password: "1234",
-    database: "galeria_arte",
+    database: "artGallery",
     synchronize: true,
     logging: false,
     entities: [__dirname + '/model/Classes/*.{js,ts}'],

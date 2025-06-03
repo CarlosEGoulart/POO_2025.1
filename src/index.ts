@@ -16,7 +16,7 @@ const AppDataSource = new DataSource({
     port: 3306,
     username: "carlos",
     password: "1234",
-    database: "galeria_arte",
+    database: "artGallery",
     entities: [__dirname + '/model/Classes/*.{js,ts}'],
     synchronize: true,
     logging: false,

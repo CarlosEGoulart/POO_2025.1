@@ -19,7 +19,7 @@ const AppDataSource = new typeorm_1.DataSource({
     port: 3306,
     username: "carlos",
     password: "1234",
-    database: "galeria_arte",
+    database: "artGallery",
     entities: [__dirname + '/model/Classes/*.{js,ts}'],
     synchronize: true,
     logging: false,
