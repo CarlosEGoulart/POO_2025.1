@@ -1,8 +1,9 @@
 import BaseEntity from "./BaseEntity";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, PrimaryColumn } from "typeorm"
 
+@Entity()
 export default class Artist extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id!: number;
     
     @Column({

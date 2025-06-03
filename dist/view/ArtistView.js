@@ -15,13 +15,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -78,24 +88,23 @@ class ArtistView {
             }
         }
     }
-    listArtists() {
-        const artists = this.artistController.listArtists();
+    async listArtists() {
+        const artists = await this.artistController.listArtists();
         if (artists.length === 0) {
-            this.message.showMessage(EnumType_1.MessageType.NotFound);
-            return;
+            throw new Exception_1.default("Nenhum artista encontrado");
         }
         artists.forEach(artist => {
             console.log(`ID: ${artist.getId()}, Nome: ${artist.getName()}`);
         });
     }
-    viewArtistDetails() {
+    async viewArtistDetails() {
         const input = readlineSync.question("Digite o ID ou Nome do artista: ");
         let artist;
         if (!isNaN(Number(input))) {
-            artist = this.artistController.getArtist(Number(input));
+            artist = await this.artistController.getArtist(Number(input));
         }
         else {
-            artist = this.artistController.getArtist(input);
+            artist = await this.artistController.getArtist(input);
         }
         if (artist) {
             console.log(artist.getInfo());
@@ -104,22 +113,23 @@ class ArtistView {
             throw new Exception_1.default("Artista não encontrado");
         }
     }
-    createArtist() {
+    async createArtist() {
+        const id = readlineSync.questionInt("ID: ");
         const name = readlineSync.question("Nome: ");
         const bio = readlineSync.question("Bio: ");
         const birthYear = readlineSync.questionInt("Ano de nascimento: ");
         const instagram = readlineSync.question("Instagram: ");
-        this.artistController.createArtist(name, bio, birthYear, instagram);
+        await this.artistController.createArtist(id, name, bio, birthYear, instagram);
         this.message.showMessage(EnumType_1.MessageType.Success);
     }
-    updateArtist() {
+    async updateArtist() {
         const input = readlineSync.question("Digite o ID ou Nome do artista para atualizar: ");
         let artist;
         if (!isNaN(Number(input))) {
-            artist = this.artistController.getArtist(Number(input));
+            artist = await this.artistController.getArtist(Number(input));
         }
         else {
-            artist = this.artistController.getArtist(input);
+            artist = await this.artistController.getArtist(input);
         }
         if (artist) {
             const namePrompt = `Novo nome (${artist.getName()}): `;
@@ -138,7 +148,7 @@ class ArtistView {
             if (!newInstagram.trim())
                 newInstagram = artist.getInstagram();
             try {
-                this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
+                await this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
                 this.message.showMessage(EnumType_1.MessageType.Success);
             }
             catch (error) {
@@ -149,20 +159,20 @@ class ArtistView {
             throw new Exception_1.default("Artista não encontrado");
         }
     }
-    deleteArtist() {
+    async deleteArtist() {
         const input = readlineSync.question("Digite o ID ou Nome do artista para deletar: ");
         let deleted;
         if (!isNaN(Number(input))) {
-            deleted = this.artistController.deleteArtist(Number(input));
+            deleted = await this.artistController.deleteArtist(Number(input));
         }
         else {
-            deleted = this.artistController.deleteArtist(input);
+            deleted = await this.artistController.deleteArtist(input);
         }
         if (deleted) {
             this.message.showMessage(EnumType_1.MessageType.Success);
         }
         else {
-            throw new Exception_1.default("Error ao deletar artista");
+            throw new Exception_1.default("Artista não encontrado");
         }
     }
 }

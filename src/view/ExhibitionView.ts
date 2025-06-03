@@ -74,8 +74,8 @@ export default class ExhibitionView {
         }
     }
 
-    private listExhibitions(): void {
-        const exhibitions = this.exhibitionController.listExhibitions();
+    private async listExhibitions(): Promise<void> {
+        const exhibitions = await this.exhibitionController.listExhibitions();
         if (exhibitions.length === 0) {
             this.message.showMessage(MessageType.NotFound);
             return;
@@ -85,16 +85,16 @@ export default class ExhibitionView {
         });
     }
 
-    private viewExhibitionDetails(): void {
+    private async viewExhibitionDetails(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Título da exposição: ");
-        let exhibition: Exhibition | undefined;
+        let exhibition: Exhibition | null;
 
         if (!isNaN(Number(input))) {
-            exhibition = this.exhibitionController.getExhibition(Number(input));
+            exhibition = await this.exhibitionController.getExhibition(Number(input));
         }
 
         else {
-            exhibition = this.exhibitionController.getExhibition(input);
+            exhibition = await this.exhibitionController.getExhibition(input);
         }
 
 
@@ -108,23 +108,24 @@ export default class ExhibitionView {
         }
     }
 
-    private createExhibition(): void {
+    private async createExhibition(): Promise<void> {
+        const id = readlineSync.questionInt("ID: ");
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        this.exhibitionController.createExhibition(title, description, []);
+        await this.exhibitionController.createExhibition(id, title, description, []);
         this.message.showMessage(MessageType.Success);
     }
 
 
-    private updateExhibition(): void {
+    private async updateExhibition(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Título da exposição para atualizar: ");
-        let exhibition: Exhibition | undefined;
+        let exhibition: Exhibition | null;
         if (!isNaN(Number(input))) {
-            exhibition = this.exhibitionController.getExhibition(Number(input));
+            exhibition = await this.exhibitionController.getExhibition(Number(input));
         }
 
         else {
-            exhibition = this.exhibitionController.getExhibition(input);
+            exhibition = await this.exhibitionController.getExhibition(input);
         }
 
         if (exhibition) {
@@ -134,7 +135,7 @@ export default class ExhibitionView {
             const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
 
             try {
-                this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
+                await this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
                 this.message.showMessage(MessageType.Success);
             }
 
@@ -148,16 +149,16 @@ export default class ExhibitionView {
         }
     }
 
-    private deleteExhibition(): void {
+    private async deleteExhibition(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Título da exposição para deletar: ");
         let deleted;
 
         if (!isNaN(Number(input))) {
-            deleted = this.exhibitionController.deleteExhibition(Number(input));
+            deleted = await this.exhibitionController.deleteExhibition(Number(input));
         }
 
         else {
-            deleted = this.exhibitionController.deleteExhibition(input);
+            deleted = await this.exhibitionController.deleteExhibition(input);
         }
 
         if (deleted) {
@@ -169,12 +170,12 @@ export default class ExhibitionView {
         }
     }
 
-    private assignArtToExhibition(): void {
+    private async assignArtToExhibition(): Promise<void> {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const artInput = readlineSync.question("Digite o ID da arte: ");
 
         try {
-            this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
+            await this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
             this.message.showMessage(MessageType.Success);
         }
 
@@ -183,12 +184,12 @@ export default class ExhibitionView {
         }
     }
 
-    private removeArtFromExhibition(): void {
+    private async removeArtFromExhibition(): Promise<void> {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const artInput = readlineSync.question("Digite o ID da arte: ");
 
         try {
-            this.exhibitionController.removeArtFromExhibition(Number(exhibitionInput), Number(artInput));
+            await this.exhibitionController.removeArtFromExhibition(Number(exhibitionInput), Number(artInput));
             this.message.showMessage(MessageType.Success);
         }
 
@@ -197,12 +198,12 @@ export default class ExhibitionView {
         }
     }
 
-    public getExhibitionArts(): void {
+    public async getExhibitionArts(): Promise<void> {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
-        const arts = this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+        const arts = await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
 
         try {
-            this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+            await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
             if (!arts || arts.length === 0) {
                 this.message.showMessage(MessageType.NotFound);
             }

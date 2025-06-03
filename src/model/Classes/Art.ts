@@ -1,16 +1,16 @@
 import BaseEntity from "./BaseEntity";
 import Artist from "./Artist";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm"
 
 @Entity()
 export default class Art extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id!: number;
     
     @Column({
         length: 50,
     })
-    name!: string
+    name!: string;
 
     
     @Column()
@@ -19,7 +19,7 @@ export default class Art extends BaseEntity {
     @Column()
     year: number;
     
-    @Column()
+    @ManyToOne(() => Artist , (artist) => artist)
     artist?: Artist;
     
     @Column()

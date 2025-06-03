@@ -3,27 +3,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Art_1 = __importDefault(require("../model/Classes/Art"));
-const Artist_1 = __importDefault(require("../model/Classes/Artist"));
-const Exhibition_1 = __importDefault(require("../model/Classes/Exhibition"));
-test("Test Art class", () => {
-    const art = new Art_1.default(1, "Titulo da obra", "Descrição da obra", 2025);
-    expect(art.getId()).toBe(1);
-    expect(art.getName()).toBe("Titulo da obra");
-    expect(art.getDescription()).toBe("Descrição da obra");
-    expect(art.getYear()).toBe(2025);
+const Database_1 = __importDefault(require("../db/Database"));
+const ArtController_1 = __importDefault(require("../controller/ArtController"));
+const ExhibitionController_1 = __importDefault(require("../controller/ExhibitionController"));
+const ArtistController_1 = __importDefault(require("../controller/ArtistController"));
+let db = new Database_1.default();
+test("Test Art create", async () => {
+    const artController = new ArtController_1.default(db);
+    const id = 1;
+    const title = "Titulo da obra";
+    const description = "Descrição da obra";
+    const year = 2025;
+    const imageUrl = "url1";
+    const createdArt = await artController.createArt(id, title, description, year, imageUrl);
+    expect(createdArt.getName()).toBe(title);
+    expect(createdArt.getDescription()).toBe(description);
+    expect(createdArt.getYear()).toBe(year);
+    expect(createdArt.getImageUrl()).toBe(imageUrl);
 });
-test("Test Artist class", () => {
-    const artist = new Artist_1.default(1, "Nome do artista", "Biografia do artista", 2004, "@instagram");
-    expect(artist.getId()).toBe(1);
-    expect(artist.getName()).toBe("Nome do artista");
-    expect(artist.getBio()).toBe("Biografia do artista");
-    expect(artist.getInstagram()).toBe("@instagram");
+test("Test Artist create", async () => {
+    const artistController = new ArtistController_1.default(db);
+    const id = 1;
+    const name = "Nome do artista";
+    const bio = "Biografia do artista";
+    const birthYear = 2004;
+    const instagram = "@instagram";
+    const createdArtist = await artistController.createArtist(id, name, bio, birthYear, instagram);
+    expect(createdArtist.getName()).toBe(name);
+    expect(createdArtist.getBio()).toBe(bio);
+    expect(createdArtist.getBirthYear()).toBe(birthYear);
+    expect(createdArtist.getInstagram()).toBe(instagram);
 });
-test("Test Exhibition class", () => {
-    const exhibition = new Exhibition_1.default(1, "Nome da Exibição", "Descrição da exibição", [1, 2]);
-    expect(exhibition.getId()).toBe(1);
-    expect(exhibition.getName()).toBe("Nome da Exibição");
-    expect(exhibition.getDescription()).toBe("Descrição da exibição");
-    expect(exhibition.getArtWorks()).toEqual([1, 2]);
+test("Test Exhibition create", async () => {
+    const exhibitionController = new ExhibitionController_1.default(db);
+    const id = 1;
+    const name = "Nome da Exibição";
+    const description = "Descrição da exibição";
+    const artWorks = [1, 2];
+    const createdExhibition = await exhibitionController.createExhibition(id, name, description, artWorks);
+    expect(createdExhibition.getName()).toBe(name);
+    expect(createdExhibition.getDescription()).toBe(description);
+    expect(createdExhibition.getArtWorks()).toEqual(artWorks);
 });

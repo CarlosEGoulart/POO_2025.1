@@ -1,171 +1,169 @@
 import Art from "../model/Classes/Art";
 import Artist from "../model/Classes/Artist";
 import Exhibition from "../model/Classes/Exhibition";
+import { AppDataSource } from "../data-source";
+import "reflect-metadata";
+
+const artRepository = AppDataSource.getRepository(Art);
+const artistRepository = AppDataSource.getRepository(Artist);
+const exhibitionRepository = AppDataSource.getRepository(Exhibition);
 
 export default class Database {
-    private ArtDb: Art[] = [];
-    private ArtistDb: Artist[] = [];
-    private ExhibitionDb: Exhibition[] = [];
-    private nextArtId: number = 1;
-    private nextArtistId: number = 1;
-    private nextExhibitionId: number = 1;
-
+ 
     // ART CRUD
-    public createArt(title: string, description: string, year: number, imageUrl: string): Art {
-        const newArt = new Art(this.nextArtId++, title, description, year, imageUrl);
-        this.ArtDb.push(newArt);
+    public async createArt(artId: number, title: string, description: string, year: number, imageUrl: string): Promise<Art> {
+        const newArt = new Art(artId, title, description, year, imageUrl);
+        await artRepository.save(newArt);
         return newArt;
     }
 
-    public readArt(idArt: number): Art | undefined {
-        return this.ArtDb.find(art => art.getId() === idArt);
+    public async readArt(artId: number | undefined): Promise<Art | null>{
+        return await artRepository.findOneBy({ id: artId });
     }
 
-    public readArtByTitle(name: string): Art | undefined {
-        return this.ArtDb.find(art => art.getName().toLowerCase() === name.toLowerCase());
+    public async readArtByTitle(title: string): Promise<Art | null> {
+        return await artRepository.findOneBy({ name: title });
     }
 
-    public readAllArts(): Art[] {
-        return this.ArtDb;
+
+    public async readAllArts(): Promise<Art[]> {
+        return artRepository.find();
     }
 
-    public updateArt(idArt: number, title: string, description: string, year: number): boolean {
-        const art = this.readArt(idArt);
+    public async updateArt(artId: number, title: string, description: string, year: number, imageUrl: string): Promise<boolean> {
+        const art = await this.readArt(artId);
         if (art) {
             art.setName(title);
             art.setDescription(description);
             art.setYear(year);
+            art.setImageUrl(imageUrl);
+            await artRepository.save(art);
             return true;
         }
         return false;
     }
 
-    public deleteArt(idArt: number): Art[] | undefined {
-        const index = this.ArtDb.findIndex(art => art.getId() === idArt);
-        if (index !== -1) {
-            this.ArtDb.splice(index, 1);
-            return this.ArtDb;
-        }
-        return undefined;
+
+    public async deleteArt(artId: number): Promise<boolean> {
+        await artRepository.delete(artId);
+        return true;
     }
 
-    public assignArtistToArt(idArt: number, artist: Artist): boolean {
-        const art = this.readArt(idArt);
-        if (art && artist) {
-            art.setArtist(artist);
+    public async assignArtistToArt(artId: number, artist: Artist): Promise<boolean> {
+        const art = await this.readArt(artId);
+        const idArtist = await this.readArtist(artist.getId());
+      
+        if (art && idArtist) {
+            art.artist = artist;
+            artRepository.save(art)
             return true;
         }
         return false;
     }
 
     // ARTIST CRUD
-    public createArtist(name: string, bio: string, birthYear: number, instagram: string): Artist {
-        const newArtist = new Artist(this.nextArtistId++, name, bio, birthYear, instagram);
-        this.ArtistDb.push(newArtist);
+    public async createArtist(artistId: number, name: string, bio: string, birthYear: number, instagram: string): Promise<Artist> {
+        const newArtist = new Artist(artistId, name, bio, birthYear, instagram);
+        await artistRepository.save(newArtist);
         return newArtist;
     }
 
-    public readArtist(idArtist: number): Artist | undefined {
-        return this.ArtistDb.find(artist => artist.getId() === idArtist);
+    public async readArtist(artistId: number): Promise<Artist | null> {
+        return await artistRepository.findOneBy({ id: artistId });
     }
 
-    public readArtistByName(name: string): Artist | undefined {
-        return this.ArtistDb.find(artist => artist.getName().toLowerCase() === name.toLowerCase());
+    public async readArtistByName(name: string):  Promise<Artist | null>{
+        return await artistRepository.findOneBy({ name: name });
     }
 
-    public readAllArtists(): Artist[] {
-        return this.ArtistDb;
+    public async readAllArtists(): Promise<Artist[]> {
+        return await artistRepository.find();
     }
 
-    public updateArtist(idArtist: number, name: string, bio: string, birthYear: number, instagram: string): boolean {
-        const artist = this.readArtist(idArtist);
+    public async updateArtist(artistId: number, name: string, bio: string, birthYear: number, instagram: string): Promise<boolean> {
+        const artist = await this.readArtist(artistId);
         if (artist) {
             artist.setName(name);
             artist.setBio(bio);
             artist.setBirthYear(birthYear);
             artist.setInstagram(instagram);
+            await artistRepository.save(artist);
             return true;
         }
         return false;
     }
 
-    public deleteArtist(idArtist: number): Artist[] | undefined {
-        const index = this.ArtistDb.findIndex(artist => artist.getId() === idArtist);
-        if (index !== -1) {
-            this.ArtistDb.splice(index, 1);
-            return this.ArtistDb;
-        }
-        return undefined;
+    public async deleteArtist(artistId: number): Promise<boolean> {
+        await artistRepository.delete(artistId);
+        return true;
     }
 
     // EXHIBITION CRUD
-    public createExhibition(name: string, description: string, artWorks: number[] = []): Exhibition {
-        const newExhibition = new Exhibition(this.nextExhibitionId++, name, description, artWorks);
-        this.ExhibitionDb.push(newExhibition);
+    public async createExhibition(exhibitionId: number, name: string, description: string, artWorks: number[] = []): Promise<Exhibition> {
+        const newExhibition = new Exhibition(exhibitionId, name, description, artWorks);
+        await exhibitionRepository.save(newExhibition);
         return newExhibition;
     }
 
-    public readExhibition(idExhibition: number): Exhibition | undefined {
-        return this.ExhibitionDb.find(exh => exh.getId() === idExhibition);
+    public async readExhibition(exhibitionId: number): Promise<Exhibition | null> {
+        return await exhibitionRepository.findOneBy({ id: exhibitionId});
     }
 
-    public readExhibitionByName(name: string): Exhibition | undefined {
-        return this.ExhibitionDb.find(exh => exh.getName().toLowerCase() === name.toLowerCase());
+    public async readExhibitionByName(name: string): Promise<Exhibition | null> {
+        return await exhibitionRepository.findOneBy({ name: name});
     }
 
-    public readAllExhibitions(): Exhibition[] {
-        return this.ExhibitionDb;
+    public async readAllExhibitions(): Promise<Exhibition[]> {
+        return await exhibitionRepository.find();
     }
 
-    public updateExhibition(idExhibition: number, name: string, description: string, artWorks: number[]): boolean {
-        const exhibition = this.readExhibition(idExhibition);
+    public async updateExhibition(exhibitionId: number, name: string, description: string, artWorks: number[]): Promise<boolean> {
+        const exhibition = await this.readExhibition(exhibitionId);
         if (exhibition) {
             exhibition.setName(name);
             exhibition.setDescription(description);
             exhibition.setArtWorks(artWorks);
+            exhibitionRepository.save(exhibition);
             return true;
         }
         return false;
     }
 
-    public deleteExhibition(idExhibition: number): boolean {
-        const index = this.ExhibitionDb.findIndex(exh => exh.getId() === idExhibition);
-        if (index !== -1) {
-            this.ExhibitionDb.splice(index, 1);
-            return true;
-        }
-        return false;
+    public async deleteExhibition(exhibitionId: number): Promise<boolean> {
+        await exhibitionRepository.delete(exhibitionId);
+        return true;
     }
 
-    public addArtToExhibition(idExhibition: number, idArt: number): boolean {
-        const exhibition = this.readExhibition(idExhibition);
-        const art = this.readArt(idArt);
+    public async addArtToExhibition(exhibitionId: number, artId: number): Promise<boolean> {
+        const exhibition = await this.readExhibition(exhibitionId);
+        const art = await this.readArt(artId);
         if (exhibition && art) {
             const currentArtWorks = exhibition.getArtWorks();
-            if (!currentArtWorks.includes(idArt)) {
-                exhibition.setArtWorks([...currentArtWorks, idArt]);
+            if (!currentArtWorks.includes(artId)) {
+                exhibition.setArtWorks([...currentArtWorks, artId]);
+                exhibitionRepository.save(exhibition);
                 return true;
             }
         }
         return false;
     }
 
-    public removeArtFromExhibition(idExhibition: number, idArt: number): boolean {
-        const exhibition = this.readExhibition(idExhibition);
+    public async removeArtFromExhibition(exhibitionId: number, artId: number): Promise<boolean> {
+        const exhibition = await this.readExhibition(exhibitionId);
         if (exhibition) {
-            const updatedArtWorks = exhibition.getArtWorks().filter(id => id !== idArt);
+            const updatedArtWorks = exhibition.getArtWorks().filter(id => id !== artId);
             exhibition.setArtWorks(updatedArtWorks);
+            await exhibitionRepository.save(exhibition);
             return true;
         }
         return false;
     }
 
-    public getExhibitionArts(idExhibition: number): Art[] | undefined {
-        const exhibition = this.readExhibition(idExhibition);
+    public async getExhibitionArts(exhibitionId: number): Promise<number[] | undefined> {
+        const exhibition = await this.readExhibition(exhibitionId);
         if (exhibition) {
             const artIds = exhibition.getArtWorks();
-            return artIds.map(id => this.readArt(id)).filter(art => art !== undefined) as Art[];
+            return artIds;
         }
-        return undefined;
     }
 }

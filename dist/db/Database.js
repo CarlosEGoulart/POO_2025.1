@@ -6,151 +6,143 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Art_1 = __importDefault(require("../model/Classes/Art"));
 const Artist_1 = __importDefault(require("../model/Classes/Artist"));
 const Exhibition_1 = __importDefault(require("../model/Classes/Exhibition"));
+const data_source_1 = require("../data-source");
+require("reflect-metadata");
+const artRepository = data_source_1.AppDataSource.getRepository(Art_1.default);
+const artistRepository = data_source_1.AppDataSource.getRepository(Artist_1.default);
+const exhibitionRepository = data_source_1.AppDataSource.getRepository(Exhibition_1.default);
 class Database {
-    constructor() {
-        this.ArtDb = [];
-        this.ArtistDb = [];
-        this.ExhibitionDb = [];
-        this.nextArtId = 1;
-        this.nextArtistId = 1;
-        this.nextExhibitionId = 1;
-    }
     // ART CRUD
-    createArt(title, description, year, imageUrl) {
-        const newArt = new Art_1.default(this.nextArtId++, title, description, year, imageUrl);
-        this.ArtDb.push(newArt);
+    async createArt(artId, title, description, year, imageUrl) {
+        const newArt = new Art_1.default(artId, title, description, year, imageUrl);
+        await artRepository.save(newArt);
         return newArt;
     }
-    readArt(idArt) {
-        return this.ArtDb.find(art => art.getId() === idArt);
+    async readArt(artId) {
+        return await artRepository.findOneBy({ id: artId });
     }
-    readArtByTitle(name) {
-        return this.ArtDb.find(art => art.getName().toLowerCase() === name.toLowerCase());
+    async readArtByTitle(title) {
+        return await artRepository.findOneBy({ name: title });
     }
-    readAllArts() {
-        return this.ArtDb;
+    async readAllArts() {
+        return artRepository.find();
     }
-    updateArt(idArt, title, description, year) {
-        const art = this.readArt(idArt);
+    async updateArt(artId, title, description, year, imageUrl) {
+        const art = await this.readArt(artId);
         if (art) {
             art.setName(title);
             art.setDescription(description);
             art.setYear(year);
+            art.setImageUrl(imageUrl);
+            await artRepository.save(art);
             return true;
         }
         return false;
     }
-    deleteArt(idArt) {
-        const index = this.ArtDb.findIndex(art => art.getId() === idArt);
-        if (index !== -1) {
-            this.ArtDb.splice(index, 1);
-            return this.ArtDb;
-        }
-        return undefined;
+    async deleteArt(artId) {
+        await artRepository.delete(artId);
+        return true;
     }
-    assignArtistToArt(idArt, artist) {
-        const art = this.readArt(idArt);
-        if (art && artist) {
-            art.setArtist(artist);
+    async assignArtistToArt(artId, artist) {
+        const art = await this.readArt(artId);
+        const idArtist = await this.readArtist(artist.getId());
+        if (art && idArtist) {
+            art.artist = artist;
+            artRepository.save(art);
             return true;
         }
         return false;
     }
     // ARTIST CRUD
-    createArtist(name, bio, birthYear, instagram) {
-        const newArtist = new Artist_1.default(this.nextArtistId++, name, bio, birthYear, instagram);
-        this.ArtistDb.push(newArtist);
+    async createArtist(artistId, name, bio, birthYear, instagram) {
+        const newArtist = new Artist_1.default(artistId, name, bio, birthYear, instagram);
+        await artistRepository.save(newArtist);
         return newArtist;
     }
-    readArtist(idArtist) {
-        return this.ArtistDb.find(artist => artist.getId() === idArtist);
+    async readArtist(artistId) {
+        return await artistRepository.findOneBy({ id: artistId });
     }
-    readArtistByName(name) {
-        return this.ArtistDb.find(artist => artist.getName().toLowerCase() === name.toLowerCase());
+    async readArtistByName(name) {
+        return await artistRepository.findOneBy({ name: name });
     }
-    readAllArtists() {
-        return this.ArtistDb;
+    async readAllArtists() {
+        return await artistRepository.find();
     }
-    updateArtist(idArtist, name, bio, birthYear, instagram) {
-        const artist = this.readArtist(idArtist);
+    async updateArtist(artistId, name, bio, birthYear, instagram) {
+        const artist = await this.readArtist(artistId);
         if (artist) {
             artist.setName(name);
             artist.setBio(bio);
             artist.setBirthYear(birthYear);
             artist.setInstagram(instagram);
+            await artistRepository.save(artist);
             return true;
         }
         return false;
     }
-    deleteArtist(idArtist) {
-        const index = this.ArtistDb.findIndex(artist => artist.getId() === idArtist);
-        if (index !== -1) {
-            this.ArtistDb.splice(index, 1);
-            return this.ArtistDb;
-        }
-        return undefined;
+    async deleteArtist(artistId) {
+        await artistRepository.delete(artistId);
+        return true;
     }
     // EXHIBITION CRUD
-    createExhibition(name, description, artWorks = []) {
-        const newExhibition = new Exhibition_1.default(this.nextExhibitionId++, name, description, artWorks);
-        this.ExhibitionDb.push(newExhibition);
+    async createExhibition(exhibitionId, name, description, artWorks = []) {
+        const newExhibition = new Exhibition_1.default(exhibitionId, name, description, artWorks);
+        await exhibitionRepository.save(newExhibition);
         return newExhibition;
     }
-    readExhibition(idExhibition) {
-        return this.ExhibitionDb.find(exh => exh.getId() === idExhibition);
+    async readExhibition(exhibitionId) {
+        return await exhibitionRepository.findOneBy({ id: exhibitionId });
     }
-    readExhibitionByName(name) {
-        return this.ExhibitionDb.find(exh => exh.getName().toLowerCase() === name.toLowerCase());
+    async readExhibitionByName(name) {
+        return await exhibitionRepository.findOneBy({ name: name });
     }
-    readAllExhibitions() {
-        return this.ExhibitionDb;
+    async readAllExhibitions() {
+        return await exhibitionRepository.find();
     }
-    updateExhibition(idExhibition, name, description, artWorks) {
-        const exhibition = this.readExhibition(idExhibition);
+    async updateExhibition(exhibitionId, name, description, artWorks) {
+        const exhibition = await this.readExhibition(exhibitionId);
         if (exhibition) {
             exhibition.setName(name);
             exhibition.setDescription(description);
             exhibition.setArtWorks(artWorks);
+            exhibitionRepository.save(exhibition);
             return true;
         }
         return false;
     }
-    deleteExhibition(idExhibition) {
-        const index = this.ExhibitionDb.findIndex(exh => exh.getId() === idExhibition);
-        if (index !== -1) {
-            this.ExhibitionDb.splice(index, 1);
-            return true;
-        }
-        return false;
+    async deleteExhibition(exhibitionId) {
+        await exhibitionRepository.delete(exhibitionId);
+        return true;
     }
-    addArtToExhibition(idExhibition, idArt) {
-        const exhibition = this.readExhibition(idExhibition);
-        const art = this.readArt(idArt);
+    async addArtToExhibition(exhibitionId, artId) {
+        const exhibition = await this.readExhibition(exhibitionId);
+        const art = await this.readArt(artId);
         if (exhibition && art) {
             const currentArtWorks = exhibition.getArtWorks();
-            if (!currentArtWorks.includes(idArt)) {
-                exhibition.setArtWorks([...currentArtWorks, idArt]);
+            if (!currentArtWorks.includes(artId)) {
+                exhibition.setArtWorks([...currentArtWorks, artId]);
+                exhibitionRepository.save(exhibition);
                 return true;
             }
         }
         return false;
     }
-    removeArtFromExhibition(idExhibition, idArt) {
-        const exhibition = this.readExhibition(idExhibition);
+    async removeArtFromExhibition(exhibitionId, artId) {
+        const exhibition = await this.readExhibition(exhibitionId);
         if (exhibition) {
-            const updatedArtWorks = exhibition.getArtWorks().filter(id => id !== idArt);
+            const updatedArtWorks = exhibition.getArtWorks().filter(id => id !== artId);
             exhibition.setArtWorks(updatedArtWorks);
+            await exhibitionRepository.save(exhibition);
             return true;
         }
         return false;
     }
-    getExhibitionArts(idExhibition) {
-        const exhibition = this.readExhibition(idExhibition);
+    async getExhibitionArts(exhibitionId) {
+        const exhibition = await this.readExhibition(exhibitionId);
         if (exhibition) {
             const artIds = exhibition.getArtWorks();
-            return artIds.map(id => this.readArt(id)).filter(art => art !== undefined);
+            return artIds;
         }
-        return undefined;
     }
 }
 exports.default = Database;

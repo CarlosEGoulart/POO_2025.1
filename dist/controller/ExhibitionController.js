@@ -4,55 +4,53 @@ class ExhibitionController {
     constructor(db) {
         this.db = db;
     }
-    createExhibition(name, description, artWorks = []) {
-        return this.db.createExhibition(name, description, artWorks);
+    async createExhibition(exhibitionId, name, description, artWorks = []) {
+        return await this.db.createExhibition(exhibitionId, name, description, artWorks);
     }
-    getExhibition(param, extra) {
+    async getExhibition(param, extra) {
         if (typeof param === "number") {
-            if (typeof extra === "string") {
-                return this.db.readExhibition(param);
-            }
-            return this.db.readExhibition(param);
+            return await this.db.readExhibition(param);
         }
         else if (typeof param === "string") {
-            return this.db.readExhibitionByName(param);
+            return await this.db.readExhibitionByName(param);
         }
+        return null;
     }
-    listExhibitions() {
-        return this.db.readAllExhibitions();
+    async listExhibitions() {
+        return await this.db.readAllExhibitions();
     }
-    updateExhibition(param, name, description, artWorks) {
+    async updateExhibition(param, name, description, artWorks, extra) {
         if (typeof param === "number") {
-            return this.db.updateExhibition(param, name, description, artWorks);
+            return await this.db.updateExhibition(param, name, description, artWorks);
         }
         else if (typeof param === "string") {
-            const exhibition = this.db.readExhibitionByName(param);
+            const exhibition = await this.db.readExhibitionByName(param);
             if (exhibition) {
-                return this.db.updateExhibition(exhibition.getId(), name, description, artWorks);
+                return await this.db.updateExhibition(exhibition.getId(), name, description, artWorks);
             }
         }
         return false;
     }
-    deleteExhibition(param) {
+    async deleteExhibition(param, extra) {
         if (typeof param === "number") {
-            return this.db.deleteExhibition(param);
+            return await this.db.deleteExhibition(param);
         }
         else if (typeof param === "string") {
-            const exhibition = this.db.readExhibitionByName(param);
+            const exhibition = await this.db.readExhibitionByName(param);
             if (exhibition) {
-                return this.db.deleteExhibition(exhibition.getId());
+                return await this.db.deleteExhibition(exhibition.getId());
             }
         }
         return false;
     }
-    addArtToExhibition(idExhibition, idArt) {
-        return this.db.addArtToExhibition(idExhibition, idArt);
+    async addArtToExhibition(idExhibition, idArt) {
+        return await this.db.addArtToExhibition(idExhibition, idArt);
     }
-    removeArtFromExhibition(idExhibition, idArt) {
-        return this.db.removeArtFromExhibition(idExhibition, idArt);
+    async removeArtFromExhibition(idExhibition, idArt) {
+        return await this.db.removeArtFromExhibition(idExhibition, idArt);
     }
-    getExhibitionArts(idExhibition) {
-        return this.db.getExhibitionArts(idExhibition);
+    async getExhibitionArts(idExhibition) {
+        return await this.db.getExhibitionArts(idExhibition);
     }
 }
 exports.default = ExhibitionController;

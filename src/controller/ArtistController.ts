@@ -8,53 +8,54 @@ export default class ArtistController {
         this.db = db;
     }
 
-    public createArtist(name: string, bio: string, birthYear: number, instagram: string): Artist {
-        return this.db.createArtist(name, bio, birthYear, instagram);
+    public async createArtist(artistId: number, name: string, bio: string, birthYear: number, instagram: string): Promise<Artist> {
+        return await this.db.createArtist(artistId, name, bio, birthYear, instagram);
     }
 
-    public getArtist(id: number): Artist | undefined;
-    public getArtist(name: string): Artist | undefined;
-    public getArtist(id: number, extra: string): Artist | undefined;
-    public getArtist(param: number | string, extra?: string): Artist | undefined {
+    public async getArtist(id: number): Promise<Artist | null>;
+    public async getArtist(name: string): Promise<Artist | null>;
+    public async getArtist(id: number, extra: string): Promise<Artist | null>;
+    public async getArtist(param: number | string, extra?: string): Promise<Artist | null> {
         if (typeof param === "number") {
-            if (typeof extra === "string") {
-                return this.db.readArtist(param);
-            }
-            return this.db.readArtist(param);
-        } else if (typeof param === "string") {
-            return this.db.readArtistByName(param);
+            await this.db.readArtist(param);
+        } 
+        else if (typeof param === "string") {
+            await this.db.readArtistByName(param);
         }
+        return null;
     }
 
-    public listArtists(): Artist[] {
-        return this.db.readAllArtists();
+    public async listArtists(): Promise<Artist[]> {
+        return await this.db.readAllArtists();
     }
 
-    public updateArtist(id: number, name: string, bio: string, birthYear: number, instagram: string): boolean;
-    public updateArtist(param: number | string, name: string, bio: string, birthYear: number, instagram: string, extra?: string): boolean;
-    public updateArtist(id: number, name: string, bio: string, birthYear: number, instagram: string, extra?: string): boolean;
-    public updateArtist(param: number | string, name: string, bio: string, birthYear: number, instagram: string, extra?: string): boolean {
+    public async updateArtist(id: number, name: string, bio: string, birthYear: number, instagram: string): Promise<boolean>;
+    public async updateArtist(param: number | string, name: string, bio: string, birthYear: number, instagram: string, extra?: string): Promise<boolean>;
+    public async updateArtist(id: number, name: string, bio: string, birthYear: number, instagram: string, extra?: string): Promise<boolean>;
+    public async updateArtist(param: number | string, name: string, bio: string, birthYear: number, instagram: string, extra?: string): Promise<boolean> {
         if (typeof param === "number") {
-            return this.db.updateArtist(param, name, bio, birthYear, instagram);
-        } else if (typeof param === "string") {
-            const artist = this.db.readArtistByName(param);
+            return await this.db.updateArtist(param, name, bio, birthYear, instagram);
+        } 
+        else if (typeof param === "string") {
+            const artist = await this.db.readArtistByName(param);
             if (artist) {
-                return this.db.updateArtist(artist.getId(), name, bio, birthYear, instagram);
+                return await this.db.updateArtist(artist.getId(), param, bio, birthYear, instagram);
             }
         }
         return false;
     }
 
-    public deleteArtist(id: number): boolean;
-    public deleteArtist(name: string): boolean;
-    public deleteArtist(id: number, extra: string): boolean;
-    public deleteArtist(param: number | string, extra?: string): boolean {
+    public async deleteArtist(id: number): Promise<boolean>;
+    public async deleteArtist(name: string): Promise<boolean>;
+    public async deleteArtist(id: number, extra: string): Promise<boolean>;
+    public async deleteArtist(param: number | string, extra?: string): Promise<boolean> {
         if (typeof param === "number") {
-            return !!this.db.deleteArtist(param);
-        } else if (typeof param === "string") {
-            const artist = this.db.readArtistByName(param);
+            return await this.db.deleteArtist(param);
+        } 
+        else if (typeof param === "string") {
+            const artist = await this.db.readArtistByName(param);
             if (artist) {
-                return !!this.db.deleteArtist(artist.getId());
+                return this.db.deleteArtist(artist.getId());
             }
         }
         return false;

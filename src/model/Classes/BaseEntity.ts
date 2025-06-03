@@ -1,6 +1,6 @@
 export default abstract class BaseEntity {
-    protected id: number;
-    protected name: string;
+    protected id: number | undefined;
+    protected name: string | undefined;
 
     constructor(id: number, name: string) {
         this.id = id;

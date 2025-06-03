@@ -66,8 +66,8 @@ export default class ArtView {
         }
     }
 
-    private listArts(): void {
-        const arts = this.artController.listArts();
+    private async listArts(): Promise<void> {
+        const arts = await this.artController.listArts();
         if (arts.length === 0) {
             this.message.showMessage(MessageType.NotFound);
             return;
@@ -77,16 +77,16 @@ export default class ArtView {
         });
     }
 
-    private viewArtDetails(): void {
+    private async viewArtDetails(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Título da obra: ");
-        let art: Art | undefined;
+        let art: Art | null;
 
         if (!isNaN(Number(input))) {
-            art = this.artController.getArt(Number(input));
+            art = await this.artController.getArt(Number(input));
         }
 
         else {
-            art = this.artController.getArt(input);
+            art = await this.artController.getArt(input);
         }
 
 
@@ -100,25 +100,26 @@ export default class ArtView {
 
     }
 
-    private createArt(): void {
+    private async createArt(): Promise<void> {
+        const id = readlineSync.questionInt("ID: ");
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
         const year = readlineSync.questionInt("Ano: ");
         const imageUrl = readlineSync.question("URL da Imagem: ");
-        this.artController.createArt(title, description, year, imageUrl);
+        await this.artController.createArt(id, title, description, year, imageUrl);
         this.message.showMessage(MessageType.Success);
     }
 
-    private updateArt(): void {
+    private async updateArt(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Título da obra para atualizar: ");
-        let art: Art | undefined;
+        let art: Art | null;
 
         if (!isNaN(Number(input))) {
-            art = this.artController.getArt(Number(input));
+            art = await this.artController.getArt(Number(input));
         }
 
         else {
-            art = this.artController.getArt(input);
+            art = await this.artController.getArt(input);
         }
 
         if (art) {
@@ -128,9 +129,11 @@ export default class ArtView {
             const newDescription = newDescriptionInput.trim() === "" ? art.getDescription() : newDescriptionInput;
             const newYearInput = readlineSync.question(`Novo ano (${art.getYear()}): `);
             const newYear = newYearInput.trim() === "" ? art.getYear() : Number(newYearInput);
+            const newImageUrlInput = readlineSync.question(`Nova URL da imagem (${art.getImageUrl()}): `);
+            const newImageUrl = newImageUrlInput.trim() === "" ? art.getImageUrl() : newImageUrlInput;
 
             try {
-                this.artController.updateArt(art.getId(), newTitle, newDescription, newYear);
+                await this.artController.updateArt(art.getId(), newTitle, newDescription, newYear, newImageUrl);
                 this.message.showMessage(MessageType.Success);
 
             }
@@ -145,16 +148,16 @@ export default class ArtView {
 
     }
 
-    private deleteArt(): void {
+    private async deleteArt(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Título da obra para deletar: ");
         let deleted;
 
         if (!isNaN(Number(input))) {
-            deleted = this.artController.deleteArt(Number(input));
+            deleted = await this.artController.deleteArt(Number(input));
         }
 
         else {
-            deleted = this.artController.deleteArt(input);
+            deleted = await this.artController.deleteArt(input);
         }
 
         if (deleted) {
@@ -166,12 +169,12 @@ export default class ArtView {
         }
     }
 
-    private assignArtistToArt(): void {
+    private async assignArtistToArt(): Promise<void> {
         const artInput = readlineSync.question("Digite o ID da obra: ");
         const artistInput = readlineSync.question("Digite o ID do artista: ");
 
         try {
-            this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
+            await this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
             this.message.showMessage(MessageType.Success);
         }
 

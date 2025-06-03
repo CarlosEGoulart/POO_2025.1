@@ -2,7 +2,7 @@ import Art from "../model/Classes/Art";
 import Artist from "../model/Classes/Artist";
 import Exhibition from "../model/Classes/Exhibition";
 
-test("Test Art read", () => {
+test("Test Art read", async () => {
     const art = new Art(1, "Titulo da obra", "Descrição da obra", 2025);
     expect(art.getId()).toBe(1);
     expect(art.getName()).toBe("Titulo da obra");
@@ -10,7 +10,7 @@ test("Test Art read", () => {
     expect(art.getYear()).toBe(2025);
 });
 
-test("Test Artist read", () => {
+test("Test Artist read", async () => {
     const artist = new Artist(1, "Nome do artista", "Biografia do artista", 2004, "@instagram");
     expect(artist.getId()).toBe(1);
     expect(artist.getName()).toBe("Nome do artista");
@@ -18,7 +18,7 @@ test("Test Artist read", () => {
     expect(artist.getInstagram()).toBe("@instagram");
 });
 
-test("Test Exhibition read", () => {
+test("Test Exhibition read", async () => {
     const exhibition = new Exhibition(1, "Nome da Exibição", "Descrição da exibição", [1, 2]);
     expect(exhibition.getId()).toBe(1);
     expect(exhibition.getName()).toBe("Nome da Exibição");

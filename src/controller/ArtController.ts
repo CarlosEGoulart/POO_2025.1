@@ -1,5 +1,6 @@
 import Art from "../model/Classes/Art";
 import Database from "../db/Database";
+import Artist from "../model/Classes/Artist";
 
 export default class ArtController {
     private db: Database;
@@ -8,63 +9,63 @@ export default class ArtController {
         this.db = db;
     }
 
-    public createArt(title: string, description: string, year: number, imageUrl: string): Art {
-        return this.db.createArt(title, description, year, imageUrl);
+    public async createArt(artId: number, title: string, description: string, year: number, imageUrl: string): Promise<Art> {
+        return await this.db.createArt(artId, title, description, year, imageUrl);
     }
 
-    public getArt(id: number): Art | undefined;
-    public getArt(title: string): Art | undefined;
-    public getArt(id: number, extra: string): Art | undefined;
-    public getArt(param: number | string, extra?: string): Art | undefined {
+    public async getArt(id: number): Promise<Art | null>;
+    public async getArt(title: string): Promise<Art | null>;
+    public async getArt(param: number | string, extra?: string): Promise<Art | null> {
         if (typeof param === "number") {
-            if (typeof extra === "string") {
-                return this.db.readArt(param);
-            }
-            return this.db.readArt(param);
-        } else if (typeof param === "string") {
-            return this.db.readArtByTitle(param);
-        }
+            return await this.db.readArt(param);
+        } 
+        else if (typeof param === "string") {
+            return await this.db.readArtByTitle(param);
+        } 
+        return null;
     }
 
-    public listArts(): Art[] {
-        return this.db.readAllArts();
+    public async listArts(): Promise<Art[]> {
+        return await this.db.readAllArts();
     }
 
-    public updateArt(id: number, title: string, description: string, year: number): boolean;
-    public updateArt(param: number | string, title: string, description: string, year: number, extra?: string): boolean;
-    public updateArt(id: number, title: string, description: string, year: number, extra?: string): boolean;
-    public updateArt(param: number | string, title: string, description: string, year: number): boolean {
+    public async updateArt(id: number, title: string, description: string, year: number, imageUrl: string): Promise<boolean>;
+    public async updateArt(param: number | string, title: string, description: string, year: number, imageUrl: string, extra?: string): Promise<boolean>;
+    public async updateArt(id: number, title: string, description: string, year: number, imageUrl: string, extra?: string): Promise<boolean>;
+    public async updateArt(param: number | string, title: string, description: string, year: number, imageUrl: string): Promise<boolean> {
         if (typeof param === "number") {
-            return this.db.updateArt(param, title, description, year);
-        } else if (typeof param === "string") {
-            const art = this.db.readArtByTitle(param);
+            return await this.db.updateArt(param, title, description, year, imageUrl);
+        } 
+        else if (typeof param === "string") {
+            const art = await this.db.readArtByTitle(param);
             if (art) {
-                return this.db.updateArt(art.getId(), title, description, year);
+                return await this.db.updateArt(art.getId(), title, description, year, imageUrl);
             }
         }
         return false;
     }
 
-    public deleteArt(id: number): boolean;
-    public deleteArt(title: string): boolean;
-    public deleteArt(id: number, extra: string): boolean;
-    public deleteArt(param: number | string): boolean {
+    public async deleteArt(id: number): Promise<boolean>;
+    public async deleteArt(title: string): Promise<boolean>;
+    public async deleteArt(id: number, extra: string): Promise<boolean>;
+    public async deleteArt(param: number | string): Promise<boolean> {
         if (typeof param === "number") {
-            return !!this.db.deleteArt(param);
-        } else if (typeof param === "string") {
-            const art = this.db.readArtByTitle(param);
+            return this.db.deleteArt(param);
+        } 
+        else if (typeof param === "string") {
+            const art = await this.db.readArtByTitle(param);
             if (art) {
-                return !!this.db.deleteArt(art.getId());
+                return this.db.deleteArt(art.getId());
             }
         }
         return false;
     }
 
-    public assignArtistToArt(idArt: number, idArtist: number): boolean {
-        const artist = this.db.readArtist(idArtist);
-        if (!artist) {
-            return false;
+    public async assignArtistToArt(artId: number, artistId: number): Promise<boolean> {
+        const artist = await this.db.readArtist(artistId);
+        if (artist) {
+            return this.db.assignArtistToArt(artId, artist);
         }
-        return this.db.assignArtistToArt(idArt, artist);
+        return false;
     }
 }

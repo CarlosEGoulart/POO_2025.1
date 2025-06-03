@@ -9,67 +9,68 @@ export default class ExhibitionController {
         this.db = db;
     }
 
-    public createExhibition(name: string, description: string, artWorks: number[] = []): Exhibition {
-        return this.db.createExhibition(name, description, artWorks);
+    public async createExhibition(exhibitionId: number, name: string, description: string, artWorks: number[] = []): Promise<Exhibition> {
+        return await this.db.createExhibition(exhibitionId, name, description, artWorks);
     }
 
-    public getExhibition(id: number): Exhibition | undefined;
-    public getExhibition(name: string): Exhibition | undefined;
-    public getExhibition(id: number, extra: string): Exhibition | undefined;
-    public getExhibition(param: number | string, extra?: string): Exhibition | undefined {
+    public async getExhibition(id: number): Promise<Exhibition | null>;
+    public async getExhibition(name: string): Promise<Exhibition | null>;
+    public async getExhibition(id: number, extra: string): Promise<Exhibition | null>;
+    public async getExhibition(param: number | string, extra?: string): Promise<Exhibition | null> {
         if (typeof param === "number") {
-            if (typeof extra === "string") {
-                return this.db.readExhibition(param);
-            }
-            return this.db.readExhibition(param);
-        } else if (typeof param === "string") {
-            return this.db.readExhibitionByName(param);
+            return await this.db.readExhibition(param);
+        } 
+        else if (typeof param === "string") {
+            return await this.db.readExhibitionByName(param);
         }
+        return null;
     }
 
-    public listExhibitions(): Exhibition[] {
-        return this.db.readAllExhibitions();
+    public async listExhibitions(): Promise<Exhibition[]> {
+        return await this.db.readAllExhibitions();
     }
 
-    public updateExhibition(id: number, name: string, description: string, artWorks: number[]): boolean;
-    public updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): boolean;
-    public updateExhibition(id: number, name: string, description: string, artWorks: number[], extra?: string): boolean;
-    public updateExhibition(param: number | string, name: string, description: string, artWorks: number[]): boolean {
+    public async updateExhibition(id: number, name: string, description: string, artWorks: number[]): Promise<boolean>;
+    public async updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): Promise<boolean>;
+    public async updateExhibition(id: number, name: string, description: string, artWorks: number[], extra?: string): Promise<boolean>;
+    public async updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): Promise<boolean> {
         if (typeof param === "number") {
-            return this.db.updateExhibition(param, name, description, artWorks);
-        } else if (typeof param === "string") {
-            const exhibition = this.db.readExhibitionByName(param);
+            return await this.db.updateExhibition(param, name, description, artWorks);
+        } 
+        else if (typeof param === "string") {
+            const exhibition = await this.db.readExhibitionByName(param);
             if (exhibition) {
-                return this.db.updateExhibition(exhibition.getId(), name, description, artWorks);
+                return await this.db.updateExhibition(exhibition.getId(), name, description, artWorks);
             }
         }
         return false;
     }
 
-    public deleteExhibition(id: number): boolean;
-    public deleteExhibition(name: string): boolean;
-    public deleteExhibition(id: number, extra: string): boolean;
-    public deleteExhibition(param: number | string): boolean {
+    public async deleteExhibition(id: number): Promise<boolean>;
+    public async deleteExhibition(name: string): Promise<boolean>;
+    public async deleteExhibition(id: number, extra: string): Promise<boolean>;
+    public async deleteExhibition(param: number | string, extra?: string): Promise<boolean> {
         if (typeof param === "number") {
-            return this.db.deleteExhibition(param);
-        } else if (typeof param === "string") {
-            const exhibition = this.db.readExhibitionByName(param);
+            return await this.db.deleteExhibition(param);
+        } 
+        else if (typeof param === "string") {
+            const exhibition = await this.db.readExhibitionByName(param);
             if (exhibition) {
-                return this.db.deleteExhibition(exhibition.getId());
+                return await this.db.deleteExhibition(exhibition.getId());
             }
         }
         return false;
     }
 
-    public addArtToExhibition(idExhibition: number, idArt: number): boolean {
-        return this.db.addArtToExhibition(idExhibition, idArt);
+    public async addArtToExhibition(idExhibition: number, idArt: number): Promise<boolean> {
+        return await this.db.addArtToExhibition(idExhibition, idArt);
     }
 
-    public removeArtFromExhibition(idExhibition: number, idArt: number): boolean {
-        return this.db.removeArtFromExhibition(idExhibition, idArt);
+    public async removeArtFromExhibition(idExhibition: number, idArt: number): Promise<boolean> {
+        return await this.db.removeArtFromExhibition(idExhibition, idArt);
     }
 
-    public getExhibitionArts(idExhibition: number): Art[] | undefined{
-        return this.db.getExhibitionArts(idExhibition);
+    public async getExhibitionArts(idExhibition: number): Promise<number[] | undefined> {
+        return await this.db.getExhibitionArts(idExhibition);
     }
 }

@@ -4,53 +4,51 @@ class ArtController {
     constructor(db) {
         this.db = db;
     }
-    createArt(title, description, year, imageUrl) {
-        return this.db.createArt(title, description, year, imageUrl);
+    async createArt(artId, title, description, year, imageUrl) {
+        return await this.db.createArt(artId, title, description, year, imageUrl);
     }
-    getArt(param, extra) {
+    async getArt(param, extra) {
         if (typeof param === "number") {
-            if (typeof extra === "string") {
-                return this.db.readArt(param);
-            }
-            return this.db.readArt(param);
+            return await this.db.readArt(param);
         }
         else if (typeof param === "string") {
-            return this.db.readArtByTitle(param);
+            return await this.db.readArtByTitle(param);
         }
+        return null;
     }
-    listArts() {
-        return this.db.readAllArts();
+    async listArts() {
+        return await this.db.readAllArts();
     }
-    updateArt(param, title, description, year) {
+    async updateArt(param, title, description, year, imageUrl) {
         if (typeof param === "number") {
-            return this.db.updateArt(param, title, description, year);
+            return await this.db.updateArt(param, title, description, year, imageUrl);
         }
         else if (typeof param === "string") {
-            const art = this.db.readArtByTitle(param);
+            const art = await this.db.readArtByTitle(param);
             if (art) {
-                return this.db.updateArt(art.getId(), title, description, year);
+                return await this.db.updateArt(art.getId(), title, description, year, imageUrl);
             }
         }
         return false;
     }
-    deleteArt(param) {
+    async deleteArt(param) {
         if (typeof param === "number") {
-            return !!this.db.deleteArt(param);
+            return this.db.deleteArt(param);
         }
         else if (typeof param === "string") {
-            const art = this.db.readArtByTitle(param);
+            const art = await this.db.readArtByTitle(param);
             if (art) {
-                return !!this.db.deleteArt(art.getId());
+                return this.db.deleteArt(art.getId());
             }
         }
         return false;
     }
-    assignArtistToArt(idArt, idArtist) {
-        const artist = this.db.readArtist(idArtist);
-        if (!artist) {
-            return false;
+    async assignArtistToArt(artId, artistId) {
+        const artist = await this.db.readArtist(artistId);
+        if (artist) {
+            return this.db.assignArtistToArt(artId, artist);
         }
-        return this.db.assignArtistToArt(idArt, artist);
+        return false;
     }
 }
 exports.default = ArtController;

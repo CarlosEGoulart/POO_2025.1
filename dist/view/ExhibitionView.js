@@ -15,13 +15,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -90,8 +100,8 @@ class ExhibitionView {
             }
         }
     }
-    listExhibitions() {
-        const exhibitions = this.exhibitionController.listExhibitions();
+    async listExhibitions() {
+        const exhibitions = await this.exhibitionController.listExhibitions();
         if (exhibitions.length === 0) {
             this.message.showMessage(EnumType_1.MessageType.NotFound);
             return;
@@ -100,14 +110,14 @@ class ExhibitionView {
             console.log(`ID: ${exhibition.getId()}, Título: ${exhibition.getName()}, Obras: ${exhibition.getArtWorks().length}`);
         });
     }
-    viewExhibitionDetails() {
+    async viewExhibitionDetails() {
         const input = readlineSync.question("Digite o ID ou Título da exposição: ");
         let exhibition;
         if (!isNaN(Number(input))) {
-            exhibition = this.exhibitionController.getExhibition(Number(input));
+            exhibition = await this.exhibitionController.getExhibition(Number(input));
         }
         else {
-            exhibition = this.exhibitionController.getExhibition(input);
+            exhibition = await this.exhibitionController.getExhibition(input);
         }
         if (exhibition) {
             console.log(exhibition.getInfo());
@@ -117,20 +127,21 @@ class ExhibitionView {
             throw new Exception_1.default("Exposição não encontrada");
         }
     }
-    createExhibition() {
+    async createExhibition() {
+        const id = readlineSync.questionInt("ID: ");
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        this.exhibitionController.createExhibition(title, description, []);
+        await this.exhibitionController.createExhibition(id, title, description, []);
         this.message.showMessage(EnumType_1.MessageType.Success);
     }
-    updateExhibition() {
+    async updateExhibition() {
         const input = readlineSync.question("Digite o ID ou Título da exposição para atualizar: ");
         let exhibition;
         if (!isNaN(Number(input))) {
-            exhibition = this.exhibitionController.getExhibition(Number(input));
+            exhibition = await this.exhibitionController.getExhibition(Number(input));
         }
         else {
-            exhibition = this.exhibitionController.getExhibition(input);
+            exhibition = await this.exhibitionController.getExhibition(input);
         }
         if (exhibition) {
             const titleInput = readlineSync.question(`Novo título (${exhibition.getName()}): `);
@@ -138,7 +149,7 @@ class ExhibitionView {
             const descInput = readlineSync.question(`Nova descrição (${exhibition.getDescription()}): `);
             const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
             try {
-                this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
+                await this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
                 this.message.showMessage(EnumType_1.MessageType.Success);
             }
             catch (error) {
@@ -149,14 +160,14 @@ class ExhibitionView {
             throw new Exception_1.default("Exposição não encontrada");
         }
     }
-    deleteExhibition() {
+    async deleteExhibition() {
         const input = readlineSync.question("Digite o ID ou Título da exposição para deletar: ");
         let deleted;
         if (!isNaN(Number(input))) {
-            deleted = this.exhibitionController.deleteExhibition(Number(input));
+            deleted = await this.exhibitionController.deleteExhibition(Number(input));
         }
         else {
-            deleted = this.exhibitionController.deleteExhibition(input);
+            deleted = await this.exhibitionController.deleteExhibition(input);
         }
         if (deleted) {
             this.message.showMessage(EnumType_1.MessageType.Success);
@@ -165,33 +176,33 @@ class ExhibitionView {
             throw new Exception_1.default("Erro ao deletar a exposição");
         }
     }
-    assignArtToExhibition() {
+    async assignArtToExhibition() {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const artInput = readlineSync.question("Digite o ID da arte: ");
         try {
-            this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
+            await this.exhibitionController.addArtToExhibition(Number(exhibitionInput), Number(artInput));
             this.message.showMessage(EnumType_1.MessageType.Success);
         }
         catch (error) {
             throw new Exception_1.default("Erro ao adicionar arte à exposição");
         }
     }
-    removeArtFromExhibition() {
+    async removeArtFromExhibition() {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const artInput = readlineSync.question("Digite o ID da arte: ");
         try {
-            this.exhibitionController.removeArtFromExhibition(Number(exhibitionInput), Number(artInput));
+            await this.exhibitionController.removeArtFromExhibition(Number(exhibitionInput), Number(artInput));
             this.message.showMessage(EnumType_1.MessageType.Success);
         }
         catch (error) {
             throw new Exception_1.default("Erro ao remover arte da exposição");
         }
     }
-    getExhibitionArts() {
+    async getExhibitionArts() {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
-        const arts = this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+        const arts = await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
         try {
-            this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+            await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
             if (!arts || arts.length === 0) {
                 this.message.showMessage(EnumType_1.MessageType.NotFound);
             }

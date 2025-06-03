@@ -1,8 +1,10 @@
+import Art from './Art';
 import BaseEntity from './BaseEntity';
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm"
 
+@Entity()
 export default class Exhibition extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id!: number;
     
     @Column({
@@ -13,8 +15,9 @@ export default class Exhibition extends BaseEntity {
     @Column()
     description: string;
     
-    @Column()
+    @ManyToOne(() => Art, (art) => art)
     artWorks: number[];
+    
 
     constructor(id: number, name: string, description: string, artWorks: number[] = []) {
         super(id, name);

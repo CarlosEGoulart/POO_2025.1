@@ -5,14 +5,15 @@ import ArtistController from "../controller/ArtistController";
 
 let db = new Database();
 
-test("Test Art create", () => {
+test("Test Art create", async () => {
     const artController = new ArtController(db);
+    const id = 1;
     const title = "Titulo da obra";
     const description = "Descrição da obra";
     const year = 2025;
     const imageUrl = "url1";
 
-    const createdArt = artController.createArt(title, description, year, imageUrl);
+    const createdArt = await artController.createArt(id, title, description, year, imageUrl);
 
     expect(createdArt.getName()).toBe(title);
     expect(createdArt.getDescription()).toBe(description);
@@ -20,14 +21,15 @@ test("Test Art create", () => {
     expect(createdArt.getImageUrl()).toBe(imageUrl);
 });
 
-test("Test Artist create", () => {
+test("Test Artist create", async () => {
     const artistController = new ArtistController(db);
+    const id = 1;
     const name = "Nome do artista";
     const bio = "Biografia do artista";
     const birthYear = 2004;
     const instagram = "@instagram";
 
-    const createdArtist = artistController.createArtist(name, bio, birthYear, instagram);
+    const createdArtist = await artistController.createArtist(id, name, bio, birthYear, instagram);
 
     expect(createdArtist.getName()).toBe(name);
     expect(createdArtist.getBio()).toBe(bio);
@@ -35,13 +37,14 @@ test("Test Artist create", () => {
     expect(createdArtist.getInstagram()).toBe(instagram);
 });
 
-test("Test Exhibition create", () => {
+test("Test Exhibition create", async () => {
     const exhibitionController = new ExhibitionController(db);
+    const id = 1;
     const name = "Nome da Exibição";
     const description = "Descrição da exibição";
     const artWorks = [1, 2];
 
-    const createdExhibition = exhibitionController.createExhibition(name, description, artWorks);
+    const createdExhibition = await exhibitionController.createExhibition(id, name, description, artWorks);
 
     expect(createdExhibition.getName()).toBe(name);
     expect(createdExhibition.getDescription()).toBe(description);

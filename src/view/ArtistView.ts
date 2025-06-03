@@ -61,27 +61,26 @@ export default class ArtistView {
         }
     }
 
-    private listArtists(): void {
-        const artists = this.artistController.listArtists();
+    private async listArtists(): Promise<void> {
+        const artists = await this.artistController.listArtists();
         if (artists.length === 0) {
-            this.message.showMessage(MessageType.NotFound);
-            return;
+            throw new Exception("Nenhum artista encontrado")
         }
-        artists.forEach(artist => {
+        artists.forEach (artist => {
             console.log(`ID: ${artist.getId()}, Nome: ${artist.getName()}`);
         });
     }
 
-    private viewArtistDetails(): void {
+    private async viewArtistDetails(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Nome do artista: ");
         let artist;
 
         if (!isNaN(Number(input))) {
-            artist = this.artistController.getArtist(Number(input));
+            artist = await this.artistController.getArtist(Number(input));
         }
 
         else {
-            artist = this.artistController.getArtist(input);
+            artist = await this.artistController.getArtist(input);
         }
 
         if (artist) {
@@ -93,24 +92,25 @@ export default class ArtistView {
         }
     }
 
-    private createArtist(): void {
+    private async createArtist(): Promise<void> {
+        const id = readlineSync.questionInt("ID: ");
         const name = readlineSync.question("Nome: ");
         const bio = readlineSync.question("Bio: ");
         const birthYear = readlineSync.questionInt("Ano de nascimento: ");
         const instagram = readlineSync.question("Instagram: ");
-        this.artistController.createArtist(name, bio, birthYear, instagram);
+        await this.artistController.createArtist(id, name, bio, birthYear, instagram);
         this.message.showMessage(MessageType.Success);
     }
 
-    private updateArtist(): void {
+    private async updateArtist(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Nome do artista para atualizar: ");
         let artist;
         if (!isNaN(Number(input))) {
-            artist = this.artistController.getArtist(Number(input));
+            artist = await this.artistController.getArtist(Number(input));
         }
 
         else {
-            artist = this.artistController.getArtist(input);
+            artist = await this.artistController.getArtist(input);
         }
 
         if (artist) {
@@ -132,7 +132,7 @@ export default class ArtistView {
             if (!newInstagram.trim()) newInstagram = artist.getInstagram();
 
             try {
-                this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
+                await this.artistController.updateArtist(artist.getId(), newName, newBio, newBirthYear, newInstagram);
                 this.message.showMessage(MessageType.Success);
             }
 
@@ -146,15 +146,15 @@ export default class ArtistView {
         }
     }
 
-    private deleteArtist(): void {
+    private async deleteArtist(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Nome do artista para deletar: ");
         let deleted;
         if (!isNaN(Number(input))) {
-            deleted = this.artistController.deleteArtist(Number(input));
+            deleted = await this.artistController.deleteArtist(Number(input));
         }
 
         else{
-            deleted = this.artistController.deleteArtist(input);
+            deleted = await this.artistController.deleteArtist(input);
         }
         
         if (deleted) {

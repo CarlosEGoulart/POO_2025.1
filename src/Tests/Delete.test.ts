@@ -6,30 +6,30 @@ import ArtistController from "../controller/ArtistController";
 
 let db = new Database()
 
-test("Test Delete Art", () => {
+test("Test Delete Art", async () => {
     const artController = new ArtController(db);
     
-    const createdArt = artController.createArt("Titulo da obra", "Descrição da obra", 2025, "url1");
+    const createdArt = await artController.createArt(1, "Titulo da obra", "Descrição da obra", 2025, "url1");
 
     const deleted = artController.deleteArt(createdArt.getId());
 
     expect(deleted).toBe(true);
 });
 
-test("Test Delete Artist", () => {
+test("Test Delete Artist", async () => {
     const artistController = new ArtistController(db);
     
-    const createdArt = artistController.createArtist("Nome do artista", "Biografia do artista", 2004, "url1");
+    const createdArt = await artistController.createArtist(1,"Nome do artista", "Biografia do artista", 2004, "url1");
 
     const deleted = artistController.deleteArtist(createdArt.getId());
 
     expect(deleted).toBe(true);
 });
 
-test("Test Delete Exhibition", () => {
+test("Test Delete Exhibition", async () => {
     const exhibitionController = new ExhibitionController(db);
     
-    const createdArt = exhibitionController.createExhibition("Titulo da Exibição", "Descrição da Exibição");
+    const createdArt = await exhibitionController.createExhibition(1, "Titulo da Exibição", "Descrição da Exibição");
 
     const deleted = exhibitionController.deleteExhibition(createdArt.getId());
 

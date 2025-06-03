@@ -5,11 +5,11 @@ import { MessageType } from "./model/Message/EnumType";
 import Message from "./model/Message/Message";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import Art from "./model/Classes/Art";
 
-const message = new Message()
+const message = new Message();
 const mainController = new MainController();
 const mainScreen = new MainScreen(mainController);
+
 const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
@@ -17,25 +17,23 @@ const AppDataSource = new DataSource({
     username: "carlos",
     password: "1234",
     database: "galeria_arte",
-    entities: [Art],
+    entities: [__dirname + '/model/Classes/*.{js,ts}'],
     synchronize: true,
     logging: false,
-})
-
-
-
+});
 
 try {
-    mainScreen.start();
     AppDataSource.initialize()
-        .then(() => {
-            message.showMessage(MessageType.Success);
-        })
-        .catch((error) => () => { 
-            throw new Exception("Erro ao iniciar o banco de dados" + MessageType.Error);
-        });
-        }       
+    .then(async () => {
+        mainScreen.start();
+        message.showMessage(MessageType.Success);
+    })
+    .catch((error) => {
+        console.error(error);
+        throw new Exception("Erro ao iniciar o banco de dados");
+    });
+} 
 
 catch (error) {
-    throw new Exception("Erro ao iniciar o sistema principal " + MessageType.Error);
+    throw new Exception("Erro ao iniciar o sistema principal");
 }
