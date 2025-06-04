@@ -19,10 +19,10 @@ class Database {
         return newArt;
     }
     async readArt(artId) {
-        return await artRepository.findOneBy({ id: artId });
+        return artRepository.findOneBy({ id: artId });
     }
     async readArtByTitle(title) {
-        return await artRepository.findOneBy({ name: title });
+        return artRepository.findOneBy({ name: title });
     }
     async readAllArts() {
         return artRepository.find();
@@ -45,8 +45,7 @@ class Database {
     }
     async assignArtistToArt(artId, artist) {
         const art = await this.readArt(artId);
-        const idArtist = await this.readArtist(artist.getId());
-        if (art && idArtist) {
+        if (art && artist.id) {
             art.artist = artist;
             artRepository.save(art);
             return true;
@@ -60,13 +59,13 @@ class Database {
         return newArtist;
     }
     async readArtist(artistId) {
-        return await artistRepository.findOneBy({ id: artistId });
+        return artistRepository.findOneBy({ id: artistId });
     }
     async readArtistByName(name) {
-        return await artistRepository.findOneBy({ name: name });
+        return artistRepository.findOneBy({ name: name });
     }
     async readAllArtists() {
-        return await artistRepository.find();
+        return artistRepository.find();
     }
     async updateArtist(artistId, name, bio, birthYear, instagram) {
         const artist = await this.readArtist(artistId);
@@ -91,13 +90,13 @@ class Database {
         return newExhibition;
     }
     async readExhibition(exhibitionId) {
-        return await exhibitionRepository.findOneBy({ id: exhibitionId });
+        return exhibitionRepository.findOneBy({ id: exhibitionId });
     }
     async readExhibitionByName(name) {
-        return await exhibitionRepository.findOneBy({ name: name });
+        return exhibitionRepository.findOneBy({ name: name });
     }
     async readAllExhibitions() {
-        return await exhibitionRepository.find();
+        return exhibitionRepository.find();
     }
     async updateExhibition(exhibitionId, name, description, artWorks) {
         const exhibition = await this.readExhibition(exhibitionId);

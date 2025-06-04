@@ -18,11 +18,11 @@ export default class Database {
     }
 
     public async readArt(artId: number | undefined): Promise<Art | null>{
-        return await artRepository.findOneBy({ id: artId });
+        return artRepository.findOneBy({ id: artId });
     }
 
     public async readArtByTitle(title: string): Promise<Art | null> {
-        return await artRepository.findOneBy({ name: title });
+        return artRepository.findOneBy({ name: title });
     }
 
 
@@ -43,7 +43,6 @@ export default class Database {
         return false;
     }
 
-
     public async deleteArt(artId: number): Promise<boolean> {
         await artRepository.delete(artId);
         return true;
@@ -51,9 +50,7 @@ export default class Database {
 
     public async assignArtistToArt(artId: number, artist: Artist): Promise<boolean> {
         const art = await this.readArt(artId);
-        const idArtist = await this.readArtist(artist.getId());
-      
-        if (art && idArtist) {
+        if (art && artist.id) {
             art.artist = artist;
             artRepository.save(art)
             return true;
@@ -69,15 +66,15 @@ export default class Database {
     }
 
     public async readArtist(artistId: number): Promise<Artist | null> {
-        return await artistRepository.findOneBy({ id: artistId });
+        return artistRepository.findOneBy({ id: artistId });
     }
 
     public async readArtistByName(name: string):  Promise<Artist | null>{
-        return await artistRepository.findOneBy({ name: name });
+        return artistRepository.findOneBy({ name: name });
     }
 
     public async readAllArtists(): Promise<Artist[]> {
-        return await artistRepository.find();
+        return artistRepository.find();
     }
 
     public async updateArtist(artistId: number, name: string, bio: string, birthYear: number, instagram: string): Promise<boolean> {
@@ -106,15 +103,15 @@ export default class Database {
     }
 
     public async readExhibition(exhibitionId: number): Promise<Exhibition | null> {
-        return await exhibitionRepository.findOneBy({ id: exhibitionId});
+        return exhibitionRepository.findOneBy({ id: exhibitionId});
     }
 
     public async readExhibitionByName(name: string): Promise<Exhibition | null> {
-        return await exhibitionRepository.findOneBy({ name: name});
+        return exhibitionRepository.findOneBy({ name: name});
     }
 
     public async readAllExhibitions(): Promise<Exhibition[]> {
-        return await exhibitionRepository.find();
+        return exhibitionRepository.find();
     }
 
     public async updateExhibition(exhibitionId: number, name: string, description: string, artWorks: number[]): Promise<boolean> {

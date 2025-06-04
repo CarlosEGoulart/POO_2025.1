@@ -17,10 +17,10 @@ export default class ArtistController {
     public async getArtist(id: number, extra: string): Promise<Artist | null>;
     public async getArtist(param: number | string, extra?: string): Promise<Artist | null> {
         if (typeof param === "number") {
-            await this.db.readArtist(param);
+            return await this.db.readArtist(param);
         } 
         else if (typeof param === "string") {
-            await this.db.readArtistByName(param);
+            return await this.db.readArtistByName(param);
         }
         return null;
     }

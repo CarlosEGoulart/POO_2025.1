@@ -17,10 +17,10 @@
 
   # Sets environment variables in the workspace
   
-  services.mysql = {
-    enable = true;
-    package = pkgs.mysql84;
-  };
+services.mysql = {
+  enable = true;
+  package = pkgs.mysql84;
+};
   
   env = {};
   idx = {
