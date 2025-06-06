@@ -109,10 +109,9 @@ export default class ExhibitionView {
     }
 
     private async createExhibition(): Promise<void> {
-        const id = readlineSync.questionInt("ID: ");
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        await this.exhibitionController.createExhibition(id, title, description, []);
+        await this.exhibitionController.createExhibition(title, description, []);
         this.message.showMessage(MessageType.Success);
     }
 

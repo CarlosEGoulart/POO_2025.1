@@ -101,12 +101,11 @@ export default class ArtView {
     }
 
     private async createArt(): Promise<void> {
-        const id = readlineSync.questionInt("ID: ");
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
         const year = readlineSync.questionInt("Ano: ");
         const imageUrl = readlineSync.question("URL da Imagem: ");
-        await this.artController.createArt(id, title, description, year, imageUrl);
+        await this.artController.createArt(title, description, year, imageUrl);
         this.message.showMessage(MessageType.Success);
     }
 

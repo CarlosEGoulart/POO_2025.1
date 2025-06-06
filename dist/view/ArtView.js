@@ -109,12 +109,11 @@ class ArtView {
         }
     }
     async createArt() {
-        const id = readlineSync.questionInt("ID: ");
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
         const year = readlineSync.questionInt("Ano: ");
         const imageUrl = readlineSync.question("URL da Imagem: ");
-        await this.artController.createArt(id, title, description, year, imageUrl);
+        await this.artController.createArt(title, description, year, imageUrl);
         this.message.showMessage(EnumType_1.MessageType.Success);
     }
     async updateArt() {

@@ -1,9 +1,9 @@
 import BaseEntity from "./BaseEntity";
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
-@Entity()
+@Entity("artist")
 export default class Artist extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id!: number;
     
     @Column({
@@ -20,8 +20,8 @@ export default class Artist extends BaseEntity {
     @Column()
     instagram: string;
 
-    constructor(id: number, name: string, bio: string, birthYear: number, instagram: string) {
-        super(id, name);
+    constructor(name: string, bio: string, birthYear: number, instagram: string) {
+        super(0, name);
         this.bio = bio;
         this.birthYear = birthYear;
         this.instagram = instagram;

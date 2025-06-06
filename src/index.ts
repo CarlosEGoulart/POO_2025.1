@@ -15,8 +15,7 @@ try {
         mainScreen.start();
         message.showMessage(MessageType.Success);
     })
-    .catch((error) => {
-        console.error(error);
+    .catch((Exception) => {
         throw new Exception("Erro ao iniciar o banco de dados");
     });
 } 

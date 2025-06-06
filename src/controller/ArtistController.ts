@@ -8,8 +8,8 @@ export default class ArtistController {
         this.db = db;
     }
 
-    public async createArtist(artistId: number, name: string, bio: string, birthYear: number, instagram: string): Promise<Artist> {
-        return await this.db.createArtist(artistId, name, bio, birthYear, instagram);
+    public async createArtist(name: string, bio: string, birthYear: number, instagram: string): Promise<Artist> {
+        return await this.db.createArtist(name, bio, birthYear, instagram);
     }
 
     public async getArtist(id: number): Promise<Artist | null>;

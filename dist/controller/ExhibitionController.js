@@ -4,8 +4,8 @@ class ExhibitionController {
     constructor(db) {
         this.db = db;
     }
-    async createExhibition(exhibitionId, name, description, artWorks = []) {
-        return await this.db.createExhibition(exhibitionId, name, description, artWorks);
+    async createExhibition(name, description, artWorks = []) {
+        return await this.db.createExhibition(name, description, artWorks);
     }
     async getExhibition(param, extra) {
         if (typeof param === "number") {

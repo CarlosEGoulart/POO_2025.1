@@ -16,8 +16,8 @@ const BaseEntity_1 = __importDefault(require("./BaseEntity"));
 const Artist_1 = __importDefault(require("./Artist"));
 const typeorm_1 = require("typeorm");
 let Art = class Art extends BaseEntity_1.default {
-    constructor(id, name, description, year, imageUrl = "", artist) {
-        super(id, name);
+    constructor(name, description, year, imageUrl = "", artist) {
+        super(0, name);
         this.description = description;
         this.year = year;
         this.artist = artist;
@@ -64,7 +64,7 @@ let Art = class Art extends BaseEntity_1.default {
     }
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Art.prototype, "id", void 0);
 __decorate([
@@ -91,6 +91,6 @@ __decorate([
 ], Art.prototype, "imageUrl", void 0);
 Art = __decorate([
     (0, typeorm_1.Entity)(),
-    __metadata("design:paramtypes", [Number, String, String, Number, String, Artist_1.default])
+    __metadata("design:paramtypes", [String, String, Number, String, Artist_1.default])
 ], Art);
 exports.default = Art;

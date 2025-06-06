@@ -93,12 +93,11 @@ export default class ArtistView {
     }
 
     private async createArtist(): Promise<void> {
-        const id = readlineSync.questionInt("ID: ");
         const name = readlineSync.question("Nome: ");
         const bio = readlineSync.question("Bio: ");
         const birthYear = readlineSync.questionInt("Ano de nascimento: ");
         const instagram = readlineSync.question("Instagram: ");
-        await this.artistController.createArtist(id, name, bio, birthYear, instagram);
+        await this.artistController.createArtist(name, bio, birthYear, instagram);
         this.message.showMessage(MessageType.Success);
     }
 

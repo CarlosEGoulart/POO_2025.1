@@ -9,8 +9,8 @@ export default class ExhibitionController {
         this.db = db;
     }
 
-    public async createExhibition(exhibitionId: number, name: string, description: string, artWorks: number[] = []): Promise<Exhibition> {
-        return await this.db.createExhibition(exhibitionId, name, description, artWorks);
+    public async createExhibition(name: string, description: string, artWorks: number[] = []): Promise<Exhibition> {
+        return await this.db.createExhibition( name, description, artWorks);
     }
 
     public async getExhibition(id: number): Promise<Exhibition | null>;

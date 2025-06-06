@@ -1,12 +1,12 @@
 import Art from './Art';
 import BaseEntity from './BaseEntity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm"
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
-@Entity()
+@Entity("exhibition")
 export default class Exhibition extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id!: number;
-    
+
     @Column({
         length: 50,
     })
@@ -19,8 +19,8 @@ export default class Exhibition extends BaseEntity {
     artWorks: number[];
     
 
-    constructor(id: number, name: string, description: string, artWorks: number[] = []) {
-        super(id, name);
+    constructor(name: string, description: string, artWorks: number[] = []) {
+        super(0, name);
         this.description = description;
         this.artWorks = artWorks;
     }

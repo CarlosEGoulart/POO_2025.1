@@ -19,6 +19,6 @@ exports.AppDataSource = new typeorm_1.DataSource({
     synchronize: true,
     logging: false,
     entities: [Artist_1.default, Art_1.default, Exhibition_1.default],
-    migrations: [],
-    subscribers: [],
+    migrations: ["db/Migrations/*.ts"],
+    subscribers: []
 });

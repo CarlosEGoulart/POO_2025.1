@@ -4,8 +4,8 @@ class ArtController {
     constructor(db) {
         this.db = db;
     }
-    async createArt(artId, title, description, year, imageUrl) {
-        return await this.db.createArt(artId, title, description, year, imageUrl);
+    async createArt(title, description, year, imageUrl) {
+        return await this.db.createArt(title, description, year, imageUrl);
     }
     async getArt(param, extra) {
         if (typeof param === "number") {

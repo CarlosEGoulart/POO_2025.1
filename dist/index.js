@@ -18,9 +18,8 @@ try {
         mainScreen.start();
         message.showMessage(EnumType_1.MessageType.Success);
     })
-        .catch((error) => {
-        console.error(error);
-        throw new Exception_1.default("Erro ao iniciar o banco de dados");
+        .catch((Exception) => {
+        throw new Exception("Erro ao iniciar o banco de dados");
     });
 }
 catch (error) {

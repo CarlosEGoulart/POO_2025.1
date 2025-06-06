@@ -13,8 +13,8 @@ const artistRepository = data_source_1.AppDataSource.getRepository(Artist_1.defa
 const exhibitionRepository = data_source_1.AppDataSource.getRepository(Exhibition_1.default);
 class Database {
     // ART CRUD
-    async createArt(artId, title, description, year, imageUrl) {
-        const newArt = new Art_1.default(artId, title, description, year, imageUrl);
+    async createArt(title, description, year, imageUrl) {
+        const newArt = new Art_1.default(title, description, year, imageUrl);
         await artRepository.save(newArt);
         return newArt;
     }
@@ -53,8 +53,8 @@ class Database {
         return false;
     }
     // ARTIST CRUD
-    async createArtist(artistId, name, bio, birthYear, instagram) {
-        const newArtist = new Artist_1.default(artistId, name, bio, birthYear, instagram);
+    async createArtist(name, bio, birthYear, instagram) {
+        const newArtist = new Artist_1.default(name, bio, birthYear, instagram);
         await artistRepository.save(newArtist);
         return newArtist;
     }
@@ -84,8 +84,8 @@ class Database {
         return true;
     }
     // EXHIBITION CRUD
-    async createExhibition(exhibitionId, name, description, artWorks = []) {
-        const newExhibition = new Exhibition_1.default(exhibitionId, name, description, artWorks);
+    async createExhibition(name, description, artWorks = []) {
+        const newExhibition = new Exhibition_1.default(name, description, artWorks);
         await exhibitionRepository.save(newExhibition);
         return newExhibition;
     }

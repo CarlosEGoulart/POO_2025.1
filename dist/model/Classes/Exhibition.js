@@ -16,8 +16,8 @@ const Art_1 = __importDefault(require("./Art"));
 const BaseEntity_1 = __importDefault(require("./BaseEntity"));
 const typeorm_1 = require("typeorm");
 let Exhibition = class Exhibition extends BaseEntity_1.default {
-    constructor(id, name, description, artWorks = []) {
-        super(id, name);
+    constructor(name, description, artWorks = []) {
+        super(0, name);
         this.description = description;
         this.artWorks = artWorks;
     }
@@ -50,7 +50,7 @@ let Exhibition = class Exhibition extends BaseEntity_1.default {
     }
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Exhibition.prototype, "id", void 0);
 __decorate([
@@ -69,6 +69,6 @@ __decorate([
 ], Exhibition.prototype, "artWorks", void 0);
 Exhibition = __decorate([
     (0, typeorm_1.Entity)(),
-    __metadata("design:paramtypes", [Number, String, String, Array])
+    __metadata("design:paramtypes", [String, String, Array])
 ], Exhibition);
 exports.default = Exhibition;

@@ -9,8 +9,8 @@ test("Test Assign Artist to Art", async () => {
     const artController = new ArtController(db);
     const artistController = new ArtistController(db);
 
-    const createdArt = artController.createArt(1, "Titulo da obra", "Descrição da obra", 2025, "url1");
-    const createdArtist = artistController.createArtist(1, "Nome do artista", "Biografia do artista", 2004, "@instagram");
+    const createdArt = artController.createArt("Titulo da obra", "Descrição da obra", 2025, "url1");
+    const createdArtist = artistController.createArtist("Nome do artista", "Biografia do artista", 2004, "@instagram");
 
     const assigned = artController.assignArtistToArt((await createdArt).getId(), (await createdArtist).getId());
 
@@ -21,8 +21,8 @@ test("Test Assign Art to Exhibition", async () => {
     const artController = new ArtController(db);
     const exhibitionController = new ExhibitionController(db);
 
-    const createdArt = await artController.createArt(1, "Titulo da obra", "Descrição da obra", 2025, "url1");
-    const createdExhibition = exhibitionController.createExhibition(1, "Titulo da Exibiçao", "Descrição da Exibição");
+    const createdArt = await artController.createArt("Titulo da obra", "Descrição da obra", 2025, "url1");
+    const createdExhibition = exhibitionController.createExhibition("Titulo da Exibiçao", "Descrição da Exibição");
 
     const assigned = exhibitionController.addArtToExhibition((await createdExhibition).getId(), createdArt.getId());
 

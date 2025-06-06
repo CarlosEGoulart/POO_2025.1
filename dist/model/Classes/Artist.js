@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const BaseEntity_1 = __importDefault(require("./BaseEntity"));
 const typeorm_1 = require("typeorm");
 let Artist = class Artist extends BaseEntity_1.default {
-    constructor(id, name, bio, birthYear, instagram) {
-        super(id, name);
+    constructor(name, bio, birthYear, instagram) {
+        super(0, name);
         this.bio = bio;
         this.birthYear = birthYear;
         this.instagram = instagram;
@@ -56,7 +56,7 @@ let Artist = class Artist extends BaseEntity_1.default {
     }
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Artist.prototype, "id", void 0);
 __decorate([
@@ -79,6 +79,6 @@ __decorate([
 ], Artist.prototype, "instagram", void 0);
 Artist = __decorate([
     (0, typeorm_1.Entity)(),
-    __metadata("design:paramtypes", [Number, String, String, Number, String])
+    __metadata("design:paramtypes", [String, String, Number, String])
 ], Artist);
 exports.default = Artist;

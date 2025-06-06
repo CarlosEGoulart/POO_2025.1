@@ -4,8 +4,8 @@ class ArtistController {
     constructor(db) {
         this.db = db;
     }
-    async createArtist(artistId, name, bio, birthYear, instagram) {
-        return await this.db.createArtist(artistId, name, bio, birthYear, instagram);
+    async createArtist(name, bio, birthYear, instagram) {
+        return await this.db.createArtist(name, bio, birthYear, instagram);
     }
     async getArtist(param, extra) {
         if (typeof param === "number") {

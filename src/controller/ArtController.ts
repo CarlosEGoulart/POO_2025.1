@@ -9,8 +9,8 @@ export default class ArtController {
         this.db = db;
     }
 
-    public async createArt(artId: number, title: string, description: string, year: number, imageUrl: string): Promise<Art> {
-        return await this.db.createArt(artId, title, description, year, imageUrl);
+    public async createArt( title: string, description: string, year: number, imageUrl: string): Promise<Art> {
+        return await this.db.createArt(title, description, year, imageUrl);
     }
 
     public async getArt(id: number): Promise<Art | null>;

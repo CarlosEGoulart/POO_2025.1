@@ -1,10 +1,11 @@
 import BaseEntity from "./BaseEntity";
 import Artist from "./Artist";
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm"
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+
+@Entity("art")
 export default class Art extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id!: number;
     
     @Column({
@@ -25,8 +26,8 @@ export default class Art extends BaseEntity {
     @Column()
     imageUrl: string;
 
-    constructor(id: number, name: string, description: string, year: number, imageUrl: string = "", artist?: Artist) {
-        super(id, name);
+ constructor(name: string, description: string, year: number, imageUrl: string = "", artist?: Artist) {
+        super(0, name);
         this.description = description;
         this.year = year;
         this.artist = artist;
