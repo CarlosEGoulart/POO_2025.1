@@ -11,7 +11,6 @@ export const AppDataSource = new DataSource({
     username: 'carlos',
     password: '1234',
     database: 'artGallery',
-    synchronize: true,
     logging: false,
     entities: [Artist, Art, Exhibition],
     migrations: ["./db/Migrations/*.ts"],

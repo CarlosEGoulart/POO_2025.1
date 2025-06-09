@@ -50,12 +50,10 @@ export default class ArtistView {
             }
             catch (error) {
                 if (error instanceof Exception) {
-                    console.error(error.message);
-                }
-
-                else {
                     this.message.showMessage(MessageType.Error);
-                    console.error("Erro inesperado:", error);
+                } else {
+                    this.message.showMessage(MessageType.Error);
+                    console.error("Erro inesperado:", error); 
                 }
             }
         }

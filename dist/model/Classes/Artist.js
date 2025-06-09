@@ -78,7 +78,7 @@ __decorate([
     __metadata("design:type", String)
 ], Artist.prototype, "instagram", void 0);
 Artist = __decorate([
-    (0, typeorm_1.Entity)(),
+    (0, typeorm_1.Entity)("artist"),
     __metadata("design:paramtypes", [String, String, Number, String])
 ], Artist);
 exports.default = Artist;

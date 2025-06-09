@@ -90,7 +90,7 @@ __decorate([
     __metadata("design:type", String)
 ], Art.prototype, "imageUrl", void 0);
 Art = __decorate([
-    (0, typeorm_1.Entity)(),
+    (0, typeorm_1.Entity)("art"),
     __metadata("design:paramtypes", [String, String, Number, String, Artist_1.default])
 ], Art);
 exports.default = Art;

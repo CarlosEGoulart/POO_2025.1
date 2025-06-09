@@ -16,9 +16,8 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: 'carlos',
     password: '1234',
     database: 'artGallery',
-    synchronize: true,
     logging: false,
     entities: [Artist_1.default, Art_1.default, Exhibition_1.default],
-    migrations: ["db/Migrations/*.ts"],
-    subscribers: []
+    migrations: ["./db/Migrations/*.ts"],
+    subscribers: [],
 });

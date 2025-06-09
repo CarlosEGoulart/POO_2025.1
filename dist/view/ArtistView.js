@@ -69,7 +69,7 @@ class ArtistView {
             }
             catch (error) {
                 if (error instanceof Exception_1.default) {
-                    console.error(error.message);
+                    this.message.showMessage(EnumType_1.MessageType.Error);
                 }
                 else {
                     this.message.showMessage(EnumType_1.MessageType.Error);

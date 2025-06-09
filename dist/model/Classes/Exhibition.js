@@ -68,7 +68,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Exhibition.prototype, "artWorks", void 0);
 Exhibition = __decorate([
-    (0, typeorm_1.Entity)(),
+    (0, typeorm_1.Entity)("exhibition"),
     __metadata("design:paramtypes", [String, String, Array])
 ], Exhibition);
 exports.default = Exhibition;
