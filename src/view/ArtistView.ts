@@ -13,7 +13,7 @@ export default class ArtistView {
         this.message = message;
     }
 
-    public start(): void {
+    public async start(): Promise<void> {
         while (true) {
             console.log("\n--- Gerenciar Artistas ---");
             console.log("1. Listar Artistas");
@@ -28,19 +28,19 @@ export default class ArtistView {
             try {
                 switch (choice) {
                     case 1:
-                        this.listArtists();
+                        await this.listArtists();
                         break;
                     case 2:
-                        this.viewArtistDetails();
+                        await this.viewArtistDetails();
                         break;
                     case 3:
-                        this.createArtist();
+                        await this.createArtist();
                         break;
                     case 4:
-                        this.updateArtist();
+                        await this.updateArtist();
                         break;
                     case 5:
-                        this.deleteArtist();
+                        await this.deleteArtist();
                         break;
                     case 0:
                         return;
@@ -60,11 +60,11 @@ export default class ArtistView {
     }
 
     private async listArtists(): Promise<void> {
-        const artists = await this.artistController.listArtists();
-        if (artists.length === 0) {
+        const artists = this.artistController.listArtists();
+        if ((await artists).length === 0) {
             throw new Exception("Nenhum artista encontrado")
         }
-        artists.forEach (artist => {
+        (await artists).forEach (artist => {
             console.log(`ID: ${artist.getId()}, Nome: ${artist.getName()}`);
         });
     }
@@ -72,6 +72,7 @@ export default class ArtistView {
     private async viewArtistDetails(): Promise<void> {
         const input = readlineSync.question("Digite o ID ou Nome do artista: ");
         let artist;
+
 
         if (!isNaN(Number(input))) {
             artist = await this.artistController.getArtist(Number(input));
@@ -95,6 +96,7 @@ export default class ArtistView {
         const bio = readlineSync.question("Bio: ");
         const birthYear = readlineSync.questionInt("Ano de nascimento: ");
         const instagram = readlineSync.question("Instagram: ");
+        
         await this.artistController.createArtist(name, bio, birthYear, instagram);
         this.message.showMessage(MessageType.Success);
     }

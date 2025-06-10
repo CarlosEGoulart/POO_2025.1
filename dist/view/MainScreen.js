@@ -39,7 +39,7 @@ class MainScreen {
         this.artView = new ArtView_1.default(this.mainController.artController, this.message);
         this.exhibitionView = new ExhibitionView_1.default(this.mainController.exhibitionController, this.message);
     }
-    start() {
+    async start() {
         while (true) {
             console.log("\n--- Menu Principal ---");
             console.log("1. Gerenciar Artistas");
@@ -49,13 +49,13 @@ class MainScreen {
             const choice = readlineSync.questionInt("Escolha uma opção: ");
             switch (choice) {
                 case 1:
-                    this.artistView.start();
+                    await this.artistView.start();
                     break;
                 case 2:
-                    this.artView.start();
+                    await this.artView.start();
                     break;
                 case 3:
-                    this.exhibitionView.start();
+                    await this.exhibitionView.start();
                     break;
                 case 0:
                     console.log("Saindo do sistema...");

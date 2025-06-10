@@ -15,7 +15,7 @@ const mainScreen = new MainScreen_1.default(mainController);
 try {
     data_source_1.AppDataSource.initialize()
         .then(async () => {
-        mainScreen.start();
+        await mainScreen.start();
         message.showMessage(EnumType_1.MessageType.Success);
     })
         .catch((Exception) => {

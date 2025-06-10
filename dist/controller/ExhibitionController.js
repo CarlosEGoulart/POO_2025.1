@@ -7,7 +7,7 @@ class ExhibitionController {
     async createExhibition(name, description, artWorks = []) {
         return await this.db.createExhibition(name, description, artWorks);
     }
-    async getExhibition(param, extra) {
+    async getExhibition(param) {
         if (typeof param === "number") {
             return await this.db.readExhibition(param);
         }
@@ -19,7 +19,7 @@ class ExhibitionController {
     async listExhibitions() {
         return await this.db.readAllExhibitions();
     }
-    async updateExhibition(param, name, description, artWorks, extra) {
+    async updateExhibition(param, name, description, artWorks) {
         if (typeof param === "number") {
             return await this.db.updateExhibition(param, name, description, artWorks);
         }
@@ -31,7 +31,7 @@ class ExhibitionController {
         }
         return false;
     }
-    async deleteExhibition(param, extra) {
+    async deleteExhibition(param) {
         if (typeof param === "number") {
             return await this.db.deleteExhibition(param);
         }

@@ -13,10 +13,7 @@ export default class ExhibitionController {
         return await this.db.createExhibition( name, description, artWorks);
     }
 
-    public async getExhibition(id: number): Promise<Exhibition | null>;
-    public async getExhibition(name: string): Promise<Exhibition | null>;
-    public async getExhibition(id: number, extra: string): Promise<Exhibition | null>;
-    public async getExhibition(param: number | string, extra?: string): Promise<Exhibition | null> {
+    public async getExhibition<T extends number | string>(param: T): Promise<Exhibition | null> {
         if (typeof param === "number") {
             return await this.db.readExhibition(param);
         } 
@@ -30,10 +27,7 @@ export default class ExhibitionController {
         return await this.db.readAllExhibitions();
     }
 
-    public async updateExhibition(id: number, name: string, description: string, artWorks: number[]): Promise<boolean>;
-    public async updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): Promise<boolean>;
-    public async updateExhibition(id: number, name: string, description: string, artWorks: number[], extra?: string): Promise<boolean>;
-    public async updateExhibition(param: number | string, name: string, description: string, artWorks: number[], extra?: string): Promise<boolean> {
+    public async updateExhibition<T extends string | number>(param: T, name: string, description: string, artWorks: number[]): Promise<boolean> {
         if (typeof param === "number") {
             return await this.db.updateExhibition(param, name, description, artWorks);
         } 
@@ -46,10 +40,7 @@ export default class ExhibitionController {
         return false;
     }
 
-    public async deleteExhibition(id: number): Promise<boolean>;
-    public async deleteExhibition(name: string): Promise<boolean>;
-    public async deleteExhibition(id: number, extra: string): Promise<boolean>;
-    public async deleteExhibition(param: number | string, extra?: string): Promise<boolean> {
+    public async deleteExhibition<T extends number | string>(param: T): Promise<boolean> {
         if (typeof param === "number") {
             return await this.db.deleteExhibition(param);
         } 

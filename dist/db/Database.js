@@ -15,7 +15,7 @@ class Database {
     // ART CRUD
     async createArt(title, description, year, imageUrl) {
         const newArt = new Art_1.default(title, description, year, imageUrl);
-        artRepository.create(newArt);
+        artRepository.save(newArt);
         return newArt;
     }
     async readArt(artId) {
@@ -55,7 +55,7 @@ class Database {
     // ARTIST CRUD
     async createArtist(name, bio, birthYear, instagram) {
         const newArtist = new Artist_1.default(name, bio, birthYear, instagram);
-        artistRepository.create(newArtist);
+        artistRepository.save(newArtist);
         return newArtist;
     }
     async readArtist(artistId) {
@@ -86,7 +86,7 @@ class Database {
     // EXHIBITION CRUD
     async createExhibition(name, description, artWorks = []) {
         const newExhibition = new Exhibition_1.default(name, description, artWorks);
-        exhibitionRepository.create(newExhibition);
+        exhibitionRepository.save(newExhibition);
         return newExhibition;
     }
     async readExhibition(exhibitionId) {

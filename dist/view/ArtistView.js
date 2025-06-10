@@ -34,7 +34,7 @@ class ArtistView {
         this.artistController = artistController;
         this.message = message;
     }
-    start() {
+    async start() {
         while (true) {
             console.log("\n--- Gerenciar Artistas ---");
             console.log("1. Listar Artistas");
@@ -47,19 +47,19 @@ class ArtistView {
             try {
                 switch (choice) {
                     case 1:
-                        this.listArtists();
+                        await this.listArtists();
                         break;
                     case 2:
-                        this.viewArtistDetails();
+                        await this.viewArtistDetails();
                         break;
                     case 3:
-                        this.createArtist();
+                        await this.createArtist();
                         break;
                     case 4:
-                        this.updateArtist();
+                        await this.updateArtist();
                         break;
                     case 5:
-                        this.deleteArtist();
+                        await this.deleteArtist();
                         break;
                     case 0:
                         return;
@@ -79,11 +79,11 @@ class ArtistView {
         }
     }
     async listArtists() {
-        const artists = await this.artistController.listArtists();
-        if (artists.length === 0) {
+        const artists = this.artistController.listArtists();
+        if ((await artists).length === 0) {
             throw new Exception_1.default("Nenhum artista encontrado");
         }
-        artists.forEach(artist => {
+        (await artists).forEach(artist => {
             console.log(`ID: ${artist.getId()}, Nome: ${artist.getName()}`);
         });
     }

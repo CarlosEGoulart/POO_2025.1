@@ -12,7 +12,7 @@ const mainScreen = new MainScreen(mainController);
 try {
     AppDataSource.initialize()
     .then(async () => {
-        mainScreen.start();
+        await mainScreen.start();
         message.showMessage(MessageType.Success);
     })
     .catch((Exception) => {

@@ -13,7 +13,7 @@ export default class Database {
     // ART CRUD
  public async createArt(title: string, description: string, year: number, imageUrl: string): Promise<Art> {
         const newArt = new Art(title, description, year, imageUrl);
-        artRepository.create(newArt);
+        artRepository.save(newArt);
         return newArt;
     }
 
@@ -61,7 +61,7 @@ export default class Database {
     // ARTIST CRUD
  public async createArtist(name: string, bio: string, birthYear: number, instagram: string): Promise<Artist> {
         const newArtist = new Artist(name, bio, birthYear, instagram);
-        artistRepository.create(newArtist);
+        artistRepository.save(newArtist);
         return newArtist;
     }
 
@@ -98,7 +98,7 @@ export default class Database {
     // EXHIBITION CRUD
  public async createExhibition(name: string, description: string, artWorks: number[] = []): Promise<Exhibition> {
         const newExhibition = new Exhibition(name, description, artWorks);
-        exhibitionRepository.create(newExhibition);
+        exhibitionRepository.save(newExhibition);
         return newExhibition;
     }
 

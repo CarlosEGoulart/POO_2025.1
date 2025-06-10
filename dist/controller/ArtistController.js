@@ -5,9 +5,9 @@ class ArtistController {
         this.db = db;
     }
     async createArtist(name, bio, birthYear, instagram) {
-        return await this.db.createArtist(name, bio, birthYear, instagram);
+        return this.db.createArtist(name, bio, birthYear, instagram);
     }
-    async getArtist(param, extra) {
+    async getArtist(param) {
         if (typeof param === "number") {
             return await this.db.readArtist(param);
         }
@@ -19,7 +19,7 @@ class ArtistController {
     async listArtists() {
         return await this.db.readAllArtists();
     }
-    async updateArtist(param, name, bio, birthYear, instagram, extra) {
+    async updateArtist(param, name, bio, birthYear, instagram) {
         if (typeof param === "number") {
             return await this.db.updateArtist(param, name, bio, birthYear, instagram);
         }
@@ -31,7 +31,7 @@ class ArtistController {
         }
         return false;
     }
-    async deleteArtist(param, extra) {
+    async deleteArtist(param) {
         if (typeof param === "number") {
             return await this.db.deleteArtist(param);
         }

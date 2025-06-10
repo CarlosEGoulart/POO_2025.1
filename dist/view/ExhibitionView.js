@@ -34,7 +34,7 @@ class ExhibitionView {
         this.exhibitionController = exhibitionController;
         this.message = message;
     }
-    start() {
+    async start() {
         while (true) {
             console.log("\n--- Gerenciar Exposições ---");
             console.log("1. Listar Exposições");
@@ -50,28 +50,28 @@ class ExhibitionView {
             try {
                 switch (choice) {
                     case 1:
-                        this.listExhibitions();
+                        await this.listExhibitions();
                         break;
                     case 2:
-                        this.viewExhibitionDetails();
+                        await this.viewExhibitionDetails();
                         break;
                     case 3:
-                        this.createExhibition();
+                        await this.createExhibition();
                         break;
                     case 4:
-                        this.updateExhibition();
+                        await this.updateExhibition();
                         break;
                     case 5:
-                        this.assignArtToExhibition();
+                        await this.assignArtToExhibition();
                         break;
                     case 6:
-                        this.removeArtFromExhibition();
+                        await this.removeArtFromExhibition();
                         break;
                     case 7:
-                        this.getExhibitionArts();
+                        await this.getExhibitionArts();
                         break;
                     case 8:
-                        this.deleteExhibition();
+                        await this.deleteExhibition();
                         break;
                     case 0:
                         return;
@@ -120,7 +120,7 @@ class ExhibitionView {
     async createExhibition() {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        await this.exhibitionController.createExhibition(title, description, []);
+        this.exhibitionController.createExhibition(title, description, []);
         this.message.showMessage(EnumType_1.MessageType.Success);
     }
     async updateExhibition() {
@@ -191,7 +191,6 @@ class ExhibitionView {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const arts = await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
         try {
-            await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
             if (!arts || arts.length === 0) {
                 this.message.showMessage(EnumType_1.MessageType.NotFound);
             }

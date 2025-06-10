@@ -1,6 +1,5 @@
 import Art from "../model/Classes/Art";
 import Database from "../db/Database";
-import Artist from "../model/Classes/Artist";
 
 export default class ArtController {
     private db: Database;
@@ -13,9 +12,7 @@ export default class ArtController {
         return await this.db.createArt(title, description, year, imageUrl);
     }
 
-    public async getArt(id: number): Promise<Art | null>;
-    public async getArt(title: string): Promise<Art | null>;
-    public async getArt(param: number | string, extra?: string): Promise<Art | null> {
+    public async getArt<T extends number | string>(param: T): Promise<Art | null>{
         if (typeof param === "number") {
             return await this.db.readArt(param);
         } 
@@ -29,10 +26,7 @@ export default class ArtController {
         return await this.db.readAllArts();
     }
 
-    public async updateArt(id: number, title: string, description: string, year: number, imageUrl: string): Promise<boolean>;
-    public async updateArt(param: number | string, title: string, description: string, year: number, imageUrl: string, extra?: string): Promise<boolean>;
-    public async updateArt(id: number, title: string, description: string, year: number, imageUrl: string, extra?: string): Promise<boolean>;
-    public async updateArt(param: number | string, title: string, description: string, year: number, imageUrl: string): Promise<boolean> {
+    public async updateArt<T extends string | number>(param: T | string, title: string, description: string, year: number, imageUrl: string): Promise<boolean> {
         if (typeof param === "number") {
             return await this.db.updateArt(param, title, description, year, imageUrl);
         } 
@@ -45,10 +39,7 @@ export default class ArtController {
         return false;
     }
 
-    public async deleteArt(id: number): Promise<boolean>;
-    public async deleteArt(title: string): Promise<boolean>;
-    public async deleteArt(id: number, extra: string): Promise<boolean>;
-    public async deleteArt(param: number | string): Promise<boolean> {
+    public async deleteArt<T extends number | string>(param: T): Promise<boolean> {
         if (typeof param === "number") {
             return this.db.deleteArt(param);
         } 

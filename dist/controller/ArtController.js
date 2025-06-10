@@ -7,7 +7,7 @@ class ArtController {
     async createArt(title, description, year, imageUrl) {
         return await this.db.createArt(title, description, year, imageUrl);
     }
-    async getArt(param, extra) {
+    async getArt(param) {
         if (typeof param === "number") {
             return await this.db.readArt(param);
         }

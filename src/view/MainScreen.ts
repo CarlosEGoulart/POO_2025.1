@@ -19,7 +19,7 @@ export default class MainScreen {
         this.exhibitionView = new ExhibitionView(this.mainController.exhibitionController, this.message);
     }
 
-    public start(): void {
+    public async start(): Promise<void> {
         while (true) {
             console.log("\n--- Menu Principal ---");
             console.log("1. Gerenciar Artistas");
@@ -31,13 +31,13 @@ export default class MainScreen {
 
             switch (choice) {
                 case 1:
-                    this.artistView.start();
+                    await this.artistView.start();
                     break;
                 case 2:
-                    this.artView.start();
+                    await this.artView.start();
                     break;
                 case 3:
-                    this.exhibitionView.start();
+                    await this.exhibitionView.start();
                     break;
                 case 0:
                     console.log("Saindo do sistema...");

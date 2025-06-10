@@ -12,10 +12,7 @@ export default class ArtistController {
         return await this.db.createArtist(name, bio, birthYear, instagram);
     }
 
-    public async getArtist(id: number): Promise<Artist | null>;
-    public async getArtist(name: string): Promise<Artist | null>;
-    public async getArtist(id: number, extra: string): Promise<Artist | null>;
-    public async getArtist(param: number | string, extra?: string): Promise<Artist | null> {
+    public async getArtist<T extends number | string>(param: T): Promise<Artist | null> {
         if (typeof param === "number") {
             return await this.db.readArtist(param);
         } 
@@ -29,10 +26,7 @@ export default class ArtistController {
         return await this.db.readAllArtists();
     }
 
-    public async updateArtist(id: number, name: string, bio: string, birthYear: number, instagram: string): Promise<boolean>;
-    public async updateArtist(param: number | string, name: string, bio: string, birthYear: number, instagram: string, extra?: string): Promise<boolean>;
-    public async updateArtist(id: number, name: string, bio: string, birthYear: number, instagram: string, extra?: string): Promise<boolean>;
-    public async updateArtist(param: number | string, name: string, bio: string, birthYear: number, instagram: string, extra?: string): Promise<boolean> {
+    public async updateArtist<T extends string | number>(param: T, name: string, bio: string, birthYear: number, instagram: string): Promise<boolean>{
         if (typeof param === "number") {
             return await this.db.updateArtist(param, name, bio, birthYear, instagram);
         } 
@@ -45,17 +39,14 @@ export default class ArtistController {
         return false;
     }
 
-    public async deleteArtist(id: number): Promise<boolean>;
-    public async deleteArtist(name: string): Promise<boolean>;
-    public async deleteArtist(id: number, extra: string): Promise<boolean>;
-    public async deleteArtist(param: number | string, extra?: string): Promise<boolean> {
+    public async deleteArtist<T extends string | number>(param: T): Promise<boolean>{
         if (typeof param === "number") {
             return await this.db.deleteArtist(param);
         } 
         else if (typeof param === "string") {
             const artist = await this.db.readArtistByName(param);
             if (artist) {
-                return this.db.deleteArtist(artist.getId());
+                return await this.db.deleteArtist(artist.getId());
             }
         }
         return false;

@@ -14,7 +14,7 @@ export default class ExhibitionView {
         this.message = message;
     }
 
-    public start(): void {
+    public async start(): Promise<void> {
         while (true) {
             console.log("\n--- Gerenciar Exposições ---");
             console.log("1. Listar Exposições");
@@ -32,28 +32,28 @@ export default class ExhibitionView {
             try {
                 switch (choice) {
                     case 1:
-                        this.listExhibitions();
+                        await this.listExhibitions();
                         break;
                     case 2:
-                        this.viewExhibitionDetails();
+                        await this.viewExhibitionDetails();
                         break;
                     case 3:
-                        this.createExhibition();
+                        await this.createExhibition();
                         break;
                     case 4:
-                        this.updateExhibition();
+                        await this.updateExhibition();
                         break;
                     case 5:
-                        this.assignArtToExhibition();
+                        await this.assignArtToExhibition();
                         break;
                     case 6:
-                        this.removeArtFromExhibition();
+                        await this.removeArtFromExhibition();
                         break;
                     case 7:
-                        this.getExhibitionArts();
+                        await this.getExhibitionArts();
                         break;
                     case 8:
-                        this.deleteExhibition();
+                        await this.deleteExhibition();
                         break;
                     case 0:
                         return;
@@ -111,7 +111,7 @@ export default class ExhibitionView {
     private async createExhibition(): Promise<void> {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        await this.exhibitionController.createExhibition(title, description, []);
+        this.exhibitionController.createExhibition(title, description, []);
         this.message.showMessage(MessageType.Success);
     }
 
@@ -200,14 +200,13 @@ export default class ExhibitionView {
     public async getExhibitionArts(): Promise<void> {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
         const arts = await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
-
-        try {
-            await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+        
+        
+        try{
             if (!arts || arts.length === 0) {
                 this.message.showMessage(MessageType.NotFound);
             }
         }
-
         catch (error) {
             throw new Exception("Erro ao obter obras da exposição");
         }

@@ -34,7 +34,7 @@ class ArtView {
         this.artController = artController;
         this.message = message;
     }
-    start() {
+    async start() {
         while (true) {
             console.log("\n--- Gerenciar Obras de Arte ---");
             console.log("1. Listar Obras de Arte");
@@ -48,22 +48,22 @@ class ArtView {
             try {
                 switch (choice) {
                     case 1:
-                        this.listArts();
+                        await this.listArts();
                         break;
                     case 2:
-                        this.viewArtDetails();
+                        await this.viewArtDetails();
                         break;
                     case 3:
-                        this.createArt();
+                        await this.createArt();
                         break;
                     case 4:
-                        this.updateArt();
+                        await this.updateArt();
                         break;
                     case 5:
-                        this.deleteArt();
+                        await this.deleteArt();
                         break;
                     case 6:
-                        this.assignArtistToArt();
+                        await this.assignArtistToArt();
                         break;
                     case 0:
                         return;
@@ -113,7 +113,7 @@ class ArtView {
         const description = readlineSync.question("Descrição: ");
         const year = readlineSync.questionInt("Ano: ");
         const imageUrl = readlineSync.question("URL da Imagem: ");
-        await this.artController.createArt(title, description, year, imageUrl);
+        this.artController.createArt(title, description, year, imageUrl);
         this.message.showMessage(EnumType_1.MessageType.Success);
     }
     async updateArt() {
