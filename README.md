@@ -1,6 +1,6 @@
 # POO_2025.1
 
-Este repositório contém os arquivos e exemplos das aulas de Programação Orientada a Objetos (POO) de 2025.1. O objetivo é fornecer um diretório de fácil acesso para os alunos acompanharem o conteúdo e testarem os exemplos em diferentes ambientes.
+Este repositório contém os arquivos e exemplos das aulas de Programação Orientada a Objetos (POO) de 2025.1. O objetivo é fornecer um diretório de fácil acesso para que seja possivel acessar os arquivos da aplicação em diferentes ambientes.
 
 ## Tecnologias Utilizadas
 
@@ -9,7 +9,7 @@ O projeto utiliza as seguintes tecnologias:
 - **TypeScript**: Linguagem de programação principal.
 - **Node.js**: Ambiente de execução para o TypeScript.
 - **TypeORM**: ORM (Object-Relational Mapper) para interação com o banco de dados.
-- **MySQL2/PG**: Drivers para conexão com bancos de dados MySQL e PostgreSQL.
+- **MySQL2**: Driver para conexão com bancos de dados MySQL.
 - **Jest**: Framework de testes para garantir a qualidade do código.
 - **Readline-Sync**: Para interações síncronas via linha de comando.
 
@@ -72,13 +72,13 @@ Exemplo de configuração (ajuste conforme seu banco de dados):
 import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
-    type: "mysql", // ou "postgres"
+    type: "mysql",
     host: "localhost",
-    port: 3306, // ou 5432 para PostgreSQL
+    port: 3306,
     username: "seu_usuario",
     password: "sua_senha",
     database: "seu_banco_de_dados",
-    synchronize: true, // CUIDADO: Usar apenas em desenvolvimento
+    synchronize: true,
     logging: false,
     entities: [__dirname + "/model/**/*.ts"],
     migrations: [],
