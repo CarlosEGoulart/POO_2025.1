@@ -15,8 +15,7 @@ class Database {
     // ART CRUD
     async createArt(title, description, year, imageUrl) {
         const newArt = new Art_1.default(title, description, year, imageUrl);
-        artRepository.save(newArt);
-        return newArt;
+        return artRepository.save(newArt);
     }
     async readArt(artId) {
         return artRepository.findOneBy({ id: artId });
@@ -47,7 +46,7 @@ class Database {
         const art = await this.readArt(artId);
         if (art && artist.id) {
             art.artist = artist;
-            artRepository.save(art);
+            await artRepository.save(art);
             return true;
         }
         return false;
@@ -55,8 +54,7 @@ class Database {
     // ARTIST CRUD
     async createArtist(name, bio, birthYear, instagram) {
         const newArtist = new Artist_1.default(name, bio, birthYear, instagram);
-        artistRepository.save(newArtist);
-        return newArtist;
+        return artistRepository.save(newArtist);
     }
     async readArtist(artistId) {
         return artistRepository.findOneBy({ id: artistId });
@@ -86,8 +84,7 @@ class Database {
     // EXHIBITION CRUD
     async createExhibition(name, description, artWorks = []) {
         const newExhibition = new Exhibition_1.default(name, description, artWorks);
-        exhibitionRepository.save(newExhibition);
-        return newExhibition;
+        return exhibitionRepository.save(newExhibition);
     }
     async readExhibition(exhibitionId) {
         return exhibitionRepository.findOneBy({ id: exhibitionId });
@@ -120,7 +117,7 @@ class Database {
             const currentArtWorks = exhibition.getArtWorks();
             if (!currentArtWorks.includes(artId)) {
                 exhibition.setArtWorks([...currentArtWorks, artId]);
-                exhibitionRepository.save(exhibition);
+                await exhibitionRepository.save(exhibition);
                 return true;
             }
         }

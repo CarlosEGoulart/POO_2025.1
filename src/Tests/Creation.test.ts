@@ -1,8 +1,19 @@
 import Database from "../db/Database";
 import ArtController from "../controller/ArtController";
 import ExhibitionController from "../controller/ExhibitionController"
-import ArtistController from "../controller/ArtistController";
+import ArtistController from "../controller/ArtistController";import { AppDataSource } from "../data-source";
 
+
+beforeAll(async () => {
+    await AppDataSource.initialize();
+    db = new Database(); // Ensure db uses the initialized AppDataSource
+});
+
+afterAll(async () => {
+    await AppDataSource.destroy();
+});
+
+// Ensure db uses the initialized AppDataSource
 let db = new Database();
 
 test("Test Art create", async () => {

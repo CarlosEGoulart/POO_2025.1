@@ -1,6 +1,5 @@
 import Database from "../db/Database";
 import Exhibition from "../model/Classes/Exhibition";
-import Art from "../model/Classes/Art";
 
 export default class ExhibitionController {
     private db: Database;

@@ -5,7 +5,7 @@ class ArtistController {
         this.db = db;
     }
     async createArtist(name, bio, birthYear, instagram) {
-        return this.db.createArtist(name, bio, birthYear, instagram);
+        return await this.db.createArtist(name, bio, birthYear, instagram);
     }
     async getArtist(param) {
         if (typeof param === "number") {
@@ -38,7 +38,7 @@ class ArtistController {
         else if (typeof param === "string") {
             const artist = await this.db.readArtistByName(param);
             if (artist) {
-                return this.db.deleteArtist(artist.getId());
+                return await this.db.deleteArtist(artist.getId());
             }
         }
         return false;

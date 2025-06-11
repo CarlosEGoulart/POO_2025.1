@@ -13,8 +13,7 @@ export default class Database {
     // ART CRUD
  public async createArt(title: string, description: string, year: number, imageUrl: string): Promise<Art> {
         const newArt = new Art(title, description, year, imageUrl);
-        artRepository.save(newArt);
-        return newArt;
+        return artRepository.save(newArt);
     }
 
     public async readArt(artId: number | undefined): Promise<Art | null>{
@@ -52,7 +51,7 @@ export default class Database {
         const art = await this.readArt(artId);
         if (art && artist.id) {
             art.artist = artist;
-            artRepository.save(art)
+            await artRepository.save(art)
             return true;
         }
         return false;
@@ -61,8 +60,7 @@ export default class Database {
     // ARTIST CRUD
  public async createArtist(name: string, bio: string, birthYear: number, instagram: string): Promise<Artist> {
         const newArtist = new Artist(name, bio, birthYear, instagram);
-        artistRepository.save(newArtist);
-        return newArtist;
+        return artistRepository.save(newArtist);
     }
 
     public async readArtist(artistId: number): Promise<Artist | null> {
@@ -98,8 +96,7 @@ export default class Database {
     // EXHIBITION CRUD
  public async createExhibition(name: string, description: string, artWorks: number[] = []): Promise<Exhibition> {
         const newExhibition = new Exhibition(name, description, artWorks);
-        exhibitionRepository.save(newExhibition);
-        return newExhibition;
+        return exhibitionRepository.save(newExhibition);
     }
 
     public async readExhibition(exhibitionId: number): Promise<Exhibition | null> {
@@ -138,7 +135,7 @@ export default class Database {
             const currentArtWorks = exhibition.getArtWorks();
             if (!currentArtWorks.includes(artId)) {
                 exhibition.setArtWorks([...currentArtWorks, artId]);
-                exhibitionRepository.save(exhibition);
+                await exhibitionRepository.save(exhibition);
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 import Art from "../model/Classes/Art";
 import Database from "../db/Database";
+import GenericController from "./GenericController";
 
 export default class ArtController {
     private db: Database;
@@ -8,17 +9,17 @@ export default class ArtController {
         this.db = db;
     }
 
-    public async createArt( title: string, description: string, year: number, imageUrl: string): Promise<Art> {
+    public async createArt(title: string, description: string, year: number, imageUrl: string): Promise<Art> {
         return await this.db.createArt(title, description, year, imageUrl);
     }
 
-    public async getArt<T extends number | string>(param: T): Promise<Art | null>{
+    public async getArt<T extends number | string>(param: T): Promise<Art | null> {
         if (typeof param === "number") {
             return await this.db.readArt(param);
         } 
         else if (typeof param === "string") {
             return await this.db.readArtByTitle(param);
-        } 
+        }
         return null;
     }
 

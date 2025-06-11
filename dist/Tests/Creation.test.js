@@ -7,6 +7,15 @@ const Database_1 = __importDefault(require("../db/Database"));
 const ArtController_1 = __importDefault(require("../controller/ArtController"));
 const ExhibitionController_1 = __importDefault(require("../controller/ExhibitionController"));
 const ArtistController_1 = __importDefault(require("../controller/ArtistController"));
+const data_source_1 = require("../data-source");
+beforeAll(async () => {
+    await data_source_1.AppDataSource.initialize();
+    db = new Database_1.default(); // Ensure db uses the initialized AppDataSource
+});
+afterAll(async () => {
+    await data_source_1.AppDataSource.destroy();
+});
+// Ensure db uses the initialized AppDataSource
 let db = new Database_1.default();
 test("Test Art create", async () => {
     const artController = new ArtController_1.default(db);
