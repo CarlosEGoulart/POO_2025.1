@@ -2,7 +2,7 @@ import { IEntity } from "../model/Interfaces/IEntity";
 import Database from "../db/Database";
 
 export default class GenericController<T extends IEntity> {
-    private db: Database;
+    protected db: Database;
 
     constructor(db: Database) {
         this.db = db;

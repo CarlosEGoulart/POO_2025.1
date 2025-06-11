@@ -1,6 +1,5 @@
 import Art from "../model/Classes/Art";
 import Database from "../db/Database";
-import GenericController from "./GenericController";
 
 export default class ArtController {
     private db: Database;
@@ -16,7 +15,7 @@ export default class ArtController {
     public async getArt<T extends number | string>(param: T): Promise<Art | null> {
         if (typeof param === "number") {
             return await this.db.readArt(param);
-        } 
+        }
         else if (typeof param === "string") {
             return await this.db.readArtByTitle(param);
         }
@@ -30,7 +29,7 @@ export default class ArtController {
     public async updateArt<T extends string | number>(param: T | string, title: string, description: string, year: number, imageUrl: string): Promise<boolean> {
         if (typeof param === "number") {
             return await this.db.updateArt(param, title, description, year, imageUrl);
-        } 
+        }
         else if (typeof param === "string") {
             const art = await this.db.readArtByTitle(param);
             if (art) {
@@ -43,7 +42,7 @@ export default class ArtController {
     public async deleteArt<T extends number | string>(param: T): Promise<boolean> {
         if (typeof param === "number") {
             return this.db.deleteArt(param);
-        } 
+        }
         else if (typeof param === "string") {
             const art = await this.db.readArtByTitle(param);
             if (art) {
