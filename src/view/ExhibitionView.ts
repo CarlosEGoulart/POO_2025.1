@@ -1,4 +1,4 @@
-import ExhibitionController from "../controller/ExhibitionController";
+import ExhibitionController from "../controller/Controllers/ExhibitionController";
 import * as readlineSync from 'readline-sync';
 import Message from "../model/Message/Message";
 import { MessageType } from "../model/Message/EnumType";
@@ -111,7 +111,7 @@ export default class ExhibitionView {
     private async createExhibition(): Promise<void> {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        this.exhibitionController.createExhibition(title, description, []);
+        this.exhibitionController.createExhibition(title, description);
         this.message.showMessage(MessageType.Success);
     }
 
@@ -134,7 +134,7 @@ export default class ExhibitionView {
             const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
 
             try {
-                await this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
+                await this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription);
                 this.message.showMessage(MessageType.Success);
             }
 
@@ -199,7 +199,7 @@ export default class ExhibitionView {
 
     public async getExhibitionArts(): Promise<void> {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
-        const arts = await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+        const arts = await this.exhibitionController.listArtByExhibition(Number(exhibitionInput));
         
         
         try{

@@ -30,9 +30,10 @@ const readlineSync = __importStar(require("readline-sync"));
 const EnumType_1 = require("../model/Message/EnumType");
 const Exception_1 = __importDefault(require("../model/Error/Exception"));
 class ArtView {
-    constructor(artController, message) {
+    constructor(artController, message, artistController) {
         this.artController = artController;
         this.message = message;
+        this.artistController = artistController;
     }
     async start() {
         while (true) {
@@ -83,7 +84,7 @@ class ArtView {
         }
     }
     async listArts() {
-        const arts = await this.artController.listArts();
+        const arts = await this.artController.listArt();
         if (arts.length === 0) {
             this.message.showMessage(EnumType_1.MessageType.NotFound);
             return;
@@ -135,7 +136,7 @@ class ArtView {
             const newImageUrlInput = readlineSync.question(`Nova URL da imagem (${art.getImageUrl()}): `);
             const newImageUrl = newImageUrlInput.trim() === "" ? art.getImageUrl() : newImageUrlInput;
             try {
-                await this.artController.updateArt(art.getId(), newTitle, newDescription, newYear, newImageUrl);
+                await this.artController.updateArt(newTitle, newDescription, newYear, newImageUrl);
                 this.message.showMessage(EnumType_1.MessageType.Success);
             }
             catch (error) {
@@ -165,8 +166,9 @@ class ArtView {
     async assignArtistToArt() {
         const artInput = readlineSync.question("Digite o ID da obra: ");
         const artistInput = readlineSync.question("Digite o ID do artista: ");
+        const artist = await this.artistController.getArtist(artistInput);
         try {
-            await this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
+            await this.artController.assignArtistToArt(Number(artInput), artist);
             this.message.showMessage(EnumType_1.MessageType.Success);
         }
         catch (error) {

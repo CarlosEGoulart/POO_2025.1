@@ -4,14 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Database_1 = __importDefault(require("../db/Database"));
-const ArtController_1 = __importDefault(require("../controller/ArtController"));
-const ExhibitionController_1 = __importDefault(require("../controller/ExhibitionController"));
-const ArtistController_1 = __importDefault(require("../controller/ArtistController"));
+const ArtController_1 = __importDefault(require("../controller/Controllers/ArtController"));
+const ExhibitionController_1 = __importDefault(require("../controller/Controllers/ExhibitionController"));
+const ArtistController_1 = __importDefault(require("../controller/Controllers/ArtistController"));
 let db = new Database_1.default();
 test("Test Update Art", async () => {
     const artController = new ArtController_1.default(db);
     const createdArt = artController.createArt("Titulo da obra", "Descrição da obra", 2025, "url1");
-    const updateArt = await artController.updateArt((await createdArt).getId(), "Titulo da obra alterado", "Descrição da obra alterado", 2025, "url2");
+    const updateArt = await artController.updateArt("Titulo da obra alterado", "Descrição da obra alterado", 2025, "url2");
     expect(updateArt).toBe(true);
 });
 test("Test Update Artist", async () => {
@@ -22,7 +22,7 @@ test("Test Update Artist", async () => {
 });
 test("Test Update Exhibition", async () => {
     const exhibitionController = new ExhibitionController_1.default(db);
-    const createdExhibition = exhibitionController.createExhibition("Titulo da Exibição", "Descrição da exibição", [1, 2]);
-    const updatedExhibition = await exhibitionController.updateExhibition((await createdExhibition).getId(), "Nome da Exibição alterado", "Descrição da exibição alterado", [1]);
+    const createdExhibition = exhibitionController.createExhibition("Titulo da Exibição", "Descrição da exibição");
+    const updatedExhibition = await exhibitionController.updateExhibition((await createdExhibition).getId(), "Nome da Exibição alterado", "Descrição da exibição alterado");
     expect(updatedExhibition).toBe(true);
 });

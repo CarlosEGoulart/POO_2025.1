@@ -1,7 +1,7 @@
 import Database from "../db/Database";
-import ArtController from "../controller/ArtController";
-import ExhibitionController from "../controller/ExhibitionController"
-import ArtistController from "../controller/ArtistController";import { AppDataSource } from "../data-source";
+import ArtController from "../controller/Controllers/ArtController";
+import ExhibitionController from "../controller/Controllers/ExhibitionController"
+import ArtistController from "../controller/Controllers/ArtistController";import { AppDataSource } from "../data-source";
 
 
 beforeAll(async () => {
@@ -52,7 +52,7 @@ test("Test Exhibition create", async () => {
     const description = "Descrição da exibição";
     const artWorks = [1, 2];
 
-    const createdExhibition = await exhibitionController.createExhibition(name, description, artWorks);
+    const createdExhibition = await exhibitionController.createExhibition(name, description);
 
     expect(createdExhibition.getName()).toBe(name);
     expect(createdExhibition.getDescription()).toBe(description);

@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Database_1 = __importDefault(require("../db/Database"));
-const ArtController_1 = __importDefault(require("../controller/ArtController"));
-const ExhibitionController_1 = __importDefault(require("../controller/ExhibitionController"));
-const ArtistController_1 = __importDefault(require("../controller/ArtistController"));
+const ArtController_1 = __importDefault(require("../controller/Controllers/ArtController"));
+const ExhibitionController_1 = __importDefault(require("../controller/Controllers/ExhibitionController"));
+const ArtistController_1 = __importDefault(require("../controller/Controllers/ArtistController"));
 const data_source_1 = require("../data-source");
 beforeAll(async () => {
     await data_source_1.AppDataSource.initialize();
@@ -46,7 +46,7 @@ test("Test Exhibition create", async () => {
     const name = "Nome da Exibição";
     const description = "Descrição da exibição";
     const artWorks = [1, 2];
-    const createdExhibition = await exhibitionController.createExhibition(name, description, artWorks);
+    const createdExhibition = await exhibitionController.createExhibition(name, description);
     expect(createdExhibition.getName()).toBe(name);
     expect(createdExhibition.getDescription()).toBe(description);
     expect(createdExhibition.getArtWorks()).toEqual(artWorks);

@@ -1,4 +1,4 @@
-import Database from "../db/Database";
+import Database from "../../db/Database";
 import ArtController from "./ArtController";
 import ArtistController from "./ArtistController";
 import ExhibitionController from "./ExhibitionController";

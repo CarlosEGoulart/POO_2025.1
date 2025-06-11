@@ -1,4 +1,4 @@
-import MainController from "../controller/MainController";
+import MainController from "../controller/Controllers/MainController";
 import ArtistView from "./ArtistView";
 import ArtView from "./ArtView";
 import ExhibitionView from "./ExhibitionView";
@@ -15,7 +15,7 @@ export default class MainScreen {
     constructor(mainController: MainController) {
         this.mainController = mainController;
         this.artistView = new ArtistView(this.mainController.artistController, this.message);
-        this.artView = new ArtView(this.mainController.artController, this.message);
+        this.artView = new ArtView(this.mainController.artController, this.message, this.mainController.artistController);
         this.exhibitionView = new ExhibitionView(this.mainController.exhibitionController, this.message);
     }
 

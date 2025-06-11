@@ -36,7 +36,7 @@ class MainScreen {
         this.message = new Message_1.default();
         this.mainController = mainController;
         this.artistView = new ArtistView_1.default(this.mainController.artistController, this.message);
-        this.artView = new ArtView_1.default(this.mainController.artController, this.message);
+        this.artView = new ArtView_1.default(this.mainController.artController, this.message, this.mainController.artistController);
         this.exhibitionView = new ExhibitionView_1.default(this.mainController.exhibitionController, this.message);
     }
     async start() {
