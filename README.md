@@ -103,12 +103,3 @@ Para executar os testes unitários:
 npm test
 ```
 
-## Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests para melhorias, correções de bugs ou novas funcionalidades.
-
-## Licença
-
-Este projeto está licenciado sob a licença ISC. Veja o arquivo `LICENSE` para mais detalhes.
-
-
