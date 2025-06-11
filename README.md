@@ -1,6 +1,8 @@
-# POO_2025.1
+# Projeto Gallery POO_2025.1
 
-Este repositório contém os arquivos e exemplos das aulas de Programação Orientada a Objetos (POO) de 2025.1. O objetivo é fornecer um diretório de fácil acesso para que seja possivel acessar os arquivos da aplicação em diferentes ambientes.
+Este repositório contém os arquivos e exemplos das aulas de Programação Orientada a Objetos (POO) de 2025.1.
+O projeto se trata de uma aplicação CRUD de uma galeria de arte utilizando a estrutura MVC e fundamentos de Orientação a Objetos.
+O objetivo é fornecer um diretório de fácil acesso para que seja possivel acessar os arquivos da aplicação em diferentes ambientes.
 
 ## Tecnologias Utilizadas
 
