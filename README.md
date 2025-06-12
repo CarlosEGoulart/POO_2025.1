@@ -45,7 +45,7 @@ Para configurar e rodar este projeto em seu ambiente local, siga os passos abaix
 
 ### Pré-requisitos
 
-Certifique-se de ter o Node.js e o npm (ou yarn) instalados em sua máquina.
+Certifique-se de ter o Node.js e o npm instalados em sua máquina.
 
 ### Instalação
 
@@ -60,12 +60,11 @@ Certifique-se de ter o Node.js e o npm (ou yarn) instalados em sua máquina.
 3. Instale as dependências:
    ```bash
    npm install
-   # ou yarn install
    ```
 
 ### Configuração do Banco de Dados
 
-O projeto utiliza TypeORM para gerenciar o banco de dados. Você precisará configurar o `data-source.ts` (localizado em `src/data-source.ts`) com suas credenciais de banco de dados (MySQL ou PostgreSQL).
+O projeto utiliza TypeORM para gerenciar o banco de dados. Você precisará configurar o `data-source.ts` (localizado em `src/data-source.ts`) com suas credenciais de banco de dados.
 
 Exemplo de configuração (ajuste conforme seu banco de dados):
 

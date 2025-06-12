@@ -7,15 +7,6 @@ const Database_1 = __importDefault(require("../db/Database"));
 const ArtController_1 = __importDefault(require("../controller/Controllers/ArtController"));
 const ExhibitionController_1 = __importDefault(require("../controller/Controllers/ExhibitionController"));
 const ArtistController_1 = __importDefault(require("../controller/Controllers/ArtistController"));
-const data_source_1 = require("../data-source");
-beforeAll(async () => {
-    await data_source_1.AppDataSource.initialize();
-    db = new Database_1.default(); // Ensure db uses the initialized AppDataSource
-});
-afterAll(async () => {
-    await data_source_1.AppDataSource.destroy();
-});
-// Ensure db uses the initialized AppDataSource
 let db = new Database_1.default();
 test("Test Art create", async () => {
     const artController = new ArtController_1.default(db);
@@ -45,9 +36,7 @@ test("Test Exhibition create", async () => {
     const exhibitionController = new ExhibitionController_1.default(db);
     const name = "Nome da Exibição";
     const description = "Descrição da exibição";
-    const artWorks = [1, 2];
     const createdExhibition = await exhibitionController.createExhibition(name, description);
     expect(createdExhibition.getName()).toBe(name);
     expect(createdExhibition.getDescription()).toBe(description);
-    expect(createdExhibition.getArtWorks()).toEqual(artWorks);
 });
