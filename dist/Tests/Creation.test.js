@@ -10,15 +10,11 @@ const ArtistController_1 = __importDefault(require("../controller/Controllers/Ar
 let db = new Database_1.default();
 test("Test Art create", async () => {
     const artController = new ArtController_1.default(db);
-    const title = "Titulo da obra";
-    const description = "Descrição da obra";
-    const year = 2025;
-    const imageUrl = "url1";
-    const createdArt = await artController.createArt(title, description, year, imageUrl);
-    expect(createdArt.getName()).toBe(title);
-    expect(createdArt.getDescription()).toBe(description);
-    expect(createdArt.getYear()).toBe(year);
-    expect(createdArt.getImageUrl()).toBe(imageUrl);
+    const createdArt = await artController.createArt("Titulo da obra", "Descrição da obra", 2025, "url1");
+    expect(createdArt.getName()).toBe("Titulo da obra");
+    expect(createdArt.getDescription()).toBe("Descrição da obra");
+    expect(createdArt.getYear()).toBe(2025);
+    expect(createdArt.getImageUrl()).toBe("url1");
 });
 test("Test Artist create", async () => {
     const artistController = new ArtistController_1.default(db);

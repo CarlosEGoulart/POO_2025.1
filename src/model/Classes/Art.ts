@@ -13,7 +13,6 @@ export default class Art extends BaseEntity {
     })
     name!: string;
 
-    
     @Column()
     description: string;
     
