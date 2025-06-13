@@ -1,17 +1,20 @@
-import ArtController from "../controller/ArtController";
+import ArtController from "../controller/Controllers/ArtController";
 import * as readlineSync from 'readline-sync';
 import Message from "../model/Message/Message";
 import { MessageType } from "../model/Message/EnumType";
 import Art from "../model/Classes/Art";
 import Exception from "../model/Error/Exception";
+import ArtistController from "../controller/Controllers/ArtistController";
 
 export default class ArtView {
     private artController: ArtController;
     private message: Message;
+    private artistController: ArtistController;
 
-    constructor(artController: ArtController, message: Message) {
+    constructor(artController: ArtController, message: Message, artistController: ArtistController) {
         this.artController = artController;
         this.message = message;
+        this.artistController = artistController;
     }
 
     public async start(): Promise<void> {
@@ -67,7 +70,7 @@ export default class ArtView {
     }
 
     private async listArts(): Promise<void> {
-        const arts = await this.artController.listArts();
+        const arts = await this.artController.listArt();
         if (arts.length === 0) {
             this.message.showMessage(MessageType.NotFound);
             return;
@@ -132,7 +135,7 @@ export default class ArtView {
             const newImageUrl = newImageUrlInput.trim() === "" ? art.getImageUrl() : newImageUrlInput;
 
             try {
-                await this.artController.updateArt(art.getId(), newTitle, newDescription, newYear, newImageUrl);
+                await this.artController.updateArt(newTitle, newDescription, newYear, newImageUrl);
                 this.message.showMessage(MessageType.Success);
 
             }
@@ -171,9 +174,10 @@ export default class ArtView {
     private async assignArtistToArt(): Promise<void> {
         const artInput = readlineSync.question("Digite o ID da obra: ");
         const artistInput = readlineSync.question("Digite o ID do artista: ");
+        const artist = await this.artistController.getArtist(artistInput)
 
         try {
-            await this.artController.assignArtistToArt(Number(artInput), Number(artistInput));
+            await this.artController.assignArtistToArt(Number(artInput), artist);
             this.message.showMessage(MessageType.Success);
         }
 

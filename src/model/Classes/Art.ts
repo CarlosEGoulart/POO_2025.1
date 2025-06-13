@@ -85,4 +85,7 @@ export default class Art extends BaseEntity {
         return `Obra: ${this.name}, Descrição: ${this.description}, Ano: ${this.year}, URL da Imagem: ${this.imageUrl}, Artista: ${this.artist ? this.artist.getName() : "Desconhecido"}`;
     }
 
+    public getType(): string {
+        return "Art";
+    }
 }

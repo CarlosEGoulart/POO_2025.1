@@ -1,34 +1,18 @@
 import Database from "../db/Database";
-import ArtController from "../controller/ArtController";
-import ExhibitionController from "../controller/ExhibitionController"
-import ArtistController from "../controller/ArtistController";import { AppDataSource } from "../data-source";
+import ArtController from "../controller/Controllers/ArtController";
+import ExhibitionController from "../controller/Controllers/ExhibitionController"
+import ArtistController from "../controller/Controllers/ArtistController";
 
-
-beforeAll(async () => {
-    await AppDataSource.initialize();
-    db = new Database(); // Ensure db uses the initialized AppDataSource
-});
-
-afterAll(async () => {
-    await AppDataSource.destroy();
-});
-
-// Ensure db uses the initialized AppDataSource
-let db = new Database();
+let db = new Database()
 
 test("Test Art create", async () => {
     const artController = new ArtController(db);
-    const title = "Titulo da obra";
-    const description = "Descrição da obra";
-    const year = 2025;
-    const imageUrl = "url1";
+    const createdArt = await artController.createArt("Titulo da obra", "Descrição da obra", 2025, "url1");
 
-    const createdArt = await artController.createArt(title, description, year, imageUrl);
-
-    expect(createdArt.getName()).toBe(title);
-    expect(createdArt.getDescription()).toBe(description);
-    expect(createdArt.getYear()).toBe(year);
-    expect(createdArt.getImageUrl()).toBe(imageUrl);
+    expect(createdArt.getName()).toBe("Titulo da obra");
+    expect(createdArt.getDescription()).toBe("Descrição da obra");
+    expect(createdArt.getYear()).toBe(2025);
+    expect(createdArt.getImageUrl()).toBe("url1");
 });
 
 test("Test Artist create", async () => {
@@ -50,11 +34,9 @@ test("Test Exhibition create", async () => {
     const exhibitionController = new ExhibitionController(db);
     const name = "Nome da Exibição";
     const description = "Descrição da exibição";
-    const artWorks = [1, 2];
 
-    const createdExhibition = await exhibitionController.createExhibition(name, description, artWorks);
+    const createdExhibition = await exhibitionController.createExhibition(name, description);
 
     expect(createdExhibition.getName()).toBe(name);
     expect(createdExhibition.getDescription()).toBe(description);
-    expect(createdExhibition.getArtWorks()).toEqual(artWorks)
 });

@@ -54,6 +54,9 @@ let Artist = class Artist extends BaseEntity_1.default {
     getInfo() {
         return `Artista: ${this.name}, Bio: ${this.bio}, Ano de Nascimento: ${this.birthYear}, Instagram: ${this.instagram}`;
     }
+    getType() {
+        return "Artist";
+    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

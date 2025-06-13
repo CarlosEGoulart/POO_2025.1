@@ -1,4 +1,4 @@
-import ArtistController from "../controller/ArtistController";
+import ArtistController from "../controller/Controllers/ArtistController";
 import * as readlineSync from 'readline-sync';
 import Message from "../model/Message/Message";
 import { MessageType } from "../model/Message/EnumType";

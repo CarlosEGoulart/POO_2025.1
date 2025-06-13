@@ -120,7 +120,7 @@ class ExhibitionView {
     async createExhibition() {
         const title = readlineSync.question("Título: ");
         const description = readlineSync.question("Descrição: ");
-        this.exhibitionController.createExhibition(title, description, []);
+        this.exhibitionController.createExhibition(title, description);
         this.message.showMessage(EnumType_1.MessageType.Success);
     }
     async updateExhibition() {
@@ -138,7 +138,7 @@ class ExhibitionView {
             const descInput = readlineSync.question(`Nova descrição (${exhibition.getDescription()}): `);
             const newDescription = descInput.trim() === "" ? exhibition.getDescription() : descInput;
             try {
-                await this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription, exhibition.getArtWorks());
+                await this.exhibitionController.updateExhibition(exhibition.getId(), newTitle, newDescription);
                 this.message.showMessage(EnumType_1.MessageType.Success);
             }
             catch (error) {
@@ -189,7 +189,7 @@ class ExhibitionView {
     }
     async getExhibitionArts() {
         const exhibitionInput = readlineSync.question("Digite o ID da exibição: ");
-        const arts = await this.exhibitionController.getExhibitionArts(Number(exhibitionInput));
+        const arts = await this.exhibitionController.listArtByExhibition(Number(exhibitionInput));
         try {
             if (!arts || arts.length === 0) {
                 this.message.showMessage(EnumType_1.MessageType.NotFound);

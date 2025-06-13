@@ -70,4 +70,8 @@ export default class Artist extends BaseEntity {
     public getInfo(): string {
         return `Artista: ${this.name}, Bio: ${this.bio}, Ano de Nascimento: ${this.birthYear}, Instagram: ${this.instagram}`;
     }
+
+    public getType(): string {
+        return "Artist";
+    }
 }

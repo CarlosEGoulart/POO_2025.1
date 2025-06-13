@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Database_1 = __importDefault(require("../db/Database"));
-const ArtController_1 = __importDefault(require("../controller/ArtController"));
-const ExhibitionController_1 = __importDefault(require("../controller/ExhibitionController"));
-const ArtistController_1 = __importDefault(require("../controller/ArtistController"));
+const ArtController_1 = __importDefault(require("../controller/Controllers/ArtController"));
+const ExhibitionController_1 = __importDefault(require("../controller/Controllers/ExhibitionController"));
+const ArtistController_1 = __importDefault(require("../controller/Controllers/ArtistController"));
 let db = new Database_1.default();
 test("Test Delete Art", async () => {
     const artController = new ArtController_1.default(db);

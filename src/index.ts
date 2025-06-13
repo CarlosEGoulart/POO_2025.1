@@ -1,4 +1,4 @@
-import MainController from "./controller/MainController";
+import MainController from "./controller/Controllers/MainController";
 import MainScreen from "./view/MainScreen";
 import Exception from "./model/Error/Exception";
 import { MessageType } from "./model/Message/EnumType";

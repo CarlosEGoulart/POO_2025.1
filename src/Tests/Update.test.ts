@@ -1,7 +1,7 @@
 import Database from "../db/Database";
-import ArtController from "../controller/ArtController";
-import ExhibitionController from "../controller/ExhibitionController"
-import ArtistController from "../controller/ArtistController";
+import ArtController from "../controller/Controllers/ArtController";
+import ExhibitionController from "../controller/Controllers/ExhibitionController"
+import ArtistController from "../controller/Controllers/ArtistController";
 
 
 let db = new Database()
@@ -11,7 +11,7 @@ test("Test Update Art", async () => {
     
     const createdArt = artController.createArt("Titulo da obra", "Descrição da obra", 2025, "url1");
 
-    const updateArt = await artController.updateArt((await createdArt).getId(), "Titulo da obra alterado", "Descrição da obra alterado", 2025, "url2");
+    const updateArt = await artController.updateArt("Titulo da obra alterado", "Descrição da obra alterado", 2025, "url2");
 
     expect(updateArt).toBe(true);
 });
@@ -29,9 +29,9 @@ test("Test Update Artist", async () => {
 test("Test Update Exhibition", async () => {
     const exhibitionController = new ExhibitionController(db);
 
-    const createdExhibition = exhibitionController.createExhibition("Titulo da Exibição", "Descrição da exibição", [1, 2]);
+    const createdExhibition = exhibitionController.createExhibition("Titulo da Exibição", "Descrição da exibição");
 
-    const updatedExhibition = await exhibitionController.updateExhibition((await createdExhibition).getId(), "Nome da Exibição alterado", "Descrição da exibição alterado", [1]);
+    const updatedExhibition = await exhibitionController.updateExhibition((await createdExhibition).getId(), "Nome da Exibição alterado", "Descrição da exibição alterado");
 
     expect(updatedExhibition).toBe(true);
 });

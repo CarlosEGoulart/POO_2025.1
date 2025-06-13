@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const MainController_1 = __importDefault(require("./controller/MainController"));
+const MainController_1 = __importDefault(require("./controller/Controllers/MainController"));
 const MainScreen_1 = __importDefault(require("./view/MainScreen"));
 const Exception_1 = __importDefault(require("./model/Error/Exception"));
 const EnumType_1 = require("./model/Message/EnumType");

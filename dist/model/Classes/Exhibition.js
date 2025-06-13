@@ -48,6 +48,9 @@ let Exhibition = class Exhibition extends BaseEntity_1.default {
     getInfo() {
         return `Exposição: ${this.name}, Descrição: ${this.description}, Obras: ${this.artWorks.length}`;
     }
+    getType() {
+        return "Exhibition";
+    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

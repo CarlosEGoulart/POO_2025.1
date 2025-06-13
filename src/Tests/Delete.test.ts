@@ -1,7 +1,7 @@
 import Database from "../db/Database";
-import ArtController from "../controller/ArtController";
-import ExhibitionController from "../controller/ExhibitionController"
-import ArtistController from "../controller/ArtistController";
+import ArtController from "../controller/Controllers/ArtController";
+import ExhibitionController from "../controller/Controllers/ExhibitionController"
+import ArtistController from "../controller/Controllers/ArtistController";
 
 
 let db = new Database()

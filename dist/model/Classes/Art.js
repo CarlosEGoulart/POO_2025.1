@@ -62,6 +62,9 @@ let Art = class Art extends BaseEntity_1.default {
     getInfo() {
         return `Obra: ${this.name}, Descrição: ${this.description}, Ano: ${this.year}, URL da Imagem: ${this.imageUrl}, Artista: ${this.artist ? this.artist.getName() : "Desconhecido"}`;
     }
+    getType() {
+        return "Art";
+    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

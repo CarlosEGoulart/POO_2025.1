@@ -60,4 +60,8 @@ export default class Exhibition extends BaseEntity {
     public getInfo(): string {
         return `Exposição: ${this.name}, Descrição: ${this.description}, Obras: ${this.artWorks.length}`;
     }
+
+    public getType(): string {
+        return "Exhibition";
+    }
 }
