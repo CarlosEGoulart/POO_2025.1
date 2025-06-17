@@ -174,7 +174,7 @@ export default class ArtView {
     private async assignArtistToArt(): Promise<void> {
         const artInput = readlineSync.question("Digite o ID da obra: ");
         const artistInput = readlineSync.question("Digite o ID do artista: ");
-        const artist = await this.artistController.getArtist(artistInput)
+        const artist = await this.artistController.getArtist(artistInput);
 
         try {
             await this.artController.assignArtistToArt(Number(artInput), artist);
